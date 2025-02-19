@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203629934726",
+    "project_id": "shogi-rag",
+    "storage_bucket": "shogi-rag.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203629934726:android:fa096393cdc2830f7eb907",
+        "android_client_info": {
+          "package_name": "com.example.c61_shogi_rag"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKMFw1TMy9hLGotBdWQCgCQAEwMtWIWr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
