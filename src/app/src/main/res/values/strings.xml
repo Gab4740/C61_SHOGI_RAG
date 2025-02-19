@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">SHOGI</string>
+    <string name="app_name">C61_SHOGI_RAG</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>

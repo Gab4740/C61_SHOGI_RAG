@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SHOGI"
+rootProject.name = "C61_SHOGI_RAG"
 include(":app")
+ 
