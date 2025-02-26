@@ -1,7 +1,7 @@
 package com.example.c61_shogi_rag.piece;
 
 public class Piece {
-    private final byte ID;
+    private final byte ID;  // ID negatif = Noir, ID positif = Blanc
     private final int IMAGE_ID;
     private final String nom;
     private final int[][] directions;
@@ -15,5 +15,14 @@ public class Piece {
 
     public byte getID() {
         return ID;
+    }
+    public int getIMAGE_ID() { return IMAGE_ID; }
+    public String getNom() { return nom; }
+    public int[][] getDirections() { return directions; }
+    public boolean isValidMove(){
+
+        // TODO
+
+        return true;
     }
 }

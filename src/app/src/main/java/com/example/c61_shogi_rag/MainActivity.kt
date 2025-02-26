@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.c61_shogi_rag.dao.JoueurDAO
+import com.example.c61_shogi_rag.piece.InitPiece
+import com.example.c61_shogi_rag.piece.Piece
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 class MainActivity : ComponentActivity() {
