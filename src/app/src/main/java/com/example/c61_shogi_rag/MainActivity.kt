@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.c61_shogi_rag.game.Time
 import com.example.c61_shogi_rag.piece.InitPiece
 import com.example.c61_shogi_rag.piece.Piece
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
@@ -23,7 +25,7 @@ class MainActivity : ComponentActivity() {
             C61_SHOGI_RAGTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "aaaaaa",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

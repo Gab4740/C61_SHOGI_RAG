@@ -5,8 +5,6 @@ import android.widget.Switch;
 import java.util.Objects;
 
 public class InitPiece {
-
-
     /**
      * Méthode pour créer les pièces nécéssaires au jeu de shogi :
      *
@@ -40,5 +38,75 @@ public class InitPiece {
             default:                 composed = "NULL"; movesRule = null;                                       break;
         }
         return new Piece((byte)piece_id, image_id, composed, movesRule);
+    }
+
+    /**
+     * Lookup table des mouvements valide de tous les pièce du jeu sous forme de tableau 2D : int[][]
+     * */
+    public enum pieceMoveSet{
+        Roi(new int[][]{
+                {1, 0}, {0, 1}, {-1, 0}, {0, -1},   // Gauche, Droite, Haut, Bas
+                {1, 1}, {1, -1}, {-1, 1}, {-1, -1}  // Toutes les Diagonales
+        }),
+        Char(new int[][]{
+                {-1, 0}, {1, 0},            // Gauche, Droite
+                {0, -1}, {0, 1}             // Haut, Base
+        }),
+        Fou(new int[][]{
+                {-1, -1}, {1, 1},
+                {-1, 1}, {1, -1}            // Toutes les Diagonales
+        }),
+        GeneralOrBlanc(new int[][]{         // Directionnel vers le haut
+                {-1, 0}, {1, 0},            // Gauche, Droite
+                {0, -1}, {0, 1},            // Haut, Bas
+                {-1, 1}, {1, 1}             // Diagonales vers le haut
+        }),
+        GeneralOrNoir(new int[][]{          // Directionnel vers les bas
+                {-1, 0}, {1, 0},            // Gauche, Droite
+                {0, -1}, {0, 1},            // Haut, Bas
+                {-1, -1}, {1, -1}           // Diagonales vers le bas
+        }),
+        GeneralArgentBlanc(new int[][]{     // Directionnel ver les Haut -> Promotion : GeneralOrBlanc
+                {-1, -1}, {1, 1},           //
+                {-1, 1}, {1, -1},           // Toutes les diagonales
+                {0, 1},                     // Tout droit ver le haut
+        }),
+        GeneralArgentNoir(new int[][]{      // Directionnel ver les bas -> Promotion : GeneralOrNoir
+                {-1, -1}, {1, 1},           //
+                {-1, 1}, {1, -1},           // Toutes les diagonales
+                {0, -1},                    // Tout droit ver le bas
+        }),
+        ChevalierBlanc(new int[][]{         // Directionnel ver les Haut  -> Promotion : GeneralOrBlanc
+                {-1, 2}, {1, 2},            // 2 vers le haut, 1 gauche ou droite
+        }),
+        ChevalierNoir(new int[][]{          // Directionnel ver les Bas -> Promotion : GeneralOrNoir
+                {-1, -2}, {1, -2},          // 2 vers le Bas, 1 gauche ou droite
+        }),
+        LanceBlanc(new int[][]{             // Directionnel ver les Haut   -> Promotion : GeneralOrBlanc
+                {0, 1},                     // Tout droit vers le haut
+        }),
+        LanceNoir(new int[][]{              // Directionnel ver les Bas  -> Promotion : GeneralOrNoir
+                {0, -1},                    // Tout droit vers le bas
+        }),
+        RoiDragon(new int[][]{
+                {-1, 0}, {1, 0},            // Gauche, Droite
+                {0, -1}, {0, 1},            // Haut, Base
+                {1, 0}, {0, 1},
+                {-1, 0}, {0, -1}            // Gauche, Droite, Haut, Bas
+        }),
+        ChevalDragon(new int[][]{
+                {-1, -1}, {1, 1},
+                {-1, 1}, {1, -1},           // Toutes les Diagonales
+                {1, 0}, {0, 1},
+                {-1, 0}, {0, -1}            // Gauche, Droite, Haut, Bas
+        });
+
+        private final int[][] moveSet;
+        pieceMoveSet(int[][] moveSet) {
+            this.moveSet = moveSet;
+        }
+        public int[][] getMoveSet() {
+            return this.moveSet;
+        }
     }
 }

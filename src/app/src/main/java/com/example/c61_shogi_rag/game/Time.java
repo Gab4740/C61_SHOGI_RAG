@@ -1,5 +1,9 @@
 package com.example.c61_shogi_rag.game;
 
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,14 +40,14 @@ public class Time{
                 else{
                     minutesFormat = String.valueOf(minutes);
                 }
+                displayTime = minutesFormat + " : " + secondeFormat;
             }
         };
     }
 
     public void startTime(){
-        timer.schedule(task, 1000, 1000);
+        timer.schedule(task, 0, 1000);
     }
-
     public int getTimePassed() {
         return timePassed;
     }

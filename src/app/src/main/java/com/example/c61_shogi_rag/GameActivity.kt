@@ -11,22 +11,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.c61_shogi_rag.game.Time
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 class GameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val t : Time = Time()
+        t.startTime()
         setContent {
             C61_SHOGI_RAGTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting2(
-                        name = "Android",
+                        name = "t.displayTime",
                         modifier = Modifier.padding(innerPadding)
+
                     )
                 }
             }
         }
+
+
+
     }
 }
 
