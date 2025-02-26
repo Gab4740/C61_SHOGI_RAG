@@ -11,9 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.c61_shogi_rag.dao.JoueurDAO
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 class MainActivity : ComponentActivity() {
+
+    var joueur = JoueurDAO();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +31,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        //joueur.addJoueur("eric", "Salut92");
+        joueur.getJoueur();
     }
+
+
 }
 
 @Composable
@@ -45,3 +54,4 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
