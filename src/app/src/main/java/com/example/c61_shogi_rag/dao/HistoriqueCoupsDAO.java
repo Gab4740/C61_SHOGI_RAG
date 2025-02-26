@@ -1,2 +1,4 @@
-package com.example.c61_shogi_rag.dao;public class HistoriqueCoupsDAO {
+package com.example.c61_shogi_rag.dao;
+public class HistoriqueCoupsDAO {
+
 }
