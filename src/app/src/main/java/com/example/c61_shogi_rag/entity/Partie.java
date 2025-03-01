@@ -2,13 +2,13 @@ package com.example.c61_shogi_rag.entity;
 
 public class Partie {
     int partie_id;
-    int joueur_gagnant;
+    int winner_id;
     String date;
     int loser_id;
 
-    public Partie(int partie_id, int joueur_gagnant, String date, int loser_id) {
+    public Partie(int partie_id, int winner_id, String date, int loser_id) {
         this.partie_id = partie_id;
-        this.joueur_gagnant = joueur_gagnant;
+        this.winner_id = winner_id;
         this.date = date;
         this.loser_id = loser_id;
     }
@@ -21,12 +21,12 @@ public class Partie {
         this.partie_id = partie_id;
     }
 
-    public int getJoueur_gagnant() {
-        return joueur_gagnant;
+    public int getWinner_id() {
+        return winner_id;
     }
 
-    public void setJoueur_gagnant(int joueur_gagnant) {
-        this.joueur_gagnant = joueur_gagnant;
+    public void setWinner_id(int winner_id) {
+        this.winner_id = winner_id;
     }
 
     public String getDate() {

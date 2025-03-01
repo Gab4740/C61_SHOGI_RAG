@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.c61_shogi_rag.game.Time
 
 import com.example.c61_shogi_rag.dao.JoueurDAO
+import com.example.c61_shogi_rag.entity.Joueur
+import com.example.c61_shogi_rag.entity.JoueurCallback
 import com.example.c61_shogi_rag.piece.InitPiece
 import com.example.c61_shogi_rag.piece.Piece
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
@@ -39,7 +41,12 @@ class MainActivity : ComponentActivity() {
         }
 
         //joueur.addJoueur("eric", "Salut92");
-        joueur.getJoueur();
+
+        joueur.getJoueur { joueur ->
+            if (joueur != null) {
+                System.out.println(joueur.nom_joueur)
+            }
+        };
     }
 
 
