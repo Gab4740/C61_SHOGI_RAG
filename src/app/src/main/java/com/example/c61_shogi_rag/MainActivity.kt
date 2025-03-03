@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 import com.example.c61_shogi_rag.dao.JoueurDAO
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
@@ -21,8 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             C61_SHOGI_RAGTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainMenu(innerPadding)
-
+                    //MainMenuScreen(innerPadding)
+                    GameScreen(innerPadding)
                 }
             }
         }

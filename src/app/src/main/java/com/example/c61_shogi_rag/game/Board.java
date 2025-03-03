@@ -85,4 +85,8 @@ public class Board {
     }
 
     // IDÉE : Toutes les classe qui sont concerné dans la sauvgarde de la partie implement une interface pour leur fournir une abtract func de sauvgarde d'état.
+
+    public int getBOARD_SIZE() {
+        return BOARD_SIZE;
+    }
 }

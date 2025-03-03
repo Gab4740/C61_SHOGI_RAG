@@ -31,9 +31,6 @@ class GameActivity : ComponentActivity() {
                 }
             }
         }
-
-
-
     }
 }
 

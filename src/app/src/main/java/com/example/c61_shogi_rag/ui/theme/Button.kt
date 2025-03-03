@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MenuBottom(name: String, fontFamily: FontFamily, modifier: Modifier, onClick: () -> Unit) {
+fun MenuButton(name: String, fontFamily: FontFamily, modifier: Modifier, onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
         shape = RectangleShape,
