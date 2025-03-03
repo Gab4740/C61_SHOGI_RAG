@@ -22,6 +22,17 @@ public class Piece {
     public String getNom() { return nom; }
     public int[][] getDirections() { return directions; }
 
+    /***
+     * Retourne un tableau de positions qui représente tous les deplacements qu'une pièce peux effectuer
+     * selon l'état actuelle de la partie
+     *
+     * @param board : État actuelle de la partie
+     */
+    public Position[] getAllPossibleMoves(Board board){
+        // TODO
+        return new Position[0];
+    }
+
     /**
      * Recoit un deplacement (move) et le board et vérifie a partir du tableau de directions de la
      * pièce si le deplacement est valide
