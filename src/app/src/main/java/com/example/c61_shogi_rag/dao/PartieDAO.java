@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ public class PartieDAO {
     private final DatabaseReference partieDB = database.getReference("partie");
 
 
-    //TODO terminer les methode d'acces
 
     public void addPartie(int id_winner, int id_loser) {
 
@@ -58,8 +59,7 @@ public class PartieDAO {
 
 
 
-
-    public void getPartie(PartieCallback callback) {
+    public void getPartie(PartieCallback callback, int id_joueur) {
         partieDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -68,7 +68,10 @@ public class PartieDAO {
                 for (DataSnapshot child : snapshot.getChildren()) { // Utilisation correcte de la boucle
                     Partie partie = child.getValue(Partie.class);
                     if (partie != null) {
-                        partieList.add(partie);
+                        if (partie.getWinner_id() == id_joueur || partie.getLoser_id() == id_joueur){
+                            partieList.add(partie);
+
+                        }
                         Log.d("Firebase", "Partie ID: " + partie.getPartie_id());
                     }
                 }
