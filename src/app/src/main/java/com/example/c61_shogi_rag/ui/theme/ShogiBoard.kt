@@ -21,20 +21,19 @@ import com.example.c61_shogi_rag.R
 
 
 @Composable
-fun ShogiPiece(modifier: Modifier = Modifier, pieceResID: Int? = null, opposite: Boolean = false,) {
-    if(pieceResID != null) {
-        Image(
-            painter = painterResource(id = pieceResID),
-            contentDescription = "Image de la pièce",
-            modifier = modifier
-                .fillMaxSize()
-                .then(if (opposite) Modifier.rotate(180F) else Modifier)
-        )
-    }
+fun ShogiPiece(modifier: Modifier = Modifier, pieceResID: Int, opposite: Boolean) {
+    Image(
+        painter = painterResource(id = pieceResID),
+        contentDescription = "Image de la pièce",
+        modifier = modifier
+            .fillMaxSize()
+            .then(if (opposite) Modifier.rotate(180F) else Modifier)
+    )
+
 }
 
 @Composable
-fun ShogiboardCell(pieceResID: Int? = null, opposite: Boolean = false) {
+fun ShogiboardCell(pieceResID: Int? = null, opposite: Boolean? = null) {
     Box(
         modifier = Modifier
             .background(color = Color.White)
@@ -47,11 +46,10 @@ fun ShogiboardCell(pieceResID: Int? = null, opposite: Boolean = false) {
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-
-        ShogiPiece(Modifier.align(Alignment.Center), R.drawable._fu_1, opposite)
-
+        if (opposite != null) {
+            ShogiPiece(Modifier.align(Alignment.Center), R.drawable._fu_1, opposite)
+        }
     }
-
 }
 
 @Composable
@@ -60,10 +58,15 @@ fun Shogiboard(boardSize: Int, modifier: Modifier = Modifier) {
         for (row in 0 until boardSize) {
             Row {
                 for (column in 0 until boardSize) {
-                    ShogiboardCell(
-                        R.drawable._fu_1,
-                        true
-                    )
+                    if(row == 1 && column == 1) {
+                        ShogiboardCell(
+                            R.drawable._fu_1,
+                            true
+                        )
+                    }
+                    else {
+                        ShogiboardCell()
+                    }
                 }
             }
         }
