@@ -4,6 +4,9 @@ public class HistoriqueCoups {
     private int coups_id, partie_id, nom_joueur;
     private String position_x, position_y, nom_piece,couleur_piece;
 
+    public HistoriqueCoups(){
+    }
+
     public HistoriqueCoups(int coups_id, int partie_id, int nom_joueur,
                            String position_x, String position_y, String nom_piece, String couleur_piece) {
         this.coups_id = coups_id;

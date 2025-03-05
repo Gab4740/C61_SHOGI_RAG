@@ -64,7 +64,7 @@ public class PartieDAO {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Partie> partieList = new ArrayList<>();
-
+                System.out.println(id_joueur);
                 for (DataSnapshot child : snapshot.getChildren()) { // Utilisation correcte de la boucle
                     Partie partie = child.getValue(Partie.class);
                     if (partie != null) {

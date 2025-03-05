@@ -6,6 +6,10 @@ public class Partie {
     String date;
     int loser_id;
 
+    public Partie() {
+    }
+
+
     public Partie(int partie_id, int winner_id, String date, int loser_id) {
         this.partie_id = partie_id;
         this.winner_id = winner_id;
