@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.c61_shogi_rag.game.Board
+import com.example.c61_shogi_rag.ui.theme.Shogiboard
 
 @Composable
 fun GameScreen(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
