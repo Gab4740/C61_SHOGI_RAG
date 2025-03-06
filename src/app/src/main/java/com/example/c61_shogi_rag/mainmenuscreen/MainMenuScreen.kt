@@ -1,4 +1,4 @@
-package com.example.c61_shogi_rag
+package com.example.c61_shogi_rag.mainmenuscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

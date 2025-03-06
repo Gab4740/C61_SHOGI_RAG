@@ -15,6 +15,7 @@ import com.example.c61_shogi_rag.entity.HistoriqueCoupsCallback
 import com.example.c61_shogi_rag.entity.Joueur
 import com.example.c61_shogi_rag.entity.Partie
 import com.example.c61_shogi_rag.entity.PartieCallback
+import com.example.c61_shogi_rag.gamescreen.GameScreen
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 
