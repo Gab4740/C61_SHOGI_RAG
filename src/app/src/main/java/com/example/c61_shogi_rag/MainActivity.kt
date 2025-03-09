@@ -7,15 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.c61_shogi_rag.dao.HistoriqueCoupsDAO
-import com.example.c61_shogi_rag.dao.JoueurDAO
-import com.example.c61_shogi_rag.dao.PartieDAO
-import com.example.c61_shogi_rag.entity.HistoriqueCoups
-import com.example.c61_shogi_rag.entity.HistoriqueCoupsCallback
-import com.example.c61_shogi_rag.entity.Joueur
-import com.example.c61_shogi_rag.entity.Partie
-import com.example.c61_shogi_rag.entity.PartieCallback
-import com.example.c61_shogi_rag.gamescreen.GameScreen
+import com.example.c61_shogi_rag.engine.dao.HistoriqueCoupsDAO
+import com.example.c61_shogi_rag.engine.dao.JoueurDAO
+import com.example.c61_shogi_rag.engine.dao.PartieDAO
+import com.example.c61_shogi_rag.engine.entity.HistoriqueCoups
+import com.example.c61_shogi_rag.engine.entity.HistoriqueCoupsCallback
+import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.entity.Partie
+import com.example.c61_shogi_rag.engine.entity.PartieCallback
+import com.example.c61_shogi_rag.ui.screens.game_screen.GameScreen
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 
@@ -25,13 +25,14 @@ class MainActivity : ComponentActivity() {
 
     var partieDao = PartieDAO();
 
-    var historiqueCoupsDAO = HistoriqueCoupsDAO();
+    var historiqueCoupsDAO =
+        HistoriqueCoupsDAO();
 
     var listeParties: MutableList<Partie> = mutableListOf()
     var listeCoups: MutableList<HistoriqueCoups> = mutableListOf()
 
 
-    private var joueurRecuperer: Joueur ? = null;
+    private var joueurRecuperer: Joueur? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +88,8 @@ class MainActivity : ComponentActivity() {
     //methode permetant d'aller chercher l'historique des partie jouer
     // en fonction de l'id du joueur
     private fun getPartieJouer(id_joueur: Int) {
-        partieDao.getPartie(object : PartieCallback {
+        partieDao.getPartie(object :
+            PartieCallback {
             override fun onPartiesRecuperees(partieList: List<Partie>) {
                 if (partieList.isNotEmpty()) {
                     listeParties.clear()
@@ -103,7 +105,8 @@ class MainActivity : ComponentActivity() {
 
     //methode permetante de get tout les coups de la partie choisie
     private fun getHistoriqueDeCoups(id_partie: Int) {
-        historiqueCoupsDAO.getHistoriqueCoups(object : HistoriqueCoupsCallback {
+        historiqueCoupsDAO.getHistoriqueCoups(object :
+            HistoriqueCoupsCallback {
             override fun onHistoriqueRecuperee(coupsList: List<HistoriqueCoups>) {
                 if (coupsList.isNotEmpty()) {
                     listeCoups.clear()

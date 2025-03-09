@@ -22,8 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
-import com.example.c61_shogi_rag.game.Board
-import com.example.c61_shogi_rag.piece.Position
+import com.example.c61_shogi_rag.engine.game.Board
+import com.example.c61_shogi_rag.engine.piece.Position
 
 
 @Composable
@@ -77,7 +77,12 @@ fun ShogiboardCell(modifier: Modifier = Modifier,
 @Composable
 fun Shogiboard(modifier: Modifier = Modifier, board: Board) {
     var board by remember { mutableStateOf(board) }
-    var piecePosition by remember { mutableStateOf(Position(1,1)) }
+    var piecePosition by remember { mutableStateOf(
+        Position(
+            1,
+            1
+        )
+    ) }
 
     Column {
         for (row in 0 until board.boarD_SIZE) {
@@ -85,8 +90,16 @@ fun Shogiboard(modifier: Modifier = Modifier, board: Board) {
                 for (column in 0 until board.boarD_SIZE) {
                     if(column == piecePosition.posX && row == piecePosition.posY) {
                         ShogiboardCell(
-                            position = Position(column, row),
-                            onCellClick = {piecePosition = Position(column, row)},
+                            position = Position(
+                                column,
+                                row
+                            ),
+                            onCellClick = {piecePosition =
+                                Position(
+                                    column,
+                                    row
+                                )
+                            },
 
                             shogiPiece = {
                                 ShogiPiece(
@@ -98,8 +111,16 @@ fun Shogiboard(modifier: Modifier = Modifier, board: Board) {
                     }
                     else {
                         ShogiboardCell(
-                            position = Position(column, row),
-                            onCellClick = {piecePosition = Position(column, row)},
+                            position = Position(
+                                column,
+                                row
+                            ),
+                            onCellClick = {piecePosition =
+                                Position(
+                                    column,
+                                    row
+                                )
+                            },
                             shogiPiece = {
                                 ShogiPiece(
                                 )
