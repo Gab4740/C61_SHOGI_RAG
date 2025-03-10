@@ -4,10 +4,13 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-object MainMenu
+data class MainMenu(var connectedPlayer:String = "")
 
 @Serializable
 data class Game(val player1:String = "Player 1", val player2:String = "Player 2")
+
+@Serializable
+object Login
 
 @Serializable
 object History
