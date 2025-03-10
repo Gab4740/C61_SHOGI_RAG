@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MenuButton(modifier: Modifier = Modifier, name: String,
-               fontFamily: FontFamily, onClick: () -> Unit = {}) {
+fun ShogiButton(modifier: Modifier = Modifier, name: String,
+                fontFamily: FontFamily = japanWaveFontFamily, onClick: () -> Unit = {}) {
     Button(
         onClick = { onClick() },
         shape = RectangleShape,

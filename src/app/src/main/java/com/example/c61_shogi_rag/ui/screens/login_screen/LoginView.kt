@@ -11,20 +11,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.c61_shogi_rag.ui.theme.ShogiButton
 
 @Composable
 fun LoginView(modifier: Modifier = Modifier, loginViewModel: LoginViewModel = viewModel(),
-              navigateToMainMennu:(String) -> Unit) {
+              navigateToMainMenu:(String) -> Unit) {
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = "HOME SCREEN", fontSize = 25.sp)
-        Spacer(modifier = Modifier.weight(1f))
-        TextField(value = loginViewModel.connectedUser, onValueChange = {loginViewModel.connectedUser = it})
-        Spacer(modifier = Modifier.weight(1f))
-        Button(onClick = { navigateToMainMennu(loginViewModel.connectedUser) }) {
-            Text(text = "Submit")
-        }
-        Spacer(modifier = Modifier.weight(1f))
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(text = "HOME SCREEN", fontSize = 25.sp)
+            Spacer(modifier = Modifier.weight(1f))
+            TextField(value = loginViewModel.connectedUser, onValueChange = {loginViewModel.connectedUser = it})
+            Spacer(modifier = Modifier.weight(1f))
+            ShogiButton(
+                name = "Submit",
+                onClick = {navigateToMainMenu(loginViewModel.connectedUser)}
+            )
+            Spacer(modifier = Modifier.weight(1f))
     }
 }

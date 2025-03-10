@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.theme.GameTitle
-import com.example.c61_shogi_rag.ui.theme.MenuButton
+import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 
 @Composable
@@ -28,17 +28,17 @@ fun MainMenuView(modifier: Modifier = Modifier,
     ) {
         Spacer(modifier = Modifier.weight(1f))
         GameTitle(name = "Shogi RAG!")
-        MenuButton(
+        ShogiButton(
             name = "Play",
             fontFamily = japanWaveFontFamily,
             onClick = {navigateToGame(player1, player2)}
         )
-        MenuButton(
+        ShogiButton(
             name = "History",
             fontFamily = japanWaveFontFamily,
             onClick = {navigateToHistory()}
         )
-        MenuButton(
+        ShogiButton(
             name = "Login",
             fontFamily = japanWaveFontFamily,
             onClick = {navigateToLogin()}

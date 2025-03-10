@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-class MainMenuViewModel(connectedUser:String = "Guest"): ViewModel()  {
+class MainMenuViewModel(connectedUser:String): ViewModel()  {
     var connectedUser by mutableStateOf(connectedUser)
     var opponent by mutableStateOf("AI")
 }
