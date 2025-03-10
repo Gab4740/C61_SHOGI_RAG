@@ -19,14 +19,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
-import com.example.c61_shogi_rag.engine.game.Board
 import com.example.c61_shogi_rag.engine.piece.Piece
 import com.example.c61_shogi_rag.engine.piece.Position
+import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
+
+val cellSize: Dp = 43.dp
 
 
 @Composable
@@ -137,12 +139,20 @@ fun Shogiboard(modifier: Modifier = Modifier, boardSize: Int = 9) {
 }
 
 @Composable
-fun Piece(modifier: Modifier = Modifier, pieceModel: Piece) {
-    Icon(
-        painter = painterResource(pieceModel.imagE_ID),
-        contentDescription = pieceModel.id.toString(),
-        tint = Color.Unspecified
-    )
+fun PieceImage(modifier: Modifier = Modifier, pieceModel: Piece?) {
+    Box(
+        modifier = modifier
+            .background(color = Color.Unspecified)
+            .size(cellSize)
+    ) {
+        if(pieceModel != null) {
+            Icon(
+                painter = painterResource(pieceModel.imagE_ID),
+                contentDescription = pieceModel.id.toString(),
+                tint = Color.Unspecified
+            )
+        }
+    }
 }
 
 @Composable
@@ -150,8 +160,8 @@ fun Cell(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .background(color = Color.White)
-            .size(43.dp)
             .border(BorderStroke(1.dp, Color.Black))
+            .size(cellSize)
     ) {
         Image(
             painter = painterResource(R.drawable.wood),
@@ -162,13 +172,36 @@ fun Cell(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Board(modifier: Modifier = Modifier, boardSize: Int = 9) {
+fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (Position) -> Unit = {}) {
     Box(modifier = modifier) {
         Column {
             for (row in 0 until boardSize) {
                 Row {
                     for (column in 0 until boardSize) {
-                        Cell()
+                        val position = Position(row, column)
+                        Cell(
+                            modifier = Modifier.clickable { onTap(position) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel: GameViewModel) {
+    Box(modifier = modifier) {
+
+        Column {
+            for (row in 0 until boardSize) {
+                Row {
+                    for (column in 0 until boardSize) {
+                        val position:Position = Position(row, column)
+                        val piece: Piece? = gameViewModel.game.getPieceAt(position)
+
+                        PieceImage(pieceModel = piece)
+
                     }
                 }
             }
