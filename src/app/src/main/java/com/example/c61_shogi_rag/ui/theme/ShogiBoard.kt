@@ -105,7 +105,7 @@ fun Shogiboard(modifier: Modifier = Modifier, boardSize: Int = 9) {
 
                                 shogiPiece = {
                                     ShogiPiece(
-                                        pieceResID = R.drawable._fu_1,
+                                        pieceResID = R.drawable.p_pawn_0,
                                         opposite = false,
                                     )
                                 }
