@@ -16,3 +16,12 @@ fun GameTitle(modifier: Modifier = Modifier,
     )
 }
 
+@Composable
+fun PlayerTag(modifier: Modifier = Modifier, playerName:String) {
+    Text(
+        modifier = modifier,
+        text = playerName,
+        fontSize = 30.sp,
+        fontFamily = japanWaveFontFamily
+    )
+}
