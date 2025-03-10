@@ -6,12 +6,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun GameTitle(name: String, modifier: Modifier) {
+fun GameTitle(modifier: Modifier = Modifier,
+              name: String) {
     Text(
+        modifier = modifier,
         text = name,
         fontSize = 50.sp,
         fontFamily = asianaFontFamily,
-        modifier = modifier
     )
 }
 

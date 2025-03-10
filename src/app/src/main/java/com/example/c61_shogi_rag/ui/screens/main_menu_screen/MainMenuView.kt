@@ -1,10 +1,8 @@
 package com.example.c61_shogi_rag.ui.screens.main_menu_screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,30 +11,28 @@ import com.example.c61_shogi_rag.ui.theme.MenuButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 
 @Composable
-fun MainMenuScreen(innerPaddingValues: PaddingValues, modifier: Modifier = Modifier) {
+fun MainMenuView(modifier: Modifier = Modifier,
+                 navigateToGame: (String, String) -> Unit,
+                 navigateToHistory: () -> Unit) {
+    var player1 = "Player1"
+    var player2 = "Player2"
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(innerPaddingValues),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        GameTitle(name = "Shogi RAG!", Modifier.weight(2f))
+        GameTitle(name = "Shogi RAG!")
         MenuButton(
             name = "Play",
             fontFamily = japanWaveFontFamily,
-            modifier = Modifier.weight(1f)
-
-        ) {}
+            onClick = {navigateToGame(player1, player2)}
+        )
         MenuButton(
             name = "History",
             fontFamily = japanWaveFontFamily,
-            modifier = Modifier.weight(1f)
-
-        ) {}
+            onClick = {navigateToHistory()}
+        )
         Spacer(modifier = Modifier.weight(1f))
-
     }
-
-
 }

@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.c61_shogi_rag.engine.dao.HistoriqueCoupsDAO
@@ -15,7 +16,7 @@ import com.example.c61_shogi_rag.engine.entity.HistoriqueCoupsCallback
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.entity.PartieCallback
-import com.example.c61_shogi_rag.ui.screens.game_screen.GameScreen
+import com.example.c61_shogi_rag.ui.navigation.NavigationWrapper
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 
@@ -40,8 +41,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             C61_SHOGI_RAGTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    //MainMenuScreen(innerPadding)
-                    GameScreen(innerPadding)
+                    NavigationWrapper(Modifier.padding(innerPadding))
                 }
             }
         }
