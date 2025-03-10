@@ -18,10 +18,20 @@ import java.util.List;
 public class HistoriqueCoupsDAO {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private final DatabaseReference HistoriqueDB = database.getReference("HistoriqueCoups");
+    private static final DatabaseReference HistoriqueDB = database.getReference("HistoriqueCoups");
 
 
-    public void addHistorique(int partie_id, int joueur_id, String posX, String posY,
+    /**
+     * methode permetant d'ajouter des coups a une partie
+     *
+     *
+     * @param partie_id -> representant la partie ou est jouer le coups
+     * @param joueur_id -> representant le joueur qui fait l'action
+     * @param posX -> representant la nouvelle position x de la piece deplacer
+     * @param posY -> representant la nouvelle position y de la piece deplacer
+     *
+     **/
+    public static void addHistorique(int partie_id, int joueur_id, String posX, String posY,
                               String nomPiece, String colorPiece){
 
         HistoriqueDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -51,7 +61,15 @@ public class HistoriqueCoupsDAO {
 
     }
 
-    public void getHistoriqueCoups(HistoriqueCoupsCallback callback, int id_partie){
+    /**
+     *
+     * methode permetant d'aller chercher l'historique de tous les coups jouer dans la partie selectionner
+     *
+     * @param id_partie -> representant la partie selectionner dans l'historique
+     *
+     * return une list de HistoriquePartie
+     **/
+    public static void getHistoriqueCoups(HistoriqueCoupsCallback callback, int id_partie){
         HistoriqueDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -64,7 +82,6 @@ public class HistoriqueCoupsDAO {
                             coupsList.add(historiqueCoups);
 
                         }
-                        Log.d("Firebase", "Partie ID: " + historiqueCoups.getPartie_id());
                     }
                 }
 
