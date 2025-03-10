@@ -20,11 +20,19 @@ import java.util.List;
 public class PartieDAO {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private final DatabaseReference partieDB = database.getReference("partie");
+    private static final DatabaseReference partieDB = database.getReference("partie");
 
 
-
-    public void addPartie(int id_winner, int id_loser) {
+    /**
+     *
+     * permet d'ajouter une partie a la BD
+     *
+     * @param id_winner -> representant l'id du joueur gagnant
+     * @param id_loser -> representant l'id du joueur perdant
+     *
+     *
+     **/
+    public static void addPartie(int id_winner, int id_loser) {
 
         partieDB.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -56,8 +64,16 @@ public class PartieDAO {
     }
 
 
-
-    public void getPartie(PartieCallback callback, int id_joueur) {
+    /**
+     *
+     * permet d'aller chercher toutes les parties gagner et perdu du joueur
+     *
+     * @param id_joueur -> representant l'id du joueur
+     *
+     * return une liste de Partie
+     *
+     **/
+    public static void getPartie(PartieCallback callback, int id_joueur) {
         partieDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -68,9 +84,8 @@ public class PartieDAO {
                     if (partie != null) {
                         if (partie.getWinner_id() == id_joueur || partie.getLoser_id() == id_joueur){
                             partieList.add(partie);
-
+                            Log.d("Firebase", "Partie recuperer ID: " + partie.getPartie_id());
                         }
-                        Log.d("Firebase", "Partie ID: " + partie.getPartie_id());
                     }
                 }
 

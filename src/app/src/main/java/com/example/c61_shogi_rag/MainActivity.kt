@@ -22,12 +22,7 @@ import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
 class MainActivity : ComponentActivity() {
 
-    var joueurDAO = JoueurDAO();
 
-    var partieDao = PartieDAO();
-
-    var historiqueCoupsDAO =
-        HistoriqueCoupsDAO();
 
     var listeParties: MutableList<Partie> = mutableListOf()
     var listeCoups: MutableList<HistoriqueCoups> = mutableListOf()
@@ -46,9 +41,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        //joueur.addJoueur("eric", "Salut92");
+        //joueur.addJoueur("eric");
 
-        joueurDAO.getJoueur { joueur ->
+        JoueurDAO.getJoueur { joueur ->
             if (joueur != null) {
                 joueurRecuperer = joueur
                 System.out.println(joueurRecuperer?.nom_joueur)
@@ -77,25 +72,24 @@ class MainActivity : ComponentActivity() {
 //        };
 
 
-        historiqueCoupsDAO.addHistorique(1, 2,
-            "2", "2", "pion", "noir")
+//        HistoriqueCoupsDAO.addHistorique(1, 2,
+//            "2", "2", "pion", "noir")
 
 
 
 
     }
 
-    //methode permetant d'aller chercher l'historique des partie jouer
+    //methode permetant d'aller chercher l'historique des parties jouer
     // en fonction de l'id du joueur
     private fun getPartieJouer(id_joueur: Int) {
-        partieDao.getPartie(object :
-            PartieCallback {
+        PartieDAO.getPartie(object : PartieCallback {
             override fun onPartiesRecuperees(partieList: List<Partie>) {
                 if (partieList.isNotEmpty()) {
                     listeParties.clear()
                     listeParties.addAll(partieList)
                     // Traiter les parties récupérées
-                    System.out.println("Nombre de parties récupérées : ${listeParties.size}")
+                    System.out.println("Nombre de parties jouer par le joueur : ${listeParties.size}")
                 } else {
                     System.out.println("Aucune partie trouvée pour ce joueur.")
                 }
@@ -105,14 +99,13 @@ class MainActivity : ComponentActivity() {
 
     //methode permetante de get tout les coups de la partie choisie
     private fun getHistoriqueDeCoups(id_partie: Int) {
-        historiqueCoupsDAO.getHistoriqueCoups(object :
-            HistoriqueCoupsCallback {
+        HistoriqueCoupsDAO.getHistoriqueCoups(object : HistoriqueCoupsCallback {
             override fun onHistoriqueRecuperee(coupsList: List<HistoriqueCoups>) {
                 if (coupsList.isNotEmpty()) {
                     listeCoups.clear()
                     listeCoups.addAll(coupsList)
                     // Traiter les parties récupérées
-                    System.out.println("Nombre de coups récupérées : ${listeCoups.size}")
+                    System.out.println("Nombre de coups récupérées pour la partie : ${listeCoups.size}")
                 } else {
                     System.out.println("Aucune partie trouvée pour ce joueur.")
                 }

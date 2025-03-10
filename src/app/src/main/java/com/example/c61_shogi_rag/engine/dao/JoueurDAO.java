@@ -17,10 +17,17 @@ import com.google.firebase.database.ValueEventListener;
 public class JoueurDAO {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private final DatabaseReference joueurDB = database.getReference("joueur");
+    private static final DatabaseReference joueurDB = database.getReference("joueur");
 
-    //rajouter le mot de passe avec la class BCrypt pour crypter le mots de passe
-    public void addJoueur(String nom , String mdp){
+
+    /**
+     *
+     * methode permettant de cree un nouveau joueur et de l'envoyer a la BD
+     *
+     * @param nom -> representant le nom/pseudo du joueur
+     *
+     **/
+    public static void addJoueur(String nom){
 
         // TODO creer un objet joueur_information contenant le nom
         //  et le mots passe ou autre information privee
@@ -34,6 +41,7 @@ public class JoueurDAO {
                 if (nbr_joueur >= 0){
                     new_id = nbr_joueur+1;
                 }
+                //rajouter le mot de passe avec la class BCrypt pour crypter le mots de passe
 
                 Joueur joueur = new Joueur(new_id, nom);
 
@@ -51,8 +59,15 @@ public class JoueurDAO {
 
 
 
-    //changer plus tard en public Joueur getJoueur car doit retourner un objet Joueur
-    public void getJoueur(JoueurCallback callback) {
+    /**
+     *
+     * methode permettant de recuper un joueur
+     *
+     * return un Joueur
+     **/
+
+    //TODO (futur version si temps) rajouter une verification par mot de passe
+    public static void getJoueur(JoueurCallback callback) {
         joueurDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
