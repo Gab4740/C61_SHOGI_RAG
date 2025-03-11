@@ -8,14 +8,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -27,6 +32,7 @@ import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.piece.Piece
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 val cellSize: Dp = 43.dp
 
@@ -206,5 +212,46 @@ fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CapturedPieces(modifier: Modifier = Modifier) {
+    val drawableList = listOf<Int>(
+        R.drawable.pawn_0,
+        R.drawable.lance_0,
+        R.drawable.knight_0,
+        R.drawable.silver_0,
+        R.drawable.gold_0,
+        R.drawable.bishop_0,
+        R.drawable.rook_0
+    )
+
+    LazyRow(
+        modifier = modifier
+    ) {
+        items(drawableList) { pieceItem ->
+            CapturedPiece(imageRes = pieceItem)
+        }
+    }
+}
+
+@Composable
+fun CapturedPiece(modifier: Modifier = Modifier, imageRes: Int) {
+    Column(
+        Modifier
+            .width(55.dp)
+            .clickable {  }
+    ) {
+        Icon(
+            painter = painterResource(imageRes),
+            contentDescription = "id",
+            tint = Color.Unspecified
+        )
+
+        CounterText(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            counter =  0
+        )
     }
 }

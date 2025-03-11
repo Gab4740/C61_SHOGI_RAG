@@ -35,3 +35,13 @@ fun PlayerTag(modifier: Modifier = Modifier, playerName:String) {
         fontFamily = japanWaveFontFamily
     )
 }
+
+@Composable
+fun CounterText(modifier: Modifier = Modifier, counter: Int) {
+    Text(
+        modifier = modifier,
+        text = counter.toString(),
+        fontSize = 20.sp,
+        fontFamily = japanWaveFontFamily
+    )
+}

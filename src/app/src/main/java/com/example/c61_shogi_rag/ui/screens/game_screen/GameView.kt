@@ -8,8 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.c61_shogi_rag.ui.theme.CapturedPiece
+import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
-import com.example.c61_shogi_rag.ui.theme.BoardBackground
 
 @Composable
 fun GameView(modifier: Modifier = Modifier,
@@ -27,7 +28,15 @@ fun GameView(modifier: Modifier = Modifier,
                 .padding(horizontal = 5.dp, vertical = 3.dp),
             playerName = player2
         )
+        CapturedPieces(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+        )
         BoardView(gameViewModel = gameViewModel)
+        CapturedPieces(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+        )
         PlayerTag(
             modifier = Modifier
                 .align(Alignment.Start)
