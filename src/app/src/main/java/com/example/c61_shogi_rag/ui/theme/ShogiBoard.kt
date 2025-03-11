@@ -8,12 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +32,6 @@ import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.piece.Piece
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 val cellSize: Dp = 43.dp
 
@@ -216,7 +215,7 @@ fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel
 }
 
 @Composable
-fun CapturedPieces(modifier: Modifier = Modifier) {
+fun CapturedPieces(modifier: Modifier = Modifier, isClickable: Boolean = false) {
     val drawableList = listOf<Int>(
         R.drawable.pawn_0,
         R.drawable.lance_0,
@@ -230,8 +229,12 @@ fun CapturedPieces(modifier: Modifier = Modifier) {
     LazyRow(
         modifier = modifier
     ) {
-        items(drawableList) { pieceItem ->
-            CapturedPiece(imageRes = pieceItem)
+        itemsIndexed(drawableList) { index ,pieceItem ->
+            CapturedPiece(
+                modifier = Modifier
+                    .then(if (isClickable) Modifier.clickable {  } else Modifier),
+                imageRes = pieceItem
+            )
         }
     }
 }
@@ -239,9 +242,8 @@ fun CapturedPieces(modifier: Modifier = Modifier) {
 @Composable
 fun CapturedPiece(modifier: Modifier = Modifier, imageRes: Int) {
     Column(
-        Modifier
+        modifier = modifier
             .width(55.dp)
-            .clickable {  }
     ) {
         Icon(
             painter = painterResource(imageRes),

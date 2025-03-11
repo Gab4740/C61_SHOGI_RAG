@@ -35,7 +35,8 @@ fun GameView(modifier: Modifier = Modifier,
         BoardView(gameViewModel = gameViewModel)
         CapturedPieces(
             modifier = Modifier
-                .padding(vertical = 5.dp)
+                .padding(vertical = 5.dp),
+            isClickable = true
         )
         PlayerTag(
             modifier = Modifier
