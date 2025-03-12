@@ -2,7 +2,6 @@ package com.example.c61_shogi_rag.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +26,8 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 mainMenuViewModel = MainMenuViewModel(mainMenu.connectedPlayer),
                 navigateToGame = {
                         player1, player2 -> navController.navigate(Game(player1, player2)) },
-                navigateToHistory = { navController.navigate(History) },
+                navigateToHistory = {
+                    joueurId -> navController.navigate(History(joueurId)) },
                 navigateToLogin = {navController.navigate(Login)}
             )
         }
@@ -41,7 +41,12 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
         }
 
         composable<History> {
-            HistoryView(modifier)
+            val history:History = it.toRoute()
+            HistoryView(
+                modifier = modifier,
+                joueur_id = history.joueurId
+                //changer Joueur par int pour envoyer l'id
+            )
         }
 
         composable<Login> {

@@ -13,7 +13,7 @@ data class Game(val player1:String = "Player 1", val player2:String = "Player 2"
 object Login
 
 @Serializable
-object History
+data class History(val joueurId: Int)
 
 @Serializable
 data class ArchivedGame(val match: String)

@@ -95,4 +95,22 @@ public class HistoriqueCoupsDAO {
         });
     }
 
+
+    //methode permetante de get tout les coups de la partie choisie
+//    private fun getHistoriqueDeCoups(id_partie: Int) {
+//        HistoriqueCoupsDAO.getHistoriqueCoups(object : HistoriqueCoupsCallback {
+//            override fun onHistoriqueRecuperee(coupsList: List<HistoriqueCoups>) {
+//                if (coupsList.isNotEmpty()) {
+//                    listeCoups.clear()
+//                    listeCoups.addAll(coupsList)
+//                    // Traiter les parties récupérées
+//                    System.out.println("Nombre de coups récupérées pour la partie : ${listeCoups.size}")
+//                } else {
+//                    System.out.println("Aucune partie trouvée pour ce joueur.")
+//                }
+//            }
+//        }, id_partie)
+//    }
+//}
+
 }
