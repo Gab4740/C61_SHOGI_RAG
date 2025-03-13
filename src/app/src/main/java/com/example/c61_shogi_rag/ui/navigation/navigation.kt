@@ -2,10 +2,13 @@ package com.example.c61_shogi_rag.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.screens.archived_game_screen.ArchivedGameView
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameView
 import com.example.c61_shogi_rag.ui.screens.history_screen.HistoryView
@@ -16,18 +19,20 @@ import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuViewModel
 @Composable
 fun NavigationWrapper(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = MainMenu()) {
+    val playerShareViewModel: PlayerShareViewModel = viewModel()
+
+    NavHost(navController = navController, startDestination = MainMenu) {
         composable<MainMenu> {
 
             val mainMenu:MainMenu = it.toRoute()
 
             MainMenuView(
                 modifier = modifier,
-                mainMenuViewModel = MainMenuViewModel(mainMenu.connectedPlayer),
+                playerShareViewModel = playerShareViewModel,
                 navigateToGame = {
                         player1, player2 -> navController.navigate(Game(player1, player2)) },
                 navigateToHistory = {
-                    joueurId -> navController.navigate(History(joueurId)) },
+                    navController.navigate(History) },
                 navigateToLogin = {navController.navigate(Login)}
             )
         }
@@ -35,24 +40,23 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
             val game:Game = it.toRoute()
             GameView(
                 modifier = modifier,
-                player1 = game.player1,
-                player2 = game.player2
+                playerShareViewModel = playerShareViewModel,
+                opponent = Joueur(game.opponentID, game.opponentName)
             )
         }
 
         composable<History> {
-            val history:History = it.toRoute()
             HistoryView(
                 modifier = modifier,
-                joueur_id = history.joueurId
-                //changer Joueur par int pour envoyer l'id
+                playerShareViewModel = playerShareViewModel
             )
         }
 
         composable<Login> {
             LoginView(
+                playerShareViewModel = playerShareViewModel,
                 navigateToMainMenu = {
-                    connectedUser -> navController.navigate(MainMenu(connectedUser)) {
+                    navController.navigate(MainMenu) {
                         popUpTo<MainMenu>{inclusive = true}
                     }
                 }

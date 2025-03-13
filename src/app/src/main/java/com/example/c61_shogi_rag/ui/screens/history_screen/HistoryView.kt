@@ -1,6 +1,5 @@
 package com.example.c61_shogi_rag.ui.screens.history_screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -19,37 +17,38 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Partie
-import org.w3c.dom.Text
+import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
+import com.example.c61_shogi_rag.ui.theme.Title
 
 @Composable
 fun HistoryView(
     modifier: Modifier = Modifier,
     historyViewModel: HistoryViewModel = viewModel(),
-    joueur_id: Int
+    playerShareViewModel: PlayerShareViewModel
 ){
-
+    val joueurID = playerShareViewModel.currentPlayer.joueur_id
     LaunchedEffect(Unit) {
-        historyViewModel.getPartieJouer(joueur_id)
+        historyViewModel.getPartieJouer(joueurID)
     }
 
     val parties:List<Partie> = historyViewModel.listeParties.sortedByDescending { it.date }
 
-    Column(modifier = modifier.padding(16.dp)) {
-        Text(
-            text = "Historique des dernieres partie jouer",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
-
+    Column(
+        modifier = modifier
+                .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Title(name = "Saved games")
         LazyColumn {
             items(parties) { partie ->
+
                 PartieItem(partie = partie)
                 Spacer(modifier = Modifier.height(15.dp))
+
+
             }
         }
     }
@@ -58,7 +57,6 @@ fun HistoryView(
 
 @Composable
 fun PartieItem(partie:Partie){
-
     Column(
         modifier = Modifier
             .fillMaxWidth()

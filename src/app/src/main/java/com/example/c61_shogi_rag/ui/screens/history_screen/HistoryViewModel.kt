@@ -12,13 +12,11 @@ class HistoryViewModel: ViewModel()  {
 
     var listeParties by mutableStateOf<List<Partie>>(emptyList())
 
-    private val partieDAO = PartieDAO()
 
      fun getPartieJouer(id_joueur: Int) {
         PartieDAO.getPartie(object : PartieCallback {
             override fun onPartiesRecuperees(partieList: List<Partie>) {
                listeParties = partieList
-                //System.out.println(listeParties.size)
             }
         }, id_joueur)
     }
