@@ -8,8 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.c61_shogi_rag.engine.entity.Joueur
-import com.example.c61_shogi_rag.ui.navigation.Game
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.GameTitle
 import com.example.c61_shogi_rag.ui.theme.ShogiButton

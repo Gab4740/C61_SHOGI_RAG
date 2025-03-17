@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
-import com.example.c61_shogi_rag.ui.theme.CapturedPiece
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 

@@ -4,9 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
-import com.example.c61_shogi_rag.engine.entity.Partie
 
 
 class LoginViewModel: ViewModel() {

@@ -1,9 +1,5 @@
 package com.example.c61_shogi_rag.engine.game;
 
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.util.Timer;
 import java.util.TimerTask;
 

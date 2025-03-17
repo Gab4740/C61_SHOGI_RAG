@@ -14,7 +14,6 @@ import com.example.c61_shogi_rag.ui.screens.game_screen.GameView
 import com.example.c61_shogi_rag.ui.screens.history_screen.HistoryView
 import com.example.c61_shogi_rag.ui.screens.login_screen.LoginView
 import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuView
-import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuViewModel
 
 @Composable
 fun NavigationWrapper(modifier: Modifier = Modifier) {
