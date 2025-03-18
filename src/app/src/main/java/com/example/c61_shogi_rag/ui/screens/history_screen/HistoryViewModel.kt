@@ -29,7 +29,10 @@ sealed class HistoryUiState {
     data class Error(val message: String) : HistoryUiState()
 }
 
+<<<<<<< HEAD
 class HistoryViewModel() : ViewModel() {
+=======
+>>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
 
     private var uiState = MutableStateFlow<HistoryUiState>(HistoryUiState.Loading)
 
@@ -70,6 +73,7 @@ class HistoryViewModel() : ViewModel() {
             continuation ->
         PartieDAO.getPartie(object : PartieCallback {
             override fun onPartiesRecuperees(partieList: List<Partie>) {
+<<<<<<< HEAD
                 continuation.resume(partieList)
             }
 
@@ -120,6 +124,9 @@ class HistoryViewModel() : ViewModel() {
             }
             fun onError(exception: Exception) {
                 continuation.resumeWithException(exception)
+=======
+               listeParties = partieList
+>>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
             }
         }, id_joueur)
     }

@@ -1,10 +1,8 @@
 package com.example.c61_shogi_rag.ui.screens.main_menu_screen
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
+<<<<<<< HEAD
 import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.dao.PartieDAO
 import com.example.c61_shogi_rag.engine.entity.JoueurCallback
@@ -29,6 +27,12 @@ class MainMenuViewModel(connectedUser:String): ViewModel()  {
             }
         }
     }
+=======
+
+
+class MainMenuViewModel(): ViewModel()  {
+    val opponent: Joueur = Joueur(-2, "AI")
+>>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
 
     fun getJoueurById(id_joueur:Int){
         JoueurDAO.getJoueurById(object : JoueurCallback {

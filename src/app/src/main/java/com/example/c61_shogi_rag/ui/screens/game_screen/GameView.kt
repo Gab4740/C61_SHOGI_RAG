@@ -8,14 +8,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.c61_shogi_rag.ui.theme.CapturedPiece
+import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 
 @Composable
 fun GameView(modifier: Modifier = Modifier,
              gameViewModel: GameViewModel = viewModel(),
-             player1: String, player2: String) {
+             playerShareViewModel: PlayerShareViewModel,
+             opponent: Joueur) {
     Column(
         modifier = modifier
             .padding(horizontal = 1.dp, vertical = 5.dp)
@@ -26,7 +28,7 @@ fun GameView(modifier: Modifier = Modifier,
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(horizontal = 5.dp, vertical = 3.dp),
-            playerName = player2
+            playerName = opponent.nom_joueur
         )
         CapturedPieces(
             modifier = Modifier
@@ -42,7 +44,8 @@ fun GameView(modifier: Modifier = Modifier,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(horizontal = 5.dp, vertical = 3.dp),
-            playerName = player1
+            playerName = playerShareViewModel.currentPlayer.nom_joueur
+
         )
     }
 }

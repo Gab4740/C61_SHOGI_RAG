@@ -5,14 +5,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+<<<<<<< HEAD
 import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.Partie
+=======
+import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
+>>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
 import com.example.c61_shogi_rag.ui.theme.GameTitle
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
@@ -21,18 +23,10 @@ import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 @Composable
 fun MainMenuView(modifier: Modifier = Modifier,
                  mainMenuViewModel: MainMenuViewModel = viewModel(),
-                 navigateToGame: (String, String) -> Unit,
-                 navigateToHistory: (Int) -> Unit,
+                 playerShareViewModel: PlayerShareViewModel,
+                 navigateToGame: (Int, String) -> Unit,
+                 navigateToHistory: () -> Unit,
                  navigateToLogin: () -> Unit) {
-    //val player1 = mainMenuViewModel.connectedUser
-
-    LaunchedEffect(Unit) {
-        mainMenuViewModel.getJoueur()
-    }
-
-    val player1 = mainMenuViewModel.joueurRecuperer
-
-    val player2 = mainMenuViewModel.opponent
 
     Column(
         modifier = modifier
@@ -45,32 +39,37 @@ fun MainMenuView(modifier: Modifier = Modifier,
             name = "Play",
             fontFamily = japanWaveFontFamily,
             onClick = {
-                if (player1 != null) {
-                    navigateToGame(player1.nom_joueur, player2)
-                }
+                navigateToGame(
+                    mainMenuViewModel.opponent.joueur_id,
+                    mainMenuViewModel.opponent.nom_joueur
+                )
             }
         )
         ShogiButton(
             name = "History",
             fontFamily = japanWaveFontFamily,
             onClick = {
-                if (player1 != null) {
-                    println(">>> Joueur envoyé à History: ${player1.nom_joueur}")
-                    navigateToHistory(player1.joueur_id)
-                }
+                navigateToHistory()
             }
         )
-        ShogiButton(
-            name = "Login",
-            fontFamily = japanWaveFontFamily,
-            onClick = {navigateToLogin()}
-            )
-        Spacer(modifier = Modifier.weight(1f))
-        if (player1 != null) {
-            Text(
-                text = "Connected as: ${player1.nom_joueur}"
+        if(playerShareViewModel.isCurrentPlayerSet()) {
+            ShogiButton(
+                name = "Logout",
+                fontFamily = japanWaveFontFamily,
+                onClick = {playerShareViewModel.removeCurrentPlayer()}
             )
         }
+        else {
+            ShogiButton(
+                name = "Login",
+                fontFamily = japanWaveFontFamily,
+                onClick = {navigateToLogin()}
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "Connected as: ${playerShareViewModel.currentPlayer.nom_joueur}"
+        )
     }
 }
 
