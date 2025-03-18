@@ -22,7 +22,6 @@ public class PartieDAO {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final DatabaseReference partieDB = database.getReference("partie");
 
-
     /**
      *
      * permet d'ajouter une partie a la BD
@@ -51,16 +50,13 @@ public class PartieDAO {
                 Partie partie = new Partie(new_id, id_winner, date, id_loser);
 
                 partieDB.child(String.valueOf(new_id)).setValue(partie);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Firebase", "Erreur de lecture des données : " + error.getMessage());
-
-                }
+            }
         });
-
     }
 
 
@@ -68,6 +64,7 @@ public class PartieDAO {
      *
      * permet d'aller chercher toutes les parties gagner et perdu du joueur
      *
+     * @param callback -> signale qui permet de rapeller la fonction quand un changement est emis
      * @param id_joueur -> representant l'id du joueur
      *
      * return une liste de Partie
@@ -88,7 +85,6 @@ public class PartieDAO {
                         }
                     }
                 }
-
                 callback.onPartiesRecuperees(partieList); // Appeler le callback avec la liste des parties
             }
 
@@ -98,7 +94,5 @@ public class PartieDAO {
             }
         });
     }
-
-
 
 }

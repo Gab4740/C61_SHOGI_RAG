@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.ui.theme.GameTitle

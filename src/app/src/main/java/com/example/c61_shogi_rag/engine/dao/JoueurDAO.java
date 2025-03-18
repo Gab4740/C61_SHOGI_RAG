@@ -43,6 +43,8 @@ public class JoueurDAO {
                 }
                 //rajouter le mot de passe avec la class BCrypt pour crypter le mots de passe
 
+                //TODO rajouter une methode qui vas regarde si il y a une operation en cours si oui attendre avant de rappeler addJoueur
+
                 Joueur joueur = new Joueur(new_id, nom);
 
                 joueurDB.child(String.valueOf(new_id)).setValue(joueur);
@@ -77,6 +79,7 @@ public class JoueurDAO {
                     callback.onJoueurRecupere(joueur); // Envoi du joueur au callback
                 } else {
                     Log.d(TAG, "Aucun joueur trouvé.");
+                    callback.onJoueurRecupere(null);
                 }
             }
 
@@ -86,4 +89,29 @@ public class JoueurDAO {
             }
         });
     }
+
+
+    public static void getJoueurById(JoueurCallback callback, int id_joueur){
+        joueurDB.child(String.valueOf(id_joueur)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Joueur joueur = snapshot.getValue(Joueur.class);
+                    if (joueur != null){
+                        //Log.d(TAG, "Joueur récupéré avec l'ID "+ id_joueur + " :" + joueur.getNom_joueur());
+                        callback.onJoueurRecupere(joueur);
+                    }else {
+                        Log.d(TAG, "Aucun joueur trouvé.");
+                        callback.onJoueurRecupere(null);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Échec de récupération.", error.toException());
+            }
+        });
+    }
+
+
 }

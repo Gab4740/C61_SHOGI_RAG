@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.dao.PartieDAO
+import com.example.c61_shogi_rag.engine.entity.JoueurCallback
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.entity.PartieCallback
 
@@ -17,7 +18,6 @@ class MainMenuViewModel(connectedUser:String): ViewModel()  {
 
     var joueurRecuperer by mutableStateOf<Joueur?>(null)
         private set
-    var listeParties by mutableStateOf<List<Partie>>(emptyList())
 
 
     //private val joueurDAO = JoueurDAO()
@@ -26,14 +26,16 @@ class MainMenuViewModel(connectedUser:String): ViewModel()  {
         JoueurDAO.getJoueur { joueur ->
             if (joueur != null) {
                 joueurRecuperer = joueur
-//                PartieDAO.getPartie(object : PartieCallback {
-//                    override fun onPartiesRecuperees(partieList: List<Partie>) {
-//                        listeParties = partieList
-//                        println(listeParties.size)
-//                    }
-//                }, joueur.joueur_id)
             }
         }
+    }
+
+    fun getJoueurById(id_joueur:Int){
+        JoueurDAO.getJoueurById(object : JoueurCallback {
+            override fun onJoueurRecupere(joueur: Joueur) {
+                joueurRecuperer = joueur
+            }
+        }, id_joueur)
     }
 
 }
