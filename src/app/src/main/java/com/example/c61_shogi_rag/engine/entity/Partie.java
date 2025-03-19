@@ -6,6 +6,7 @@ public class Partie {
     String date;
     int loser_id;
 
+    //TODO rajouter un String coups qui represente un json de tout les coups effectuer dans la partie
     public Partie() {
     }
 

@@ -28,6 +28,8 @@ fun LoginView(modifier: Modifier = Modifier,
             ShogiButton(
                 name = "Submit",
                 onClick = {
+                    //TODO une fois cliquer sur submit faire une methode
+                    // qui fait attendre le temps que toutes les verifications sois terminer
                     val validatedPlayer = loginViewModel.validatePlayer()
                     if(validatedPlayer == null) {
 
