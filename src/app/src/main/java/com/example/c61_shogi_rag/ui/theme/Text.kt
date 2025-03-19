@@ -55,3 +55,4 @@ fun CustomText(modifier: Modifier = Modifier, text: String) {
         fontFamily = japanWaveFontFamily
     )
 }
+
