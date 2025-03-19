@@ -8,13 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-<<<<<<< HEAD
 import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.Partie
-=======
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
->>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
 import com.example.c61_shogi_rag.ui.theme.GameTitle
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
