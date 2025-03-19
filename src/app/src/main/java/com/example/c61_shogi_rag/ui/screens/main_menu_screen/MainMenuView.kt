@@ -8,9 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.c61_shogi_rag.engine.dao.JoueurDAO
-import com.example.c61_shogi_rag.engine.entity.Joueur
-import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.GameTitle
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
@@ -33,7 +30,7 @@ fun MainMenuView(modifier: Modifier = Modifier,
         Spacer(modifier = Modifier.weight(1f))
         GameTitle(name = "Shogi RAG!")
         ShogiButton(
-            name = "Play",
+            text = "Play",
             fontFamily = japanWaveFontFamily,
             onClick = {
                 navigateToGame(
@@ -43,22 +40,23 @@ fun MainMenuView(modifier: Modifier = Modifier,
             }
         )
         ShogiButton(
-            name = "History",
+            text = "History",
             fontFamily = japanWaveFontFamily,
             onClick = {
                 navigateToHistory()
-            }
+            },
+            enabled = playerShareViewModel.isCurrentPlayerSet()
         )
         if(playerShareViewModel.isCurrentPlayerSet()) {
             ShogiButton(
-                name = "Logout",
+                text = "Logout",
                 fontFamily = japanWaveFontFamily,
                 onClick = {playerShareViewModel.removeCurrentPlayer()}
             )
         }
         else {
             ShogiButton(
-                name = "Login",
+                text = "Login",
                 fontFamily = japanWaveFontFamily,
                 onClick = {navigateToLogin()}
             )
