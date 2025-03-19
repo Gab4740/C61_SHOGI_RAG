@@ -13,8 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ShogiButton(modifier: Modifier = Modifier, name: String,
-                fontFamily: FontFamily = japanWaveFontFamily, onClick: () -> Unit = {}) {
+fun ShogiButton(modifier: Modifier = Modifier,
+                text: String,
+                fontFamily: FontFamily = japanWaveFontFamily,
+                enabled:Boolean = true,
+                onClick: () -> Unit = {}) {
     Button(
         onClick = { onClick() },
         shape = RectangleShape,
@@ -23,11 +26,12 @@ fun ShogiButton(modifier: Modifier = Modifier, name: String,
         ),
         modifier = modifier
             .requiredWidth(200.dp)
-            .padding(10.dp)
+            .padding(10.dp),
+        enabled = enabled
 
     ) {
         Text(
-            text = name,
+            text = text,
             fontSize = 30.sp,
             fontFamily = fontFamily
         )

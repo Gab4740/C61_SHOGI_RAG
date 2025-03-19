@@ -17,3 +17,6 @@ object History
 
 @Serializable
 data class ArchivedGame(val matchId: Int)
+
+@Serializable
+object Register
