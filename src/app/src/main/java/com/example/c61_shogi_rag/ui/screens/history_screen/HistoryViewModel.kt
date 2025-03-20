@@ -121,9 +121,7 @@ class HistoryViewModel() : ViewModel() {
             }
             fun onError(exception: Exception) {
                 continuation.resumeWithException(exception)
-//=======
-//               listeParties = partieList
-//>>>>>>> 6b1fa2b2b42c47bfd2abe485a13c7a22e40faffb
+
             }
         }, id_joueur)
     }

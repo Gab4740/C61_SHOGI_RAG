@@ -4,7 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.entity.JoueurCallback
 
 
 class LoginViewModel: ViewModel() {
@@ -13,6 +15,7 @@ class LoginViewModel: ViewModel() {
     var confirmPassword by mutableStateOf("")
     var registerMode by mutableStateOf(false)
 
+    var joueurRecuperer by mutableStateOf<Joueur?>(null)
 
     public fun getCurrentMode(): String {
         return if(registerMode) "Register" else "Login"
@@ -27,10 +30,22 @@ class LoginViewModel: ViewModel() {
 
     public fun registerPlayer(): Boolean {
         // TODO: Faire appel ici à la bd pour enregistrer un usager
+        JoueurDAO.addJoueur(username, password)
         return true;
     }
     public fun validatePlayer(): Joueur? {
         // TODO: Faire appel ici à la bd pour valider le nom de l'usager
-        return Joueur(-1, username)
+        try {
+            JoueurDAO.getJoueurByName(object : JoueurCallback {
+                override fun onJoueurRecupere(joueur: Joueur) {
+                    joueurRecuperer = joueur
+                }
+            }, username , password);
+        } catch (Exception: Exception){
+            Exception.printStackTrace()
+        }
+
+
+        return joueurRecuperer
     }
 }

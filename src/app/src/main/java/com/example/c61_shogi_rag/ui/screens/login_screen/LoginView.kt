@@ -49,28 +49,31 @@ fun LoginView(modifier: Modifier = Modifier,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
         }
-            Spacer(modifier = Modifier.weight(1f))
-            ShogiButton(
-                text = "Submit",
-                onClick = {
-                    //TODO une fois cliquer sur submit faire une methode
-                    // qui fait attendre le temps que toutes les verifications sois terminer
+    Spacer(modifier = Modifier.weight(1f))
+    ShogiButton(
+        text = "Submit",
+        onClick = {
+            //TODO une fois cliquer sur submit faire une methode
+            // qui fait attendre le temps que toutes les verifications sois terminer
+                if (loginViewModel.registerMode) {
+
+                    loginViewModel.registerPlayer()
+                } else {
                     val validatedPlayer = loginViewModel.validatePlayer()
                     if (validatedPlayer == null) {
-                        if (loginViewModel.registerMode) {
-                            loginViewModel.validatePlayer()
-                        } else {
-                            val validatedPlayer = loginViewModel.validatePlayer()
-                            if (validatedPlayer == null) {
 
-                            } else {
-                                playerShareViewModel.currentPlayer = validatedPlayer
-                                navigateToMainMenu()
-                            }
-                        }
-
+                    } else {
+                        playerShareViewModel.currentPlayer = validatedPlayer
+                        navigateToMainMenu()
                     }
-                })
+            }
+        })
+        ShogiButton(
+            text = loginViewModel.getAlternativeMode(),
+            onClick = {loginViewModel.toggleMode()}
+        )
+        Spacer(modifier = Modifier.weight(1f))
     }
+
 }
 
