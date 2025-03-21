@@ -1,30 +1,36 @@
 package com.example.c61_shogi_rag.engine.game;
 
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
+import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Piece;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 
 import java.util.Hashtable;
+import java.util.Vector;
 
 public class Game {
     private Board gameBoard;
     private Hashtable<Byte, Piece> pieces;
-    private Hashtable<Byte, Piece> capturedPieceBlack;
-    private Hashtable<Byte, Piece> capturedPieceWhite;
+    private Vector<Byte> capturedPieceBlack;
+    private Vector<Byte> capturedPieceWhite;
     private Time gameTimer;
     private Boolean isPlayerStarting;
+    private Boolean isPlayerTurn;
+    private Boolean isGameEnded;
 
     /**
      * @param isPlayerStarting : Si le joueur commence : true, si le AI commence : false
      * */
     public Game(Boolean isPlayerStarting){
         this.pieces = new Hashtable<>();
-        this.capturedPieceBlack = new Hashtable<>();
-        this.capturedPieceWhite = new Hashtable<>();
+        this.capturedPieceBlack = new Vector<>();
+        this.capturedPieceWhite = new Vector<>();
         this.gameTimer = new Time();
         this.gameBoard = new Board();
         this.isPlayerStarting = isPlayerStarting;
+        this.isPlayerTurn = isPlayerStarting;
+        this.isGameEnded = false;
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -153,23 +159,87 @@ public class Game {
         pieceToPlace = pieces.get((byte)-PieceIDs.Char.getValue());
         gameBoard.setPieceAt(pieceToPlace, new Position(1,1));
     }
+    /**
+     * Initialise tous les variables nécessaire pour jouer la partie
+     * */
     public void GameInit(){
         PieceInit();
         BoardInit();
-        prettyPrintConsoleBoard();
-        // TODO
-    }
-    public Board getGameBoard() {
-        return gameBoard;
+        gameTimer.startTime();
     }
 
+    public boolean playTurn(Position firstPos, Position secondPos){
+        boolean valid = false;
+        boolean enemyPieceToCapture =  isEnemyPieceAtPos(secondPos);
+
+        if(isPlayerPieceAtPos(firstPos) && (enemyPieceToCapture || isPositionEmpty(secondPos))){
+            Piece pieceToPlay = getPieceAt(firstPos);
+            Move pieceMove = new Move(firstPos, secondPos);
+
+            if(pieceToPlay.isValidMove(pieceMove, gameBoard)){
+                if(enemyPieceToCapture){
+                    capturePieceAtPos(secondPos, true);
+                }
+                gameBoard.movePieceTo(firstPos, secondPos);
+                isPlayerTurn = !isPlayerTurn;
+                valid = true;
+            }
+            isGameEnded = isKingsAlive();
+        }
+        return valid;
+    }
+
+    public Board getGameBoard(){ return gameBoard; }
+    /**
+     * Retourne un booléen qui indique si c'est le tour du joueur = true ou au AI = false
+     * */
+    public boolean getIsPlayerTurn(){ return isPlayerTurn; }
     /**
      * Retourne un objet piece pour la position donné
+     * */
+    private Piece getPieceAt(Position pos){ return pieces.get(gameBoard.getPieceAt(pos)); }
+    /**
+     * Retourn True si c'est une pièce enemy, False si ce n'est pas une piece enemy ou pas de piece
+     * */
+    private boolean isEnemyPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) < 0; }
+    /**
+     * Retourn True si une piece du joeur est a la positon, false si non
+     * */
+    private boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) != 0; }
+    /**
+     * Retourn True si la case de l'échiquier est vide
+     * */
+    private boolean isPositionEmpty(Position pos){ return gameBoard.getPieceAt(pos) == 0; }
+    /**
+     * Retourne true si les deux rois sont encore en vie, si au moins un roi est mort, retourne false
+     * */
+    private boolean isKingsAlive(){
+        for(byte id : capturedPieceBlack){
+            if(Math.abs(id) == PieceIDs.Roi.getValue()){
+                return true;
+            }
+        }
+        for(byte id : capturedPieceWhite){
+            if(Math.abs(id) == PieceIDs.Roi.getValue()){
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Méthode pour capturer une pièce a la position donné.
      *
-     * @param pos : Positon x et y sur l'échiquier
-     */
-    public Piece getPieceAt(Position pos){
-        return pieces.get(gameBoard.getPieceAt(pos));
+     * @param pos : Position de la pièce a captuer,
+     * @param color : True = Les blancs capture (joueur), False = Les noirs capture (AI)
+     * */
+    private void capturePieceAtPos(Position pos, boolean color){
+        if (color) {
+            capturedPieceWhite.add(gameBoard.getPieceAt(pos));
+        } else {
+            capturedPieceBlack.add(gameBoard.getPieceAt(pos));
+        }
+        gameBoard.removePieceAt(pos);
+
     }
 
     // DEBUG TOOLS

@@ -16,11 +16,28 @@ public class Board {
     public byte[][] getBoard(){
         return board;
     }
+    /**
+     * Retroune le id de la piece a la positon
+     * si retourn 0, ca veux dire qu'il n'y a pas de piece
+     *
+    * @param pos : Poistion sur l'échiquier 9x9
+    **/
     public byte getPieceAt(Position pos){
         return board[pos.getPosX()][pos.getPosY()];
     }
     public void setPieceAt(Piece piece, Position pos){
         board[pos.getPosX()][pos.getPosY()] = piece.getID();
+    }
+    public void setPieceAt(byte pieceId, Position pos){
+        board[pos.getPosX()][pos.getPosY()] = piece.getID();
+    }
+    public void removePieceAt(Position pos){
+        board[pos.getPosX()][pos.getPosY()] = 0;
+    }
+    public void movePieceTo(Position piecePosition, Position newPosition){
+        byte temp = getPieceAt(piecePosition);
+        removePieceAt(piecePosition);
+        setPieceAt(temp, newPosition);
     }
 
     /**
