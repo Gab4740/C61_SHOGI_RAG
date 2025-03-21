@@ -74,7 +74,7 @@ public class Piece {
                 if(deltaX > 1 && deltaY > 1){ return checkDiagonals(finalX, finalY, currX, currY, board); }
                 else{ return checkSteps(deltaX, deltaY); }
             default:
-                return (checkSteps(deltaX, deltaY) && board.getBoard()[finalX][finalY] == 0);
+                return (checkSteps(deltaX, deltaY));
         }
     }
     private boolean checkCross(int finalX, int finalY, int currX, int currY, Board board){
@@ -119,7 +119,7 @@ public class Piece {
                     tempY = direction[j];
                 }
             }
-            if (deltaX == tempX && deltaY == tempY) {
+            if (deltaY == tempX && deltaX == tempY) {
                 return true;
             }
         }

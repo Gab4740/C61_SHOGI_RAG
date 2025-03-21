@@ -13,7 +13,7 @@ fun BoardView(modifier: Modifier = Modifier, gameViewModel: GameViewModel) {
             modifier = modifier,
             boardSize = gameViewModel.game.gameBoard.boarD_SIZE,
             onTap = {
-                    position -> gameViewModel.selectPiece(position)
+                    position -> gameViewModel.selectPosition(position)
             }
         )
         BoardLayout(
