@@ -15,9 +15,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -195,8 +197,9 @@ fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (P
 
 @Composable
 fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel: GameViewModel) {
+    
+    val board by rememberUpdatedState(newValue = gameViewModel.game)
     Box(modifier = modifier) {
-
         Column {
             for (row in 0 until boardSize) {
                 Row {

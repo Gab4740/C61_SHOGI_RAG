@@ -29,7 +29,7 @@ public class Board {
         board[pos.getPosX()][pos.getPosY()] = piece.getID();
     }
     public void setPieceAt(byte pieceId, Position pos){
-        board[pos.getPosX()][pos.getPosY()] = piece.getID();
+        board[pos.getPosX()][pos.getPosY()] = pieceId;
     }
     public void removePieceAt(Position pos){
         board[pos.getPosX()][pos.getPosY()] = 0;

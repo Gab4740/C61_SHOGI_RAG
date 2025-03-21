@@ -197,7 +197,7 @@ public class Game {
     /**
      * Retourne un objet piece pour la position donné
      * */
-    private Piece getPieceAt(Position pos){ return pieces.get(gameBoard.getPieceAt(pos)); }
+    public Piece getPieceAt(Position pos){ return pieces.get(gameBoard.getPieceAt(pos)); }
     /**
      * Retourn True si c'est une pièce enemy, False si ce n'est pas une piece enemy ou pas de piece
      * */
@@ -205,7 +205,7 @@ public class Game {
     /**
      * Retourn True si une piece du joeur est a la positon, false si non
      * */
-    private boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) != 0; }
+    public boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) != 0; }
     /**
      * Retourn True si la case de l'échiquier est vide
      * */
@@ -243,7 +243,7 @@ public class Game {
     }
 
     // DEBUG TOOLS
-    private void prettyPrintConsoleBoard(){
+    public void prettyPrintConsoleBoard(){
         for (int i = 0; i < 9; i++) {
             System.out.print((i + 1) + " | ");
             for (int j = 0; j < 9; j++) {
