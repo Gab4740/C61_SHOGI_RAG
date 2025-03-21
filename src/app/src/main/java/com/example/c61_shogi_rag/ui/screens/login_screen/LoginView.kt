@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,6 +23,8 @@ fun LoginView(modifier: Modifier = Modifier,
               loginViewModel: LoginViewModel = viewModel(),
               playerShareViewModel: PlayerShareViewModel,
               navigateToMainMenu:() -> Unit) {
+
+    val isLoading = loginViewModel.isLoading.value
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -60,11 +63,18 @@ fun LoginView(modifier: Modifier = Modifier,
                     loginViewModel.registerPlayer()
                 } else {
                     val validatedPlayer = loginViewModel.validatePlayer()
-                    if (validatedPlayer == null) {
+
+                    if (isLoading){
+                        //CircularProgressIndicator()
 
                     } else {
-                        playerShareViewModel.currentPlayer = validatedPlayer
-                        navigateToMainMenu()
+
+                        if (validatedPlayer == null) {
+
+                        } else {
+                            playerShareViewModel.currentPlayer = loginViewModel.joueurRecuperer!!
+                            navigateToMainMenu()
+                        }
                     }
             }
         })

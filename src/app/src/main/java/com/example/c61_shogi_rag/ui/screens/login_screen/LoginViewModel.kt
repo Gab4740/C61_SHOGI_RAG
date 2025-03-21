@@ -17,6 +17,8 @@ class LoginViewModel: ViewModel() {
 
     var joueurRecuperer by mutableStateOf<Joueur?>(null)
 
+    var isLoading = mutableStateOf(false)
+
     public fun getCurrentMode(): String {
         return if(registerMode) "Register" else "Login"
     }
@@ -33,12 +35,14 @@ class LoginViewModel: ViewModel() {
         JoueurDAO.addJoueur(username, password)
         return true;
     }
-    public fun validatePlayer(): Joueur? {
+    public fun validatePlayer(){
         // TODO: Faire appel ici à la bd pour valider le nom de l'usager
         try {
             JoueurDAO.getJoueurByName(object : JoueurCallback {
-                override fun onJoueurRecupere(joueur: Joueur) {
-                    joueurRecuperer = joueur
+                override fun onJoueurRecupere(joueurRecupe: Joueur) {
+                    joueurRecuperer = joueurRecupe
+                    System.out.println("joueurRecuperer :" + joueurRecuperer?.nom_joueur)
+                    isLoading.value = false
                 }
             }, username , password);
         } catch (Exception: Exception){
@@ -46,6 +50,5 @@ class LoginViewModel: ViewModel() {
         }
 
 
-        return joueurRecuperer
     }
 }

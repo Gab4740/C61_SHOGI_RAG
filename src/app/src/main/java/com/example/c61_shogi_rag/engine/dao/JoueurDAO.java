@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class JoueurDAO {
@@ -138,19 +139,45 @@ public class JoueurDAO {
 
 
     public static void getJoueurByName(JoueurCallback callback, String nom, String password) {
-        joueurDB.child(String.valueOf(nom)).addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = joueurDB.orderByChild("nom_joueur").equalTo(nom);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Joueur joueur = snapshot.getValue(Joueur.class);
-                    if (joueur != null){
-                        //Log.d(TAG, "Joueur récupéré avec l'ID "+ id_joueur + " :" + joueur.getNom_joueur());
+                if (snapshot.exists()) {
 
-                        callback.onJoueurRecupere(joueur);
-                    }else {
-                        Log.d(TAG, "Aucun joueur trouvé.");
-                        callback.onJoueurRecupere(null);
+                    Joueur joueur = null;
+                    for (DataSnapshot joueurSnapshot : snapshot.getChildren()) {
+                        joueur = joueurSnapshot.getValue(Joueur.class);
+                        System.out.println("Joueur trouvé : " + joueur.getNom_joueur());
                     }
+
+                    Query queryJoueurInfo = joueurInfoDB.orderByChild("idJoueur").equalTo(joueur.getJoueur_id());
+                    Joueur finalJoueur = joueur;
+                    queryJoueurInfo.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshotInfo) {
+                            JoueurInfo joueurInfo = null;
+                            for (DataSnapshot infoSnapshot: snapshotInfo.getChildren()){
+                                joueurInfo = infoSnapshot.getValue(JoueurInfo.class);
+
+                                if (BCrypt.checkpw(password, joueurInfo.getMotDePasse())){
+                                    System.out.println("bon mots de passe");
+                                    callback.onJoueurRecupere(finalJoueur);
+                                }
+                                else{
+                                    System.out.println("pas bon mots de passe");
+                                    snapshotInfo.exists();
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
             }
             @Override
