@@ -119,6 +119,11 @@ class HistoryViewModel() : ViewModel() {
             override fun onJoueurRecupere(joueur: Joueur?) {
                 continuation.resume(joueur)
             }
+
+            override fun onError(message: String?) {
+                TODO("Not yet implemented")
+            }
+
             fun onError(exception: Exception) {
                 continuation.resumeWithException(exception)
 

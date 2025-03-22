@@ -18,6 +18,9 @@ public class Game {
     private Boolean isPlayerStarting;
     private Boolean isPlayerTurn;
     private Boolean isGameEnded;
+    private Boolean GameWinner;
+    private GameSaver gameSaver;
+
 
     /**
      * @param isPlayerStarting : Si le joueur commence : true, si le AI commence : false
@@ -31,6 +34,7 @@ public class Game {
         this.isPlayerStarting = isPlayerStarting;
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
+        this.gameSaver = new GameSaver();
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -181,14 +185,32 @@ public class Game {
                     capturePieceAtPos(secondPos, true);
                 }
                 gameBoard.movePieceTo(firstPos, secondPos);
+
+                gameSaver.addNewTurn(new OneTurn(pieceToPlay.getID(), firstPos, secondPos, false));
+
                 isPlayerTurn = !isPlayerTurn;
                 valid = true;
             }
+            promotePiece(pieceToPlay); // TODO
             isGameEnded = isKingsAlive();
         }
         return valid;
     }
-
+    /**
+     * Cheque si la piece doit etre promu, si oui effectue le changement
+     *
+     * @param piece : La piece du tour courrant
+     * */
+    private void promotePiece(Piece piece){
+        // TODO
+    }
+    /**
+     * Retourne la classe qui possede la liste de l'historique de coup
+     * */
+    public GameSaver getGameSaver() {return gameSaver; }
+    /**
+     * Retourne la classe du GameBoard
+     * */
     public Board getGameBoard(){ return gameBoard; }
     /**
      * Retourne un booléen qui indique si c'est le tour du joueur = true ou au AI = false

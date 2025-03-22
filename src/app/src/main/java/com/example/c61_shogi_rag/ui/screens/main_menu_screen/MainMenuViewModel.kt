@@ -17,13 +17,4 @@ class MainMenuViewModel(): ViewModel()  {
 
     var joueurRecuperer by mutableStateOf<Joueur?>(null)
         private set
-
-    fun getJoueurById(id_joueur:Int){
-        JoueurDAO.getJoueurById(object : JoueurCallback {
-            override fun onJoueurRecupere(joueur: Joueur) {
-                joueurRecuperer = joueur
-            }
-        }, id_joueur)
-    }
-
 }
