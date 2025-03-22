@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -35,114 +38,6 @@ import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 
 val cellSize: Dp = 43.dp
-
-
-@Composable
-fun ShogiPiece(modifier: Modifier = Modifier,
-               pieceResID: Int? = null,
-               opposite: Boolean? = false,
-               onCellClick: () -> Unit = {},
-               onPieceClick: () -> Unit = {}) {
-
-    if (pieceResID == null) {
-        Box(
-            modifier = modifier
-                .padding(1.dp)
-                .background(Color.Transparent)
-        )
-    }
-    else {
-        Image(
-            painter = painterResource(id = pieceResID),
-            contentDescription = "Image de la pièce",
-            modifier = modifier
-                .padding(1.dp)
-                .then(if (opposite == true) Modifier.rotate(180F) else Modifier)
-
-        )
-    }
-}
-
-@Composable
-fun ShogiboardCell(modifier: Modifier = Modifier,
-                   position: Position,
-                   onCellClick: () -> Unit = {},
-                   shogiPiece: @Composable () -> Unit) {
-    Box(
-        modifier = Modifier
-            .background(color = Color.White)
-            .size(41.dp)
-            .border(BorderStroke(1.dp, Color.Black))
-            .clickable(onClick = onCellClick)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.wood),
-            contentDescription = "Image de la case",
-            contentScale = ContentScale.Crop,
-        )
-
-        shogiPiece()
-    }
-}
-
-@Composable
-fun Shogiboard(modifier: Modifier = Modifier, boardSize: Int = 9) {
-    var piecePosition by remember { mutableStateOf(
-        Position(
-            1,
-            1
-        )
-    ) }
-    Box {
-        Column {
-            for (row in 0 until boardSize) {
-                Row {
-                    for (column in 0 until boardSize) {
-                        if(column == piecePosition.posX && row == piecePosition.posY) {
-                            ShogiboardCell(
-                                position = Position(
-                                    column,
-                                    row
-                                ),
-                                onCellClick = {piecePosition =
-                                    Position(
-                                        column,
-                                        row
-                                    )
-                                },
-
-                                shogiPiece = {
-                                    ShogiPiece(
-                                        pieceResID = R.drawable.p_pawn_0,
-                                        opposite = false,
-                                    )
-                                }
-                            )
-                        }
-                        else {
-                            ShogiboardCell(
-                                position = Position(
-                                    column,
-                                    row
-                                ),
-                                onCellClick = {piecePosition =
-                                    Position(
-                                        column,
-                                        row
-                                    )
-                                },
-                                shogiPiece = {
-                                    ShogiPiece(
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun PieceImage(modifier: Modifier = Modifier, pieceModel: Piece?) {
@@ -197,23 +92,24 @@ fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (P
 
 @Composable
 fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel: GameViewModel) {
-    
-    val board by rememberUpdatedState(newValue = gameViewModel.game)
-    Box(modifier = modifier) {
-        Column {
-            for (row in 0 until boardSize) {
-                Row {
-                    for (column in 0 until boardSize) {
-                        val position:Position = Position(row, column)
-                        val piece: Piece? = gameViewModel.game.getPieceAt(position)
+    key(gameViewModel.isPlayerTurn) { // Forcer la récomposition
+        Box(modifier = modifier) {
+            Column {
+                for (row in 0 until boardSize) {
+                    Row {
+                        for (column in 0 until boardSize) {
+                            val position:Position = Position(row, column)
+                            val piece: Piece? = gameViewModel.game.getPieceAt(position)
 
-                        PieceImage(pieceModel = piece)
+                            PieceImage(pieceModel = piece)
 
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 @Composable
