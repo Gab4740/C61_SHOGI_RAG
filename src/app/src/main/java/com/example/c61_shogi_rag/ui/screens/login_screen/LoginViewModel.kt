@@ -19,6 +19,9 @@ class LoginViewModel: ViewModel() {
 
     var isLoading = mutableStateOf(false)
 
+    var errorMessage by mutableStateOf<String?>(null)
+    var successMessage by mutableStateOf<String?>(null)
+
     public fun getCurrentMode(): String {
         return if(registerMode) "Register" else "Login"
     }
@@ -30,23 +33,71 @@ class LoginViewModel: ViewModel() {
         registerMode = !registerMode
     }
 
-    public fun registerPlayer(): Boolean {
-        // TODO: Faire appel ici à la bd pour enregistrer un usager
-        JoueurDAO.addJoueur(username, password)
-        return true;
+    public fun registerPlayer() {
+        errorMessage = null
+        successMessage = null
+
+        when {
+            username.isEmpty() -> {
+                errorMessage = "Veuillez entrer un nom d'utilisateur"
+                return
+            }
+            password.isEmpty() -> {
+                errorMessage = "Veuillez entrer un mot de passe"
+                return
+            }
+            password != confirmPassword -> {
+                errorMessage = "Les mots de passe ne correspondent pas"
+                return
+            }
+        }
+
+        isLoading.value = true
+
+        try {
+            JoueurDAO.addJoueur(username, password, object : JoueurCallback{
+                override fun onJoueurRecupere(joueur: Joueur?) {
+                    successMessage = "Inscription réussie"
+                    isLoading.value = false
+
+                }
+
+                override fun onError(message: String) {
+                    errorMessage = message
+                    isLoading.value = false
+                }
+            })
+        }catch (exception: Exception){
+            exception.printStackTrace()
+            errorMessage = "Erreur serveur : ${exception.message}"
+            isLoading.value = false
+        }
+
     }
+
     public fun validatePlayer(){
-        // TODO: Faire appel ici à la bd pour valider le nom de l'usager
+
+        isLoading.value = true
+        errorMessage = null
+
         try {
             JoueurDAO.getJoueurByName(object : JoueurCallback {
                 override fun onJoueurRecupere(joueurRecupe: Joueur) {
                     joueurRecuperer = joueurRecupe
-                    System.out.println("joueurRecuperer :" + joueurRecuperer?.nom_joueur)
                     isLoading.value = false
                 }
-            }, username , password);
-        } catch (Exception: Exception){
-            Exception.printStackTrace()
+
+                override fun onError(message: String) {
+                    joueurRecuperer = null
+                    errorMessage = message
+                    isLoading.value = false
+                }
+            }, username , password)
+
+        } catch (exception: Exception){
+            exception.printStackTrace()
+            errorMessage = "Erreur serveur : ${exception.message}"
+            isLoading.value = false
         }
 
 

@@ -3,15 +3,20 @@ package com.example.c61_shogi_rag.ui.screens.login_screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
@@ -25,6 +30,14 @@ fun LoginView(modifier: Modifier = Modifier,
               navigateToMainMenu:() -> Unit) {
 
     val isLoading = loginViewModel.isLoading.value
+
+    LaunchedEffect(loginViewModel.joueurRecuperer) {
+        loginViewModel.joueurRecuperer?.let { joueur ->
+            playerShareViewModel.currentPlayer = joueur
+            navigateToMainMenu()
+        }
+
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -52,32 +65,38 @@ fun LoginView(modifier: Modifier = Modifier,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
         }
+        loginViewModel.errorMessage?.let { error->
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+        loginViewModel.successMessage?.let { error->
+            Text(
+                text = error,
+                color = Color.Green,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
     Spacer(modifier = Modifier.weight(1f))
     ShogiButton(
         text = "Submit",
         onClick = {
-            //TODO une fois cliquer sur submit faire une methode
-            // qui fait attendre le temps que toutes les verifications sois terminer
                 if (loginViewModel.registerMode) {
-
                     loginViewModel.registerPlayer()
+
                 } else {
-                    val validatedPlayer = loginViewModel.validatePlayer()
+                    loginViewModel.validatePlayer()
+                }
 
-                    if (isLoading){
-                        //CircularProgressIndicator()
 
-                    } else {
+        }, enabled = !isLoading )
 
-                        if (validatedPlayer == null) {
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
 
-                        } else {
-                            playerShareViewModel.currentPlayer = loginViewModel.joueurRecuperer!!
-                            navigateToMainMenu()
-                        }
-                    }
-            }
-        })
         ShogiButton(
             text = loginViewModel.getAlternativeMode(),
             onClick = {loginViewModel.toggleMode()}

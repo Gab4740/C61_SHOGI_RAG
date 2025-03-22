@@ -32,54 +32,66 @@ public class JoueurDAO {
      * @param nom -> representant le nom/pseudo du joueur
      *
      **/
-    public static void addJoueur(String nom, String password){
+    public static void addJoueur(String nom, String password, JoueurCallback callback) {
 
-        // TODO creer un objet joueur_information contenant le nom
-        //  et le mots passe ou autre information privee
-
-        joueurDB.addListenerForSingleValueEvent(new ValueEventListener() {
+        // 1. Vérifier si le nom d'utilisateur existe déjà
+        Query joueurExiste = joueurDB.orderByChild("nom_joueur").equalTo(nom);
+        joueurExiste.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int nbr_joueur = (int) snapshot.getChildrenCount();
-                int new_id = 1;
 
-                if (nbr_joueur >= 0){
-                    new_id = nbr_joueur+1;
+                // Si le nom existe déjà, on arrête et on signale l'erreur
+                if (snapshot.exists()) {
+                    callback.onError("Un utilisateur avec ce nom existe déjà. Veuillez en choisir un autre");
+                    return;
                 }
-                //rajouter le mot de passe avec la class BCrypt pour crypter le mots de passe
 
-                String motDePasse = BCrypt.hashpw(password, BCrypt.gensalt());
-
-                //TODO rajouter une methode qui vas regarde si il y a une operation en cours si oui attendre avant de rappeler addJoueur
-
-                Joueur joueur = new Joueur(new_id, nom);
-
-                joueurDB.child(String.valueOf(new_id)).setValue(joueur);
-
-                int finalNew_id = new_id;
-                joueurInfoDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                // 2. Générer un nouvel ID pour le joueur
+                joueurDB.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        JoueurInfo joueurInfo = new JoueurInfo(finalNew_id, motDePasse);
 
-                        joueurInfoDB.child(String.valueOf(finalNew_id)).setValue(joueurInfo);
+                        // Calculer le nouvel ID
+                        int nbr_joueur = (int) snapshot.getChildrenCount();
+                        int new_id = (nbr_joueur >= 0) ? nbr_joueur + 1 : 1;
+
+                        // 3. Hasher le mot de passe
+                        String motDePasse = BCrypt.hashpw(password, BCrypt.gensalt());
+
+                        // 4. Créer et sauvegarder le joueur
+                        Joueur joueur = new Joueur(new_id, nom);
+                        joueurDB.child(String.valueOf(new_id)).setValue(joueur)
+                                .addOnSuccessListener(aVoid -> {
+
+                                    // 5. Créer et sauvegarder les infos du joueur
+                                    JoueurInfo joueurInfo = new JoueurInfo(new_id, motDePasse);
+                                    joueurInfoDB.child(String.valueOf(new_id)).setValue(joueurInfo)
+                                            .addOnSuccessListener(aVoid2 -> {
+
+                                                // Tout est sauvegardé avec succès
+                                                callback.onJoueurRecupere(joueur);
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                callback.onError("Erreur lors de l'enregistrement des infos: " + e.getMessage());
+                                            });
+                                })
+                                .addOnFailureListener(e -> {
+                                    callback.onError("Erreur lors de l'enregistrement du joueur: " + e.getMessage());
+                                });
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("Firebase", "Erreur de lecture des données : " + error.getMessage());
-
+                        callback.onError("Erreur de base de données: " + error.getMessage());
                     }
                 });
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Erreur de lecture des données : " + error.getMessage());
+                callback.onError("Erreur de base de données: " + error.getMessage());
             }
         });
-
     }
 
 
@@ -153,36 +165,45 @@ public class JoueurDAO {
 
                     Query queryJoueurInfo = joueurInfoDB.orderByChild("idJoueur").equalTo(joueur.getJoueur_id());
                     Joueur finalJoueur = joueur;
+
                     queryJoueurInfo.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshotInfo) {
-                            JoueurInfo joueurInfo = null;
-                            for (DataSnapshot infoSnapshot: snapshotInfo.getChildren()){
-                                joueurInfo = infoSnapshot.getValue(JoueurInfo.class);
+                            if (snapshot.exists()) {
+                                JoueurInfo joueurInfo = null;
+                                for (DataSnapshot infoSnapshot : snapshotInfo.getChildren()) {
+                                    joueurInfo = infoSnapshot.getValue(JoueurInfo.class);
 
-                                if (BCrypt.checkpw(password, joueurInfo.getMotDePasse())){
-                                    System.out.println("bon mots de passe");
-                                    callback.onJoueurRecupere(finalJoueur);
-                                }
-                                else{
-                                    System.out.println("pas bon mots de passe");
-                                    snapshotInfo.exists();
-                                }
+                                    if (BCrypt.checkpw(password, joueurInfo.getMotDePasse())) {
+                                        System.out.println("bon mots de passe");
+                                        callback.onJoueurRecupere(finalJoueur);
+                                    } else {
+                                        System.out.println("pas bon mots de passe");
+                                        callback.onError("Mot de passe incorrect.");
+                                        return;
+                                    }
 
+                                }
+                            }
+                            else{
+                                callback.onError("information du joueur introuvable.");
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            Log.w(TAG, "Échec de récupération.", error.toException());
+                            callback.onError("Erreur de la base de donnee : " + error.getMessage());
                         }
                     });
 
+                }else{
+                    callback.onError("Joueur introuvable.");
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "Échec de récupération.", error.toException());
+                callback.onError("Erreur de la base de donnee : " + error.getMessage());
             }
         });
     }
