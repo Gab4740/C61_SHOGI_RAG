@@ -1,10 +1,12 @@
 package com.example.c61_shogi_rag.engine.game;
 
+import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Piece;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
+import com.google.gson.Gson;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -273,5 +275,24 @@ public class Game {
             }
             System.out.println();
         }
+    }
+
+    public void archiverPartie(int id_gagnant, int id_perdant){
+
+        if (isGameEnded){
+            try{
+                Gson gson = new Gson();
+
+                String jsonString = gson.toJson(gameSaver.getTurnList());
+
+                PartieDAO.addPartie(id_gagnant, id_perdant, jsonString);
+
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
+
+        }
+
+
     }
 }

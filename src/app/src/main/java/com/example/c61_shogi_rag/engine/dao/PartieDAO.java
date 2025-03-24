@@ -33,11 +33,9 @@ public class PartieDAO {
      *
      *
      **/
-    public static void addPartie(int id_winner, int id_loser) {
+    public static void addPartie(int id_winner, int id_loser, String jsonString) {
 
-        Gson gson = new Gson();
 
-        String jsonString = gson.toJson(Game.getGameSaver().getTurnList());
 
         partieDB.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -72,7 +70,7 @@ public class PartieDAO {
      * permet d'aller chercher toutes les parties gagner et perdu du joueur
      *
      * @param callback -> signale qui permet de rapeller la fonction quand un changement est emis
-     * @param id_joueur -> representant l'id du joueur
+     * @param id_joueur -> representant l'id du joueur connecter
      *
      * return une liste de Partie
      *
@@ -83,7 +81,7 @@ public class PartieDAO {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Partie> partieList = new ArrayList<>();
                 System.out.println(id_joueur);
-                for (DataSnapshot child : snapshot.getChildren()) { // Utilisation correcte de la boucle
+                for (DataSnapshot child : snapshot.getChildren()) {
                     Partie partie = child.getValue(Partie.class);
                     if (partie != null) {
                         if (partie.getWinner_id() == id_joueur || partie.getLoser_id() == id_joueur){

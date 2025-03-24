@@ -13,4 +13,8 @@ public class GameSaver {
     public TurnHistory getTurnList() {
         return turnList;
     }
+
+    public void setTurnList(TurnHistory turnList) {
+        this.turnList = turnList;
+    }
 }
