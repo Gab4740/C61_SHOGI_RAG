@@ -19,7 +19,7 @@ public class Game {
     private Boolean isPlayerTurn;
     private Boolean isGameEnded;
     private Boolean GameWinner;
-    private GameSaver gameSaver;
+    private static GameSaver gameSaver;
 
 
     /**
@@ -207,7 +207,7 @@ public class Game {
     /**
      * Retourne la classe qui possede la liste de l'historique de coup
      * */
-    public GameSaver getGameSaver() {return gameSaver; }
+    public static GameSaver getGameSaver() {return gameSaver; }
     /**
      * Retourne la classe du GameBoard
      * */

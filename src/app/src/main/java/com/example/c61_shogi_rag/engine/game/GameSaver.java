@@ -1,6 +1,5 @@
 package com.example.c61_shogi_rag.engine.game;
 
-import com.google.gson.Gson;
 
 public class GameSaver {
     private TurnHistory turnList;

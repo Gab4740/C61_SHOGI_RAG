@@ -1,7 +1,7 @@
 package com.example.c61_shogi_rag.engine.entity;
 public class Joueur {
-    int joueur_id;
-    String nom_joueur;
+    private int joueur_id;
+    private String nom_joueur;
 
     public Joueur(){
 

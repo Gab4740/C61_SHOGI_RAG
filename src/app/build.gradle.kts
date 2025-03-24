@@ -82,7 +82,7 @@ dependencies {
     implementation(libs.firebase.database)
 
     // Import de GSON
-    implementation(libs.gson)
+    implementation (libs.gson)
 
 
     // TODO: Add the dependencies for Firebase products you want to use

@@ -95,37 +95,7 @@ public class JoueurDAO {
     }
 
 
-
-    /**
-     *
-     * methode permettant de recuper un joueur
-     *
-     * return un Joueur
-     **/
-
-    //TODO (futur version si temps) rajouter une verification par mot de passe
-    public static void getJoueur(JoueurCallback callback) {
-        joueurDB.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Joueur joueur = snapshot.child("1").getValue(Joueur.class);
-                if (joueur != null) {
-                    Log.d(TAG, "Joueur récupéré: " + joueur.getNom_joueur());
-                    callback.onJoueurRecupere(joueur); // Envoi du joueur au callback
-                } else {
-                    Log.d(TAG, "Aucun joueur trouvé.");
-                    callback.onJoueurRecupere(null);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "Échec de récupération.", error.toException());
-            }
-        });
-    }
-
-
+    //avoir si on laisse ou non
     public static void getJoueurById(JoueurCallback callback, int id_joueur){
         joueurDB.child(String.valueOf(id_joueur)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -136,7 +106,7 @@ public class JoueurDAO {
                         //Log.d(TAG, "Joueur récupéré avec l'ID "+ id_joueur + " :" + joueur.getNom_joueur());
                         callback.onJoueurRecupere(joueur);
                     }else {
-                        Log.d(TAG, "Aucun joueur trouvé.");
+                        //Log.d(TAG, "Aucun joueur trouvé.");
                         callback.onJoueurRecupere(null);
                     }
                 }

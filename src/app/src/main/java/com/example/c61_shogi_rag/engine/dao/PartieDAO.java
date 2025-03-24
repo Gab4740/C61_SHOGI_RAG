@@ -6,11 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
+import com.example.c61_shogi_rag.engine.game.Game;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +35,12 @@ public class PartieDAO {
      **/
     public static void addPartie(int id_winner, int id_loser) {
 
+        Gson gson = new Gson();
+
+        String jsonString = gson.toJson(Game.getGameSaver().getTurnList());
+
         partieDB.addListenerForSingleValueEvent(new ValueEventListener() {
+
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -47,7 +54,7 @@ public class PartieDAO {
                 LocalDate dateActuelle = LocalDate.now();
                 String date = dateActuelle.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-                Partie partie = new Partie(new_id, id_winner, date, id_loser);
+                Partie partie = new Partie(new_id, id_winner, id_loser, date, jsonString);
 
                 partieDB.child(String.valueOf(new_id)).setValue(partie);
             }
