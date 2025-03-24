@@ -14,7 +14,5 @@ import com.example.c61_shogi_rag.engine.entity.PartieCallback
 
 class MainMenuViewModel(): ViewModel()  {
     val opponent: Joueur = Joueur(-2, "AI")
-
-    var joueurRecuperer by mutableStateOf<Joueur?>(null)
-        private set
+    var openAlertDialog by mutableStateOf(false)
 }

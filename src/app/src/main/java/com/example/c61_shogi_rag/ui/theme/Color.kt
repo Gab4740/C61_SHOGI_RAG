@@ -12,6 +12,9 @@ val Pink40 = Color(0xFF7D5260)
 
 
 val Cherry = Color(0xFFE4A4AC)
+val Cherry2 = Color(0xFFC08FA6)
+
+
 val CherryLog = Color(0xFF35232B)
 
 //val ShogiCellColor = Color()
