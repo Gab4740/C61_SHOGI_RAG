@@ -29,7 +29,8 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
                 navigateToGame = {
-                        player1, player2 -> navController.navigate(Game(player1, player2)) },
+                        player1, player2, isPlayerFirst-> navController.navigate(Game(player1, player2, isPlayerFirst))
+                                 },
                 navigateToHistory = {
                     navController.navigate(History) },
                 navigateToLogin = {navController.navigate(Login)}

@@ -24,7 +24,7 @@ import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 fun MainMenuView(modifier: Modifier = Modifier,
                  mainMenuViewModel: MainMenuViewModel = viewModel(),
                  playerShareViewModel: PlayerShareViewModel,
-                 navigateToGame: (Int, String) -> Unit,
+                 navigateToGame: (Int, String, Boolean) -> Unit,
                  navigateToHistory: () -> Unit,
                  navigateToLogin: () -> Unit) {
 
@@ -81,9 +81,11 @@ fun MainMenuView(modifier: Modifier = Modifier,
                 onDismiss = {mainMenuViewModel.openAlertDialog = false}
             ) {
                 mainMenuViewModel.openAlertDialog = false
+                mainMenuViewModel.isPlayerFirst = it
                 navigateToGame(
                     mainMenuViewModel.opponent.joueur_id,
-                    mainMenuViewModel.opponent.nom_joueur
+                    mainMenuViewModel.opponent.nom_joueur,
+                    mainMenuViewModel.isPlayerFirst
                 )
             }
         }
@@ -92,7 +94,7 @@ fun MainMenuView(modifier: Modifier = Modifier,
 
 @Composable
 fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
-                      onConfirmation:() -> Unit)
+                      onConfirmation:(Boolean) -> Unit)
 {
     AlertDialog(
         onDismissRequest = { onDismiss() },
@@ -107,13 +109,12 @@ fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
 
 
             ) {
-                SenteComposable{onConfirmation()}
-                GoteSenteComposable{onConfirmation()}
-                GoteComposable{onConfirmation()}
+                SenteComposable{onConfirmation(true)}
+                GoteSenteComposable{onConfirmation(true)}
+                GoteComposable{onConfirmation(true)}
             }
-        },
-
-        )
+        }
+    )
 }
 
 
