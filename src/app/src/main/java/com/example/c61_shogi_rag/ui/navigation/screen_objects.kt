@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 object MainMenu
 
 @Serializable
-data class Game(val opponentID: Int, val opponentName: String)
+data class Game(val opponentID: Int, val opponentName: String, val isPlayerFirst: Boolean)
 
 @Serializable
 object Login

@@ -1,8 +1,11 @@
 package com.example.c61_shogi_rag.ui.screens.main_menu_screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.GameTitle
+import com.example.c61_shogi_rag.ui.theme.GoteComposable
+import com.example.c61_shogi_rag.ui.theme.GoteSenteComposable
+import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 
@@ -18,7 +24,7 @@ import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
 fun MainMenuView(modifier: Modifier = Modifier,
                  mainMenuViewModel: MainMenuViewModel = viewModel(),
                  playerShareViewModel: PlayerShareViewModel,
-                 navigateToGame: (Int, String) -> Unit,
+                 navigateToGame: (Int, String, Boolean) -> Unit,
                  navigateToHistory: () -> Unit,
                  navigateToLogin: () -> Unit) {
 
@@ -33,10 +39,12 @@ fun MainMenuView(modifier: Modifier = Modifier,
             text = "Play",
             fontFamily = japanWaveFontFamily,
             onClick = {
+                mainMenuViewModel.openAlertDialog = true
+                /*
                 navigateToGame(
                     mainMenuViewModel.opponent.joueur_id,
                     mainMenuViewModel.opponent.nom_joueur
-                )
+                )*/
             }
         )
         ShogiButton(
@@ -66,7 +74,49 @@ fun MainMenuView(modifier: Modifier = Modifier,
             text = "Connected as: ${playerShareViewModel.currentPlayer.nom_joueur}"
         )
     }
+
+    when {
+        mainMenuViewModel.openAlertDialog -> {
+            ThreeOptionDialog(
+                onDismiss = {mainMenuViewModel.openAlertDialog = false}
+            ) {
+                mainMenuViewModel.openAlertDialog = false
+                mainMenuViewModel.isPlayerFirst = it
+                navigateToGame(
+                    mainMenuViewModel.opponent.joueur_id,
+                    mainMenuViewModel.opponent.nom_joueur,
+                    mainMenuViewModel.isPlayerFirst
+                )
+            }
+        }
+    }
 }
+
+@Composable
+fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
+                      onConfirmation:(Boolean) -> Unit)
+{
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+
+        title = { Text(text = "Choose an Option") },
+        text = { Text(text = "Please select one of the three options below:") },
+        confirmButton = {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+
+
+            ) {
+                SenteComposable{onConfirmation(true)}
+                GoteSenteComposable{onConfirmation(true)}
+                GoteComposable{onConfirmation(true)}
+            }
+        }
+    )
+}
+
 
 
 
