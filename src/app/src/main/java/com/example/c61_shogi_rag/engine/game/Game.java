@@ -10,11 +10,11 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 public class Game {
-    private Board gameBoard;
+    private final Board gameBoard;
     private Hashtable<Byte, Piece> pieces;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
-    private Time gameTimer;
+    private final Time gameTimer;
     private Boolean isPlayerStarting;
     private Boolean isPlayerTurn;
     private Boolean isGameEnded;
@@ -35,6 +35,7 @@ public class Game {
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
         this.gameSaver = new GameSaver();
+        this.GameWinner = null;
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -171,7 +172,12 @@ public class Game {
         BoardInit();
         gameTimer.startTime();
     }
-
+    /**
+     * Méthode qui permet de d'effectuer le déplacement d'une pièce
+     *
+     * @param firstPos : La pièce choisi,
+     * @param secondPos : La nouvelle position choisi
+     * */
     public boolean playTurn(Position firstPos, Position secondPos){
         boolean valid = false;
         boolean enemyPieceToCapture =  isEnemyPieceAtPos(secondPos);
@@ -191,9 +197,21 @@ public class Game {
                 isPlayerTurn = !isPlayerTurn;
                 valid = true;
             }
-            promotePiece(pieceToPlay); // TODO
+            promotePiece(pieceToPlay);
             isGameEnded = isKingsAlive();
         }
+        return valid;
+    }
+    /**
+     * Méthode qui permet de d'effectuer le parachutage d'une piece
+     *
+     * @param parachutePos : La position cliquer,
+     * @param piece : Pièce a parachuter
+     * */
+    public boolean parachute(Position parachutePos, byte piece){
+        boolean valid = false;
+
+
         return valid;
     }
     /**
@@ -204,6 +222,7 @@ public class Game {
     private void promotePiece(Piece piece){
         // TODO
     }
+    public boolean getIsGameEnded(){ return isGameEnded; }
     /**
      * Retourne la classe qui possede la liste de l'historique de coup
      * */
@@ -227,7 +246,7 @@ public class Game {
     /**
      * Retourn True si une piece du joeur est a la positon, false si non
      * */
-    public boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) != 0; }
+    public boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) > 0; }
     /**
      * Retourn True si la case de l'échiquier est vide
      * */
