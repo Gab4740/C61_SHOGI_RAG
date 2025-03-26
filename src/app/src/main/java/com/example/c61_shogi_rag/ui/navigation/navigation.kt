@@ -63,7 +63,9 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
             )
         }
         composable<ArchivedGame> {
-            ArchivedGameView(modifier)
+            ArchivedGameView(
+                playerShareViewModel = playerShareViewModel
+            )
         }
     }
 }
