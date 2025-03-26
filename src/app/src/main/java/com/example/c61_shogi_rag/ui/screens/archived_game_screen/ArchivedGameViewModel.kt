@@ -16,10 +16,10 @@ class ArchivedGameViewModel: ViewModel()  {
 
     var turn by mutableStateOf<TurnHistory?>(null)
 
-//    fun getListCoups(){
-//
-//        turn = Gson().fromJson(partie?.historiqueCoups, TurnHistory)
-//
-//    }
+    fun getListCoups(){
+
+        turn = Gson().fromJson(partie?.historiqueCoups, TurnHistory::class.java)
+
+    }
 
 }

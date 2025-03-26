@@ -17,6 +17,7 @@ import com.example.c61_shogi_rag.engine.entity.PartieCallback
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -52,10 +53,10 @@ class HistoryViewModel() : ViewModel() {
             uiState.value = HistoryUiState.Loading
             try {
                 val parties = getPartieSuspend(id_joueur)
-                uiState.value = HistoryUiState.Success(parties)
+                uiState.update { HistoryUiState.Success(parties) }
             } catch (e:Exception) {
-                uiState.value = HistoryUiState.Error("" +
-                        "Erreur lors du chargement des donnees : ${e.message}")
+                uiState.update {HistoryUiState.Error("" +
+                        "Erreur lors du chargement des donnees : ${e.message}")}
             }
         }
     }
@@ -67,18 +68,18 @@ class HistoryViewModel() : ViewModel() {
      * @param id_joueur id du joueur connecter
      *
      **/
-    private suspend fun getPartieSuspend(id_joueur: Int): List<Partie> = suspendCancellableCoroutine {
-            continuation ->
-        PartieDAO.getPartie(object : PartieCallback {
-            override fun onPartiesRecuperees(partieList: List<Partie>) {
-                continuation.resume(partieList)
-            }
+    private suspend fun getPartieSuspend(id_joueur: Int): List<Partie> =
+        suspendCancellableCoroutine { continuation ->
+            PartieDAO.getPartie(object : PartieCallback {
+                override fun onPartiesRecuperees(partieList: List<Partie>) {
+                    continuation.resumeWith(Result.success(partieList))
+                }
 
-            fun onError(exception: Exception) {
-                continuation.resumeWithException(exception)
-            }
+                override fun onError(exception: Exception) {
+                    continuation.resumeWith(Result.failure(exception))
+                }
 
-        }, id_joueur)
+            }, id_joueur)
     }
 
     /**
@@ -113,22 +114,18 @@ class HistoryViewModel() : ViewModel() {
      * @param loserId id du joueur perdant
      *
      **/
-    private suspend fun getJoueurByIdSuspend(id_joueur: Int): Joueur? = suspendCancellableCoroutine {
-            continuation ->
-        JoueurDAO.getJoueurById(object : JoueurCallback {
-            override fun onJoueurRecupere(joueur: Joueur?) {
-                continuation.resume(joueur)
-            }
+    private suspend fun getJoueurByIdSuspend(id_joueur: Int): Joueur? =
+        suspendCancellableCoroutine { continuation ->
+            JoueurDAO.getJoueurById(object : JoueurCallback {
+                override fun onJoueurRecupere(joueur: Joueur?) {
+                    continuation.resumeWith(Result.success(joueur))
+                }
 
-            override fun onError(message: String?) {
-                TODO("Not yet implemented")
-            }
+                override fun onError(message: String?) {
+                    continuation.resumeWith(Result.failure(Exception(message ?: "Unknown error")))
+                }
 
-            fun onError(exception: Exception) {
-                continuation.resumeWithException(exception)
-
-            }
-        }, id_joueur)
+            }, id_joueur)
     }
 
 

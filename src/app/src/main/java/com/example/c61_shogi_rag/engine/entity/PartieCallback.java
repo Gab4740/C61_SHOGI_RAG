@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface PartieCallback {
     void onPartiesRecuperees(List<Partie> partieList);
+
+    void onError(Exception exception);
 }

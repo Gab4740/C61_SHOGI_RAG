@@ -23,8 +23,6 @@ public class JoueurDAO {
     private static final DatabaseReference joueurDB = database.getReference("joueur");
     private static final DatabaseReference joueurInfoDB = database.getReference("joueurInfo");
 
-
-
     /**
      *
      * methode permettant de cree un nouveau joueur et de l'envoyer a la BD
@@ -61,12 +59,12 @@ public class JoueurDAO {
                         // 4. Créer et sauvegarder le joueur
                         Joueur joueur = new Joueur(new_id, nom);
                         joueurDB.child(String.valueOf(new_id)).setValue(joueur)
-                                .addOnSuccessListener(aVoid -> {
+                                .addOnSuccessListener(succes -> {
 
                                     // 5. Créer et sauvegarder les infos du joueur
                                     JoueurInfo joueurInfo = new JoueurInfo(new_id, motDePasse);
                                     joueurInfoDB.child(String.valueOf(new_id)).setValue(joueurInfo)
-                                            .addOnSuccessListener(aVoid2 -> {
+                                            .addOnSuccessListener(success -> {
 
                                                 // Tout est sauvegardé avec succès
                                                 callback.onJoueurRecupere(joueur);
@@ -95,25 +93,40 @@ public class JoueurDAO {
     }
 
 
-    //avoir si on laisse ou non
     public static void getJoueurById(JoueurCallback callback, int id_joueur){
+
+        if (id_joueur <= 0){
+            callback.onError("ID joueur invalide.");
+            return;
+        }
+
         joueurDB.child(String.valueOf(id_joueur)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Joueur joueur = snapshot.getValue(Joueur.class);
-                    if (joueur != null){
-                        //Log.d(TAG, "Joueur récupéré avec l'ID "+ id_joueur + " :" + joueur.getNom_joueur());
-                        callback.onJoueurRecupere(joueur);
-                    }else {
+                try{
+                    if (snapshot.exists()){
+                        Joueur joueur = snapshot.getValue(Joueur.class);
+                        if (joueur != null){
+                            //Log.d(TAG, "Joueur récupéré avec l'ID "+ id_joueur + " :" + joueur.getNom_joueur());
+                            callback.onJoueurRecupere(joueur);
+                        }else {
+                            //Log.d(TAG, "Aucun joueur trouvé.");
+                            callback.onError("Impossible de recuperer le joueur.");
+                        }
+                    }else{
                         //Log.d(TAG, "Aucun joueur trouvé.");
-                        callback.onJoueurRecupere(null);
+                        callback.onError("Aucun joueur trouvé avec l'ID " + id_joueur);
                     }
+                }catch (Exception e){
+                    callback.onError("Erreur lors de la récupération du joueur : " + e.getMessage());
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                String errorMessage = "Échec de récupération : " + error.getMessage();
                 Log.w(TAG, "Échec de récupération.", error.toException());
+                callback.onError(errorMessage);
             }
         });
     }
@@ -121,16 +134,23 @@ public class JoueurDAO {
 
 
     public static void getJoueurByName(JoueurCallback callback, String nom, String password) {
+
         Query query = joueurDB.orderByChild("nom_joueur").equalTo(nom);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-
                     Joueur joueur = null;
+
                     for (DataSnapshot joueurSnapshot : snapshot.getChildren()) {
                         joueur = joueurSnapshot.getValue(Joueur.class);
                         System.out.println("Joueur trouvé : " + joueur.getNom_joueur());
+                        break;
+                    }
+
+                    if (joueur == null) {
+                        callback.onError("Joueur introuvable.");
+                        return;
                     }
 
                     Query queryJoueurInfo = joueurInfoDB.orderByChild("idJoueur").equalTo(joueur.getJoueur_id());
@@ -141,19 +161,19 @@ public class JoueurDAO {
                         public void onDataChange(@NonNull DataSnapshot snapshotInfo) {
                             if (snapshot.exists()) {
                                 JoueurInfo joueurInfo = null;
+
                                 for (DataSnapshot infoSnapshot : snapshotInfo.getChildren()) {
                                     joueurInfo = infoSnapshot.getValue(JoueurInfo.class);
-
-                                    if (BCrypt.checkpw(password, joueurInfo.getMotDePasse())) {
-                                        System.out.println("bon mots de passe");
-                                        callback.onJoueurRecupere(finalJoueur);
-                                    } else {
-                                        System.out.println("pas bon mots de passe");
-                                        callback.onError("Mot de passe incorrect.");
-                                        return;
-                                    }
-
+                                    break;
                                 }
+
+                                if (BCrypt.checkpw(password, joueurInfo.getMotDePasse())) {
+                                    callback.onJoueurRecupere(finalJoueur);
+
+                                } else {
+                                    callback.onError("Mot de passe incorrect.");
+                                }
+
                             }
                             else{
                                 callback.onError("information du joueur introuvable.");
@@ -161,7 +181,7 @@ public class JoueurDAO {
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Log.w(TAG, "Échec de récupération.", error.toException());
+                            Log.e(TAG, "Échec de récupération.", error.toException());
                             callback.onError("Erreur de la base de donnee : " + error.getMessage());
                         }
                     });
@@ -172,7 +192,7 @@ public class JoueurDAO {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "Échec de récupération.", error.toException());
+                Log.e(TAG, "Échec de récupération.", error.toException());
                 callback.onError("Erreur de la base de donnee : " + error.getMessage());
             }
         });
