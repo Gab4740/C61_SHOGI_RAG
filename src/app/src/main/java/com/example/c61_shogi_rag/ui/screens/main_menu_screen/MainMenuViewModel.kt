@@ -5,11 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
-import com.example.c61_shogi_rag.engine.dao.JoueurDAO
-import com.example.c61_shogi_rag.engine.dao.PartieDAO
-import com.example.c61_shogi_rag.engine.entity.JoueurCallback
-import com.example.c61_shogi_rag.engine.entity.Partie
-import com.example.c61_shogi_rag.engine.entity.PartieCallback
 
 
 class MainMenuViewModel(): ViewModel()  {

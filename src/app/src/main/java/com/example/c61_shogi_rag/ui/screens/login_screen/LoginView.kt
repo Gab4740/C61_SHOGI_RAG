@@ -21,7 +21,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
-import kotlin.math.log
 
 @Composable
 fun LoginView(modifier: Modifier = Modifier,

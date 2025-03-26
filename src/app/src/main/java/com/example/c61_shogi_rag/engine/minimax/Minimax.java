@@ -1,7 +1,5 @@
 package com.example.c61_shogi_rag.engine.minimax;
 
-import com.example.c61_shogi_rag.engine.game.Board;
-
 public class Minimax {
     /**
      * Méthode récursive pour rechercher dans l'arbre de recherche, Algorithme Minimax
