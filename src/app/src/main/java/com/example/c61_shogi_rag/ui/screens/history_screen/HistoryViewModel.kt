@@ -1,11 +1,7 @@
 package com.example.c61_shogi_rag.ui.screens.history_screen
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c61_shogi_rag.engine.dao.JoueurDAO

@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.util.fastCbrt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.GameTitle
@@ -18,6 +19,7 @@ import com.example.c61_shogi_rag.ui.theme.GoteSenteComposable
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
+import kotlin.random.Random
 
 
 @Composable
@@ -40,11 +42,6 @@ fun MainMenuView(modifier: Modifier = Modifier,
             fontFamily = japanWaveFontFamily,
             onClick = {
                 mainMenuViewModel.openAlertDialog = true
-                /*
-                navigateToGame(
-                    mainMenuViewModel.opponent.joueur_id,
-                    mainMenuViewModel.opponent.nom_joueur
-                )*/
             }
         )
         ShogiButton(
@@ -110,8 +107,8 @@ fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
 
             ) {
                 SenteComposable{onConfirmation(true)}
-                GoteSenteComposable{onConfirmation(true)}
-                GoteComposable{onConfirmation(true)}
+                GoteSenteComposable{onConfirmation(Random.nextBoolean())}
+                GoteComposable{onConfirmation(false)}
             }
         }
     )

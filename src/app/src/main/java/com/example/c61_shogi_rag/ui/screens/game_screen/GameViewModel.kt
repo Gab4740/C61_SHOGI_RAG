@@ -9,8 +9,8 @@ import com.example.c61_shogi_rag.engine.piece.Position
 
 
 
-class GameViewModel: ViewModel() {
-    var game by mutableStateOf(Game(true))
+class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
+    var game by mutableStateOf(Game(_isPlayerFirst))
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
     private var selectedPosition: Position? = null

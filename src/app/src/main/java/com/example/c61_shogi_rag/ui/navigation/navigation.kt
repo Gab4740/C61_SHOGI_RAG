@@ -11,6 +11,7 @@ import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.screens.archived_game_screen.ArchivedGameView
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameView
+import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 import com.example.c61_shogi_rag.ui.screens.history_screen.HistoryView
 import com.example.c61_shogi_rag.ui.screens.login_screen.LoginView
 import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuView
@@ -29,8 +30,8 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
                 navigateToGame = {
-                        player1, player2, isPlayerFirst-> navController.navigate(Game(player1, player2, isPlayerFirst))
-                                 },
+                        player1, player2, isPlayerFirst ->
+                    navController.navigate(Game(player1, player2, isPlayerFirst)) },
                 navigateToHistory = {
                     navController.navigate(History) },
                 navigateToLogin = {navController.navigate(Login)}
@@ -41,7 +42,8 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
             GameView(
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
-                opponent = Joueur(game.opponentID, game.opponentName)
+                opponent = Joueur(game.opponentID, game.opponentName),
+                gameViewModel = viewModel {GameViewModel(game.isPlayerFirst)}
             )
         }
 
