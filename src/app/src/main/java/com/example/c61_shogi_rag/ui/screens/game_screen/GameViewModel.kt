@@ -24,6 +24,7 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
         }
     }
     fun selectPosition(position: Position) {
+        println("${position.posX} ${position.posY}")
         if(game.isPlayerTurn) {
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
