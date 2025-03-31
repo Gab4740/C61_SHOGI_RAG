@@ -30,7 +30,7 @@ import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 val cellSize: Dp = 43.dp
 
 @Composable
-fun PieceImage(modifier: Modifier = Modifier, pieceModel: Piece?) {
+fun PieceImage(modifier: Modifier = Modifier, pieceModel: Int?) {
     Box(
         modifier = modifier
             .background(color = Color.Unspecified)
@@ -38,8 +38,8 @@ fun PieceImage(modifier: Modifier = Modifier, pieceModel: Piece?) {
     ) {
         if(pieceModel != null) {
             Icon(
-                painter = painterResource(pieceModel.imagE_ID),
-                contentDescription = pieceModel.id.toString(),
+                painter = painterResource(pieceModel),
+                contentDescription = pieceModel.toString(),
                 tint = Color.Unspecified
             )
         }
@@ -89,7 +89,7 @@ fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel
                     Row {
                         for (column in 0 until boardSize) {
                             val position:Position = Position(row, column)
-                            val piece: Piece? = gameViewModel.game.getPieceAt(position)
+                            val piece: Int? = gameViewModel.game.getPieceDrawable(position)
 
                             PieceImage(pieceModel = piece)
 

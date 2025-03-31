@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.game.TurnHistory
+import com.google.gson.Gson
 
 class ArchivedGameViewModel: ViewModel()  {
 

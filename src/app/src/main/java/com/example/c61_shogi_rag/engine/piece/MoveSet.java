@@ -56,11 +56,11 @@ public enum MoveSet{
     }),
 
     LanceBlanc(new int[][]{             // Lance (香 Kyo) Directionnel vers le Haut -> Promotion : GeneralOrBlanc
-            {0, 1}                      // Tout droit vers le haut
+            {0, -1}                      // Tout droit vers le haut
     }),
 
     LanceNoir(new int[][]{              // Lance (香 Kyo) Directionnel ver les Bas  -> Promotion : GeneralOrNoir
-            {0, -1}                     // Tout droit vers le bas
+            {0, 1}                     // Tout droit vers le bas
     }),
 
     PionBlanc(new int[][]{              // Pawn (歩 Fu) Directionnel vers le haut

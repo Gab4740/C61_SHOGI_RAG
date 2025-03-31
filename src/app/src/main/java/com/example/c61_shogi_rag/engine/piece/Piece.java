@@ -4,13 +4,16 @@ import com.example.c61_shogi_rag.engine.game.Board;
 
 public class Piece {
     private final byte ID;  // ID negatif = Noir, ID positif = Blanc
+    private final byte IDPromu;
     private final int IMAGE_ID;
+    private final int IMAGE_ID_PROMU;
     private final String nom;
     private final int[][] directions;
-
-    public Piece(byte id, int imageId, String nom, int[][] directions) {
+    public Piece(byte id, byte IDPromu, int imageId, int IMAGE_ID_PROMU, String nom, int[][] directions) {
         this.ID = id;
+        this.IDPromu = IDPromu;
         this.IMAGE_ID = imageId;
+        this.IMAGE_ID_PROMU = IMAGE_ID_PROMU;
         this.nom = nom;
         this.directions = directions;
     }
@@ -21,6 +24,8 @@ public class Piece {
     public int getIMAGE_ID() { return IMAGE_ID; }
     public String getNom() { return nom; }
     public int[][] getDirections() { return directions; }
+    public byte getIDPromu(){ return this.IDPromu; }
+    public int getIMAGE_ID_PROMU(){ return this.IMAGE_ID_PROMU; }
 
     /***
      * Retourne un tableau de positions qui représente tous les deplacements qu'une pièce peux effectuer
@@ -54,11 +59,11 @@ public class Piece {
 
         switch(this.nom){
             case "lance":
-                displacementY = this.ID > 0 ? 1 : -1; // Noir ou Blanc : Directionnel
-                while(currY != finalY){
-                    int previousY = currY;
-                    currY += displacementY ;
-                    if(!checkSteps(deltaX, (currY - previousY)) || board.getBoard()[currX][currY] != 0){
+                displacementX = this.ID > 0 ? -1 : 1; // Noir ou Blanc : Directionnel
+                while(currX != finalX){
+                    int previousX = currX;
+                    currX += displacementX ;
+                    if(!checkSteps((currX - previousX), deltaY) || board.getBoard()[currX][currY] != 0){
                         return false;
                     }
                 }
@@ -94,20 +99,23 @@ public class Piece {
         return true;
     }
     private boolean checkDiagonals(int finalX, int finalY, int currX, int currY, Board board){
-        int displacementX = finalX > currX ? 1 : -1;
-        int displacementY = finalY > currY ? 1 : -1;
+        if(Math.abs(finalX - currX) == Math.abs(finalY - currY)){
+            int displacementX = finalX > currX ? 1 : -1;
+            int displacementY = finalY > currY ? 1 : -1;
 
-        while(currX != finalX){
-            int previousX = currX;
-            int previousY = currY;
-            currX += displacementX;
-            currY += displacementY;
+            while(currX != finalX && currY != finalY){
+                int previousX = currX;
+                int previousY = currY;
+                currX += displacementX;
+                currY += displacementY;
 
-            if ((!checkSteps((currX - previousX), (currY - previousY))) || board.getBoard()[currX][currY] != 0) {
-                return false;
+                if ((!checkSteps((currX - previousX), (currY - previousY))) || board.getBoard()[currX][currY] != 0) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
     private boolean checkSteps(int deltaX, int deltaY){
         int tempX = 0, tempY = 0;

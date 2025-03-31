@@ -15,7 +15,9 @@ public class  InitPiece {
      **/
     public static Piece create(String piece){
         int piece_id = 0;
+        int promu_id = 0;
         int image_id = 0;
+        int image_id_promu = 0;
         int[][] mR;
 
         String[] piece_attribus = piece.toLowerCase().split("_");
@@ -39,44 +41,58 @@ public class  InitPiece {
 
             case "char" :
                 piece_id = PieceIDs.Char.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.RoiDragon.getValue() * (color ? adjust : inverse);
                 mR = MoveSet.Char.getMoveSet();
-                image_id = color ? R.drawable.rook_0 :  R.drawable.rook_1;
+                image_id = color ? R.drawable.rook_0 : R.drawable.rook_1;
+                image_id_promu = color ? R.drawable.p_rook_0 : R.drawable.p_rook_1;
                 break;
 
             case "fou" :
                 piece_id = PieceIDs.Fou.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.ChevalDragon.getValue() * (color ? adjust : inverse);
                 mR = MoveSet.Fou.getMoveSet();
                 image_id = color ? R.drawable.bishop_0 :  R.drawable.bishop_1;
+                image_id_promu = color ? R.drawable.p_bishop_0 : R.drawable.p_bishop_1;
                 break;
 
             case "generalor" :
                 piece_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
                 mR = (piece_id > 0 ? MoveSet.GeneralOrBlanc.getMoveSet() : MoveSet.GeneralOrNoir.getMoveSet());
                 image_id = color ? R.drawable.gold_0 :  R.drawable.gold_1;
+                image_id_promu = color ? R.drawable.p_gold_0 : R.drawable.p_gold_1;
                 break;
 
             case "generalargent" :
                 piece_id = PieceIDs.GeneralArgent.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
                 mR = (piece_id > 0 ? MoveSet.GeneralArgentBlanc.getMoveSet() : MoveSet.GeneralArgentNoir.getMoveSet());
                 image_id = color ? R.drawable.silver_0 :  R.drawable.silver_1;
+                image_id_promu = color ? R.drawable.p_gold_0 : R.drawable.p_gold_1;
                 break;
 
             case "chevalier" :
                 piece_id = PieceIDs.Chevalier.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
                 mR = (piece_id > 0 ? MoveSet.ChevalierBlanc.getMoveSet() : MoveSet.ChevalierNoir.getMoveSet());
                 image_id = color ? R.drawable.knight_0 :  R.drawable.knight_1;
+                image_id_promu = color ? R.drawable.p_knight_0 : R.drawable.p_knight_1;
                 break;
 
             case "lance" :
                 piece_id = PieceIDs.Lance.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
                 mR = (piece_id > 0 ? MoveSet.LanceBlanc.getMoveSet() : MoveSet.LanceNoir.getMoveSet());
                 image_id = color ? R.drawable.lance_0 :  R.drawable.lance_1;
+                image_id_promu = color ? R.drawable.p_lance_0 : R.drawable.p_lance_1;
                 break;
 
             case "pion" :
                 piece_id = PieceIDs.Pion.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.GeneralOr.getValue() * (color ? adjust : inverse);
                 mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
                 image_id = color ? R.drawable.pawn_0 :  R.drawable.pawn_1;
+                image_id_promu = color ? R.drawable.p_pawn_0 : R.drawable.p_pawn_1;
                 break;
 
             case "roidragon" :
@@ -95,6 +111,6 @@ public class  InitPiece {
                 System.out.println("Invalid piece: " + piece);
                 throw new IllegalArgumentException("Unknown piece type: " + piece);
         }
-        return new Piece((byte)piece_id, image_id, pieceName, mR);
+        return new Piece((byte)piece_id, (byte)promu_id, image_id, image_id_promu, pieceName, mR);
     }
 }

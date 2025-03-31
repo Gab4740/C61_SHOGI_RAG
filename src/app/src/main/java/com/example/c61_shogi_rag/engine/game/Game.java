@@ -14,6 +14,7 @@ import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -29,6 +30,7 @@ public class Game {
     private Boolean isGameEnded;
     private Boolean GameWinner;
     private static GameSaver gameSaver;
+    private HashMap<String, Boolean> promotionStateMap;
 
 
     /**
@@ -45,6 +47,7 @@ public class Game {
         this.isGameEnded = false;
         this.gameSaver = new GameSaver();
         this.GameWinner = null;
+        this.promotionStateMap = new HashMap<>();
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -91,6 +94,18 @@ public class Game {
 
         Piece Char_noir = InitPiece.create("Char_noir");
         pieces.put(Char_noir.getID(), Char_noir);
+
+        Piece Roi_Dragon_blanc = InitPiece.create("roidragon_blanc");
+        pieces.put(Roi_Dragon_blanc.getID(), Roi_Dragon_blanc);
+
+        Piece Roi_Dragon_noir = InitPiece.create("roidragon_noir");
+        pieces.put(Roi_Dragon_noir.getID(), Roi_Dragon_noir);
+
+        Piece Cheval_Dragon_blanc = InitPiece.create("chevalierdragon_blanc");
+        pieces.put(Cheval_Dragon_blanc.getID(), Cheval_Dragon_blanc);
+
+        Piece Cheval_Dragon_noir = InitPiece.create("chevalierdragon_noir");
+        pieces.put(Cheval_Dragon_noir.getID(), Cheval_Dragon_noir);
 
         if(isPlayerStarting){
             Piece Roi_blanc = InitPiece.create("roisente_blanc");
@@ -189,10 +204,19 @@ public class Game {
      * */
     public boolean playTurn(Position firstPos, Position secondPos){
         boolean valid = false;
+        boolean pieceIsPromoted = false;
         boolean enemyPieceToCapture =  isEnemyPieceAtPos(secondPos);
 
         if(isPlayerPieceAtPos(firstPos) && (enemyPieceToCapture || isPositionEmpty(secondPos))){
-            Piece pieceToPlay = getPieceAt(firstPos);
+            Piece pieceToPlay;
+            if(isPromoted(firstPos)){
+                Piece basePiece = getPieceAt(firstPos);
+                pieceToPlay = pieces.get(basePiece.getIDPromu());
+                pieceIsPromoted = true;
+
+            }else{
+                pieceToPlay = getPieceAt(firstPos);
+            }
             Move pieceMove = new Move(firstPos, secondPos);
 
             if(pieceToPlay.isValidMove(pieceMove, gameBoard)){
@@ -205,8 +229,12 @@ public class Game {
 
                 isPlayerTurn = !isPlayerTurn;
                 valid = true;
+
+                if(pieceIsPromoted){
+                    promotionStateMap.remove(getPositionKey(firstPos.getPosX(), firstPos.getPosY()));
+                    promotionStateMap.put(getPositionKey(secondPos.getPosX(), secondPos.getPosY()), true);
+                }
             }
-            promotePiece(pieceToPlay);
             isGameEnded = isKingsAlive();
         }
         return valid;
@@ -222,14 +250,6 @@ public class Game {
 
 
         return valid;
-    }
-    /**
-     * Cheque si la piece doit etre promu, si oui effectue le changement
-     *
-     * @param piece : La piece du tour courrant
-     * */
-    private void promotePiece(Piece piece){
-        // TODO
     }
     public boolean getIsGameEnded(){ return isGameEnded; }
     /**
@@ -247,7 +267,22 @@ public class Game {
     /**
      * Retourne un objet piece pour la position donné
      * */
-    public Piece getPieceAt(Position pos){ return pieces.get(gameBoard.getPieceAt(pos)); }
+    private Piece getPieceAt(Position pos){
+        return pieces.get(gameBoard.getPieceAt(pos));
+    }
+    private boolean isPromoted(Position pos) {
+        return Boolean.TRUE.equals(promotionStateMap.get(getPositionKey(pos.getPosX(), pos.getPosY())));
+    }
+    private String getPositionKey(int row, int col) {
+        return row + "-" + col;  // Use row-column as the key
+    }
+    public Integer getPieceDrawable(Position pos){
+        Integer drawable = null;
+        if(getPieceAt(pos) != null){
+            drawable = isPromoted(pos) ? getPieceAt(pos).getIMAGE_ID_PROMU() : getPieceAt(pos).getIMAGE_ID();
+        }
+        return drawable;
+    }
     /**
      * Retourn True si c'est une pièce enemy, False si ce n'est pas une piece enemy ou pas de piece
      * */
@@ -289,7 +324,22 @@ public class Game {
             capturedPieceBlack.add(gameBoard.getPieceAt(pos));
         }
         gameBoard.removePieceAt(pos);
-
+    }
+    private void promotePiece(int row, int col) {
+        String positionKey = getPositionKey(row, col);
+        if (promotionStateMap.containsKey(positionKey)) {
+            promotionStateMap.put(positionKey, true);
+        } else {
+            System.out.println("Invalid position!");
+        }
+    }
+    private void revertPiece(int row, int col) {
+        String positionKey = getPositionKey(row, col);
+        if (promotionStateMap.containsKey(positionKey)) {
+            promotionStateMap.put(positionKey, false);
+        } else {
+            System.out.println("No piece at position (" + row + ", " + col + ") to revert.");
+        }
     }
 
     // DEBUG TOOLS
