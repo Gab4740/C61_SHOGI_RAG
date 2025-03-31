@@ -69,7 +69,7 @@ fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (P
             for (row in 0 until boardSize) {
                 Row {
                     for (column in 0 until boardSize) {
-                        val position = Position(column, row)
+                        val position = Position(row, column)
                         Cell(
                             modifier = Modifier.clickable { onTap(position) }
                         )

@@ -127,7 +127,7 @@ public class Piece {
                     tempY = direction[j];
                 }
             }
-            if (deltaY == tempY && deltaX == tempX) {
+            if (deltaY == tempX && deltaX == tempY) {
                 return true;
             }
         }
