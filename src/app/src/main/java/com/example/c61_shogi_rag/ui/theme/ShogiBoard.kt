@@ -23,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
-import com.example.c61_shogi_rag.engine.piece.Piece
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 

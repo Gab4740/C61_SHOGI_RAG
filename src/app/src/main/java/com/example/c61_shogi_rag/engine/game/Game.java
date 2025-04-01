@@ -1,17 +1,13 @@
 package com.example.c61_shogi_rag.engine.game;
 
-import static java.security.AccessController.getContext;
-
-import android.widget.Toast;
-
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
-import com.example.c61_shogi_rag.engine.piece.Piece;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
+import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -21,7 +17,7 @@ import java.util.Vector;
 
 public class Game {
     private final Board gameBoard;
-    private Hashtable<Byte, Piece> pieces;
+    private Hashtable<Byte, ShogiPiece> pieces;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
     private final Time gameTimer;
@@ -53,72 +49,72 @@ public class Game {
      * Permet de créer les pièce nécessaire au jeux
      * */
     private void PieceInit(){
-        Piece pionBlanc = InitPiece.create("Pion_blanc");
+        ShogiPiece pionBlanc = InitPiece.create("Pion_blanc");
         pieces.put(pionBlanc.getID(), pionBlanc);
 
-        Piece pionNoir = InitPiece.create("Pion_noir");
+        ShogiPiece pionNoir = InitPiece.create("Pion_noir");
         pieces.put(pionNoir.getID(), pionNoir);
 
-        Piece Lance_blanc = InitPiece.create("Lance_blanc");
+        ShogiPiece Lance_blanc = InitPiece.create("Lance_blanc");
         pieces.put(Lance_blanc.getID(), Lance_blanc);
 
-        Piece Lance_noir = InitPiece.create("Lance_noir");
+        ShogiPiece Lance_noir = InitPiece.create("Lance_noir");
         pieces.put(Lance_noir.getID(), Lance_noir);
 
-        Piece Chevalier_blanc = InitPiece.create("Chevalier_blanc");
+        ShogiPiece Chevalier_blanc = InitPiece.create("Chevalier_blanc");
         pieces.put(Chevalier_blanc.getID(), Chevalier_blanc);
 
-        Piece Chevalier_noir = InitPiece.create("Chevalier_noir");
+        ShogiPiece Chevalier_noir = InitPiece.create("Chevalier_noir");
         pieces.put(Chevalier_noir.getID(), Chevalier_noir);
 
-        Piece GeneralArgent_blanc = InitPiece.create("GeneralArgent_blanc");
+        ShogiPiece GeneralArgent_blanc = InitPiece.create("GeneralArgent_blanc");
         pieces.put(GeneralArgent_blanc.getID(), GeneralArgent_blanc);
 
-        Piece GeneralArgent_noir = InitPiece.create("GeneralArgent_noir");
+        ShogiPiece GeneralArgent_noir = InitPiece.create("GeneralArgent_noir");
         pieces.put(GeneralArgent_noir.getID(), GeneralArgent_noir);
 
-        Piece Generalor_blanc = InitPiece.create("Generalor_blanc");
+        ShogiPiece Generalor_blanc = InitPiece.create("Generalor_blanc");
         pieces.put(Generalor_blanc.getID(), Generalor_blanc);
 
-        Piece Generalor_noir = InitPiece.create("Generalor_noir");
+        ShogiPiece Generalor_noir = InitPiece.create("Generalor_noir");
         pieces.put(Generalor_noir.getID(), Generalor_noir);
 
-        Piece Fou_blanc = InitPiece.create("Fou_blanc");
+        ShogiPiece Fou_blanc = InitPiece.create("Fou_blanc");
         pieces.put(Fou_blanc.getID(), Fou_blanc);
 
-        Piece Fou_noir = InitPiece.create("Fou_noir");
+        ShogiPiece Fou_noir = InitPiece.create("Fou_noir");
         pieces.put(Fou_noir.getID(), Fou_noir);
 
-        Piece Char_blanc = InitPiece.create("Char_blanc");
+        ShogiPiece Char_blanc = InitPiece.create("Char_blanc");
         pieces.put(Char_blanc.getID(), Char_blanc);
 
-        Piece Char_noir = InitPiece.create("Char_noir");
+        ShogiPiece Char_noir = InitPiece.create("Char_noir");
         pieces.put(Char_noir.getID(), Char_noir);
 
-        Piece Roi_Dragon_blanc = InitPiece.create("roidragon_blanc");
+        ShogiPiece Roi_Dragon_blanc = InitPiece.create("roidragon_blanc");
         pieces.put(Roi_Dragon_blanc.getID(), Roi_Dragon_blanc);
 
-        Piece Roi_Dragon_noir = InitPiece.create("roidragon_noir");
+        ShogiPiece Roi_Dragon_noir = InitPiece.create("roidragon_noir");
         pieces.put(Roi_Dragon_noir.getID(), Roi_Dragon_noir);
 
-        Piece Cheval_Dragon_blanc = InitPiece.create("chevalierdragon_blanc");
+        ShogiPiece Cheval_Dragon_blanc = InitPiece.create("chevalierdragon_blanc");
         pieces.put(Cheval_Dragon_blanc.getID(), Cheval_Dragon_blanc);
 
-        Piece Cheval_Dragon_noir = InitPiece.create("chevalierdragon_noir");
+        ShogiPiece Cheval_Dragon_noir = InitPiece.create("chevalierdragon_noir");
         pieces.put(Cheval_Dragon_noir.getID(), Cheval_Dragon_noir);
 
         if(isPlayerStarting){
-            Piece Roi_blanc = InitPiece.create("roisente_blanc");
+            ShogiPiece Roi_blanc = InitPiece.create("roisente_blanc");
             pieces.put(Roi_blanc.getID(), Roi_blanc);
 
-            Piece Roi_noir = InitPiece.create("roigote_noir");
+            ShogiPiece Roi_noir = InitPiece.create("roigote_noir");
             pieces.put(Roi_noir.getID(), Roi_noir);
 
         }else{
-            Piece Roi_blanc = InitPiece.create("roigote_blanc");
+            ShogiPiece Roi_blanc = InitPiece.create("roigote_blanc");
             pieces.put(Roi_blanc.getID(), Roi_blanc);
 
-            Piece Roi_noir = InitPiece.create("roisente_noir");
+            ShogiPiece Roi_noir = InitPiece.create("roisente_noir");
             pieces.put(Roi_noir.getID(), Roi_noir);
         }
     }
@@ -126,7 +122,7 @@ public class Game {
      * Place les pièces a leur positon de départ sur l'échiquier
      * */
     private void BoardInit(){
-        Piece pieceToPlace;
+        ShogiPiece pieceToPlace;
 
         pieceToPlace = pieces.get((byte)PieceIDs.Pion.getValue());
         for(int i =0; i<9; i++){
@@ -208,10 +204,10 @@ public class Game {
         boolean enemyPieceToCapture =  isEnemyPieceAtPos(secondPos);
 
         if(isPlayerPieceAtPos(firstPos) && (enemyPieceToCapture || isPositionEmpty(secondPos))){
-            Piece pieceToPlay;
+            ShogiPiece pieceToPlay;
             if(isPromoted(firstPos)){
-                Piece basePiece = getPieceAt(firstPos);
-                pieceToPlay = pieces.get(basePiece.getIDPromu());
+                ShogiPiece basePiece = getPieceAt(firstPos);
+                pieceToPlay = pieces.get(basePiece.getID_PROMU());
                 pieceIsPromoted = true;
 
             }else{
@@ -267,7 +263,7 @@ public class Game {
     /**
      * Retourne un objet piece pour la position donné
      * */
-    private Piece getPieceAt(Position pos){
+    private ShogiPiece getPieceAt(Position pos){
         return pieces.get(gameBoard.getPieceAt(pos));
     }
     private boolean isPromoted(Position pos) {

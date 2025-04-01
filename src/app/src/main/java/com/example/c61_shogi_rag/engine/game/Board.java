@@ -1,7 +1,7 @@
 package com.example.c61_shogi_rag.engine.game;
 
-import com.example.c61_shogi_rag.engine.piece.Piece;
 import com.example.c61_shogi_rag.engine.piece.Position;
+import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.Vector;
 
@@ -25,7 +25,7 @@ public class Board {
     public byte getPieceAt(Position pos){
         return board[pos.getPosX()][pos.getPosY()];
     }
-    public void setPieceAt(Piece piece, Position pos){
+    public void setPieceAt(ShogiPiece piece, Position pos){
         board[pos.getPosX()][pos.getPosY()] = piece.getID();
     }
     public void setPieceAt(byte pieceId, Position pos){
@@ -45,7 +45,7 @@ public class Board {
     *
     * @param piece La pièce recherché
     * */
-    public Vector<Position> getPositionsFromPiece(Piece piece){
+    public Vector<Position> getPositionsFromPiece(ShogiPiece piece){
         Vector<Position> allPos = new Vector<>();
         byte pieceId = piece.getID();
 
