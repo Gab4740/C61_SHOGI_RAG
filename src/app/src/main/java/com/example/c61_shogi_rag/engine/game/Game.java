@@ -8,6 +8,13 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Char;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -20,6 +27,8 @@ public class Game {
     private Hashtable<Byte, ShogiPiece> pieces;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
+    private HashMap<String , Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
+
     private final Time gameTimer;
     private Boolean isPlayerStarting;
     private Boolean isPlayerTurn;
@@ -44,6 +53,23 @@ public class Game {
         this.gameSaver = new GameSaver();
         this.GameWinner = null;
         this.promotionStateMap = new HashMap<>();
+
+        this.capturedPieceWhiteHM = new HashMap<>();
+        this.capturedPieceBlackHM = new HashMap<>();
+        this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -223,7 +249,9 @@ public class Game {
 
                 gameSaver.addNewTurn(new OneTurn(pieceToPlay.getID(), firstPos, secondPos, false));
 
-                isPlayerTurn = !isPlayerTurn;
+                // isPlayerTurn = !isPlayerTurn;
+                // DEBUG
+                isPlayerTurn = true;
                 valid = true;
 
                 if(pieceIsPromoted){
@@ -374,7 +402,55 @@ public class Game {
             }
 
         }
-
-
     }
+
+    public Boolean parachuteWhitePiece(String shogiPieceClass) {
+        boolean isValid = false;
+        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceWhiteHM.get(shogiPieceClass);
+            if(quantity > 0) {
+                isValid = true;
+            }
+        }
+
+        return isValid;    }
+
+    public Boolean parachuteBlackPiece(String shogiPieceClass) {
+        boolean isValid = false;
+        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceBlackHM.get(shogiPieceClass);
+            if(quantity > 0) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
+
+    public Boolean captureWhitePiece(String shogiPieceClass) {
+        boolean isValid = false;
+        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceBlackHM.get(shogiPieceClass) + 1;
+            capturedPieceBlackHM.put(shogiPieceClass, quantity);
+            isValid = true;
+        }
+        return isValid;
+    }
+    public Boolean captureBlackPiece(String shogiPieceClass) {
+        boolean isValid = false;
+        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceWhiteHM.get(shogiPieceClass) + 1;
+            capturedPieceWhiteHM.put(shogiPieceClass, quantity);
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    public HashMap<String, Integer> getCapturedPieceBlackHM() {
+        return capturedPieceBlackHM;
+    }
+
+    public HashMap<String, Integer> getCapturedPieceWhiteHM() {
+        return capturedPieceWhiteHM;
+    }
+
 }

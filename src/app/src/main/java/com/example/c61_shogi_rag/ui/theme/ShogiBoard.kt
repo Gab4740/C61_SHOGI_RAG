@@ -24,9 +24,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.piece.Position
+import com.example.c61_shogi_rag.engine.piece.ShogiPiece
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 
 val cellSize: Dp = 43.dp
+
+val drawableList = listOf<Int>(
+    R.drawable.pawn_0,
+    R.drawable.lance_0,
+    R.drawable.knight_0,
+    R.drawable.silver_0,
+    R.drawable.gold_0,
+    R.drawable.bishop_0,
+    R.drawable.rook_0
+)
+
 
 @Composable
 fun PieceImage(modifier: Modifier = Modifier, pieceModel: Int?) {
@@ -81,7 +99,7 @@ fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (P
 
 @Composable
 fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel: GameViewModel) {
-    key(gameViewModel.isPlayerTurn) { // Forcer la récomposition
+    key(gameViewModel.counter) { // Forcer la récomposition
         Box(modifier = modifier) {
             Column {
                 for (row in 0 until boardSize) {
@@ -103,15 +121,6 @@ fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel
 
 @Composable
 fun CapturedPieces(modifier: Modifier = Modifier, isClickable: Boolean = false) {
-    val drawableList = listOf<Int>(
-        R.drawable.pawn_0,
-        R.drawable.lance_0,
-        R.drawable.knight_0,
-        R.drawable.silver_0,
-        R.drawable.gold_0,
-        R.drawable.bishop_0,
-        R.drawable.rook_0
-    )
 
     LazyRow(
         modifier = modifier
@@ -127,7 +136,37 @@ fun CapturedPieces(modifier: Modifier = Modifier, isClickable: Boolean = false) 
 }
 
 @Composable
-fun CapturedPiece(modifier: Modifier = Modifier, imageRes: Int) {
+fun CapturedPieces(modifier: Modifier = Modifier,
+                   hashMapCapturedPieces: HashMap<String, Int>,
+                   isClickable: Boolean = false) {
+    val keys = hashMapCapturedPieces.keys.toList()
+    LazyRow(
+        modifier = modifier
+    ) {
+        items(keys.size) { index: Int ->
+            var imageRes: Int = 0
+            var counter: Int = 0
+            when(keys[index]) {
+                Pion::class.java.canonicalName -> imageRes = R.drawable.pawn_0
+                Lance::class.java.canonicalName -> imageRes = R.drawable.lance_0
+                Chevalier::class.java.canonicalName -> imageRes = R.drawable.knight_0
+                GeneralArgent::class.java.canonicalName -> imageRes = R.drawable.silver_0
+                GeneralOr::class.java.canonicalName -> imageRes = R.drawable.gold_0
+                Fou::class.java.canonicalName -> imageRes = R.drawable.bishop_0
+                Char::class.java.canonicalName -> imageRes = R.drawable.rook_0
+            }
+            if (imageRes != 0) {
+                counter = hashMapCapturedPieces[keys[index]] ?: 0
+                CapturedPiece(imageRes = imageRes, value = counter)
+                println(imageRes)
+            }
+
+        }
+    }
+}
+
+@Composable
+fun CapturedPiece(modifier: Modifier = Modifier, imageRes: Int, value: Int = 0) {
     Column(
         modifier = modifier
             .width(55.dp)
@@ -140,7 +179,7 @@ fun CapturedPiece(modifier: Modifier = Modifier, imageRes: Int) {
 
         CounterText(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            value =  0
+            value =  value
         )
     }
 }

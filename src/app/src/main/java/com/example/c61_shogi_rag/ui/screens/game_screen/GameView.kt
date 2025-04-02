@@ -1,5 +1,6 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
+import android.graphics.Paint.Cap
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,6 +41,12 @@ fun GameView(modifier: Modifier = Modifier,
             modifier = Modifier
                 .padding(vertical = 5.dp),
             isClickable = true
+        )
+        CapturedPieces(
+            modifier = Modifier
+                .padding(vertical = 5.dp),
+            isClickable = false,
+            hashMapCapturedPieces = gameViewModel.game.capturedPieceBlackHM
         )
         PlayerTag(
             modifier = Modifier
