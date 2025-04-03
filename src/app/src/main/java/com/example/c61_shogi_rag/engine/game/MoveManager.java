@@ -37,6 +37,6 @@ public class MoveManager {
     }
 
     public void prettyPrint(){
-        System.out.println(originalTarget + " " + move.getCurrentPosition().getPosX() + "," + move.getCurrentPosition().getPosY() + " to " + move.getNextPosition().getPosX() + "," + move.getNextPosition().getPosY());
+        System.out.println("(" + move.getCurrentPosition().getPosX() + "," + move.getCurrentPosition().getPosY() + ") to " + "(" + move.getNextPosition().getPosX() + "," + move.getNextPosition().getPosY() + ")");
     }
 }

@@ -242,6 +242,15 @@ public class Game {
             }
             // MINIMAX recursive call GOES HERE
         }
+        for(MoveManager m : moveessssGEn){
+            m.do_move_on_board(gameBoard);
+            System.out.println("_____________________________________");
+            prettyPrintConsoleBoard(gameBoard.getBoard());
+            System.out.println("            -------------------");
+            m.undo_move_on_board(gameBoard);
+            prettyPrintConsoleBoard(gameBoard.getBoard());
+            m.prettyPrint();
+        }
     }
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce
@@ -392,14 +401,25 @@ public class Game {
     }
 
     // DEBUG TOOLS
-    public void prettyPrintConsoleBoard(){
-        for (int i = 0; i < 9; i++) {
-            System.out.print((i + 1) + " | ");
-            for (int j = 0; j < 9; j++) {
-                System.out.print(gameBoard.getBoard()[i][j] + " ");
+    public void prettyPrintConsoleBoard(byte[][] array) {
+        int maxLength = getMaxNumberLength(array);
+
+        for (byte[] row : array) {
+            for (int num : row) {
+                System.out.printf("%" + maxLength + "d ", num);
             }
             System.out.println();
         }
+    }
+
+    private int getMaxNumberLength(byte[][] array) {
+        int maxLength = 0;
+        for (byte[] row : array) {
+            for (int num : row) {
+                maxLength = Math.max(maxLength, String.valueOf(num).length());
+            }
+        }
+        return maxLength;
     }
 
     public void archiverPartie(int id_gagnant, int id_perdant){
