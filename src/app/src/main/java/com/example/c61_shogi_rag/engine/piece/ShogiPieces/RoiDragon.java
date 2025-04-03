@@ -17,9 +17,12 @@ public class RoiDragon extends ShogiPiece {
         int finalX = move.getNextPosition().getPosX();
         int finalY = move.getNextPosition().getPosY();
 
-        int deltaX = currX - finalX;
-        int deltaY = currY - finalY;
+        if(finalY > 9 || finalY < 0 || finalX > 9 || finalX < 0){
+            return false;
+        }
 
+        int deltaX = finalX - currX;
+        int deltaY = finalY - currY;
         if(deltaY > 1 || deltaX > 1){ return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS()); }
         else{ return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS()); }
     }

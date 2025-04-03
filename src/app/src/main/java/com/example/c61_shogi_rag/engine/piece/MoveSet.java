@@ -26,33 +26,33 @@ public enum MoveSet{
     GeneralOrBlanc(new int[][]{         // Gold (金 Kin) Directionnel vers le haut
             {-1, 0}, {1, 0},            // Gauche, Droite
             {0, -1}, {0, 1},            // Haut, Bas
-            {-1, 1}, {1, 1}             // Diagonales vers direction
+            {-1, -1}, {1, -1}             // Diagonales vers direction
     }),
 
     GeneralOrNoir(new int[][]{          // Gold (金 Kin) Directionnel vers le bas
             {-1, 0}, {1, 0},            // Gauche, Droite
             {0, -1}, {0, 1},            // Haut, Bas
-            {-1, -1}, {1, -1}           // Diagonales vers direction
+            {-1, 1}, {1, 1}           // Diagonales vers direction
     }),
 
     GeneralArgentBlanc(new int[][]{     // Silver (銀 Gin) Directionnel vers le Haut -> Promotion : GeneralOrBlanc
             {-1, -1}, {1, 1},           //
             {-1, 1}, {1, -1},           // Toutes les diagonales
-            {0, 1}                      // Tout droit ver le haut
+            {0, -1}                      // Tout droit ver le haut
     }),
 
     GeneralArgentNoir(new int[][]{      // Silver (銀 Gin) Directionnel vers le bas -> Promotion : GeneralOrNoir
             {-1, -1}, {1, 1},           //
             {-1, 1}, {1, -1},           // Toutes les diagonales
-            {0, -1}                     // Tout droit ver le bas
+            {0, 1}                     // Tout droit ver le bas
     }),
 
     ChevalierBlanc(new int[][]{         // Knight (桂 Kei) Directionnel vers le Haut  -> Promotion : GeneralOrBlanc
-            {-1, 2}, {1, 2}             // 2 vers le haut, 1 gauche ou droite
+            {-1, -2}, {1, -2}             // 2 vers le haut, 1 gauche ou droite
     }),
 
     ChevalierNoir(new int[][]{          // Knight (桂 Kei) Directionnel vers le Bas -> Promotion : GeneralOrNoir
-            {-1, -2}, {1, -2}           // 2 vers le Bas, 1 gauche ou droite
+            {-1, 2}, {1, 2}           // 2 vers le Bas, 1 gauche ou droite
     }),
 
     LanceBlanc(new int[][]{             // Lance (香 Kyo) Directionnel vers le Haut -> Promotion : GeneralOrBlanc
@@ -64,11 +64,11 @@ public enum MoveSet{
     }),
 
     PionBlanc(new int[][]{              // Pawn (歩 Fu) Directionnel vers le haut
-            {0, 1}                      // Tout droit vers le haut
+            {0, -1}                      // Tout droit vers le haut
     }),
 
     PionNoir(new int[][]{              // Pawn (歩 Fu) Directionnel vers le haut
-            {0, -1}                    // Tout droit vers le bas
+            {0, 1}                    // Tout droit vers le bas
     }),
 
     RoiDragon(new int[][]{              // Dragon (竜 Ryu)

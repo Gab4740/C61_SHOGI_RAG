@@ -3,6 +3,7 @@ package com.example.c61_shogi_rag.engine.game;
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
+import com.example.c61_shogi_rag.engine.minimax.MoveGeneration;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
@@ -25,6 +26,7 @@ import java.util.Vector;
 public class Game {
     private final Board gameBoard;
     private Hashtable<Byte, ShogiPiece> pieces;
+    private Vector<ShogiPiece> piecesForMinimax;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
     private HashMap<String , Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
@@ -43,6 +45,7 @@ public class Game {
      * */
     public Game(Boolean isPlayerStarting){
         this.pieces = new Hashtable<>();
+        this.piecesForMinimax = new Vector<>();
         this.capturedPieceBlack = new Vector<>();
         this.capturedPieceWhite = new Vector<>();
         this.gameTimer = new Time();
@@ -56,20 +59,6 @@ public class Game {
 
         this.capturedPieceWhiteHM = new HashMap<>();
         this.capturedPieceBlackHM = new HashMap<>();
-        this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Lance.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Lance.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Chevalier.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Chevalier.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(GeneralArgent.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(GeneralArgent.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(GeneralOr.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -80,54 +69,63 @@ public class Game {
 
         ShogiPiece pionNoir = InitPiece.create("Pion_noir");
         pieces.put(pionNoir.getID(), pionNoir);
+        piecesForMinimax.add(pionNoir);
 
         ShogiPiece Lance_blanc = InitPiece.create("Lance_blanc");
         pieces.put(Lance_blanc.getID(), Lance_blanc);
 
         ShogiPiece Lance_noir = InitPiece.create("Lance_noir");
         pieces.put(Lance_noir.getID(), Lance_noir);
+        piecesForMinimax.add(Lance_noir);
 
         ShogiPiece Chevalier_blanc = InitPiece.create("Chevalier_blanc");
         pieces.put(Chevalier_blanc.getID(), Chevalier_blanc);
 
         ShogiPiece Chevalier_noir = InitPiece.create("Chevalier_noir");
         pieces.put(Chevalier_noir.getID(), Chevalier_noir);
+        piecesForMinimax.add(Chevalier_noir);
 
         ShogiPiece GeneralArgent_blanc = InitPiece.create("GeneralArgent_blanc");
         pieces.put(GeneralArgent_blanc.getID(), GeneralArgent_blanc);
 
         ShogiPiece GeneralArgent_noir = InitPiece.create("GeneralArgent_noir");
         pieces.put(GeneralArgent_noir.getID(), GeneralArgent_noir);
+        piecesForMinimax.add(GeneralArgent_noir);
 
         ShogiPiece Generalor_blanc = InitPiece.create("Generalor_blanc");
         pieces.put(Generalor_blanc.getID(), Generalor_blanc);
 
         ShogiPiece Generalor_noir = InitPiece.create("Generalor_noir");
         pieces.put(Generalor_noir.getID(), Generalor_noir);
+        piecesForMinimax.add(Generalor_noir);
 
         ShogiPiece Fou_blanc = InitPiece.create("Fou_blanc");
         pieces.put(Fou_blanc.getID(), Fou_blanc);
 
         ShogiPiece Fou_noir = InitPiece.create("Fou_noir");
         pieces.put(Fou_noir.getID(), Fou_noir);
+        piecesForMinimax.add(Fou_noir);
 
         ShogiPiece Char_blanc = InitPiece.create("Char_blanc");
         pieces.put(Char_blanc.getID(), Char_blanc);
 
         ShogiPiece Char_noir = InitPiece.create("Char_noir");
         pieces.put(Char_noir.getID(), Char_noir);
+        piecesForMinimax.add(Char_noir);
 
         ShogiPiece Roi_Dragon_blanc = InitPiece.create("roidragon_blanc");
         pieces.put(Roi_Dragon_blanc.getID(), Roi_Dragon_blanc);
 
         ShogiPiece Roi_Dragon_noir = InitPiece.create("roidragon_noir");
         pieces.put(Roi_Dragon_noir.getID(), Roi_Dragon_noir);
+        piecesForMinimax.add(Roi_Dragon_noir);
 
         ShogiPiece Cheval_Dragon_blanc = InitPiece.create("chevalierdragon_blanc");
         pieces.put(Cheval_Dragon_blanc.getID(), Cheval_Dragon_blanc);
 
         ShogiPiece Cheval_Dragon_noir = InitPiece.create("chevalierdragon_noir");
         pieces.put(Cheval_Dragon_noir.getID(), Cheval_Dragon_noir);
+        piecesForMinimax.add(Cheval_Dragon_noir);
 
         if(isPlayerStarting){
             ShogiPiece Roi_blanc = InitPiece.create("roisente_blanc");
@@ -135,6 +133,7 @@ public class Game {
 
             ShogiPiece Roi_noir = InitPiece.create("roigote_noir");
             pieces.put(Roi_noir.getID(), Roi_noir);
+            piecesForMinimax.add(Roi_noir);
 
         }else{
             ShogiPiece Roi_blanc = InitPiece.create("roigote_blanc");
@@ -142,6 +141,7 @@ public class Game {
 
             ShogiPiece Roi_noir = InitPiece.create("roisente_noir");
             pieces.put(Roi_noir.getID(), Roi_noir);
+            piecesForMinimax.add(Roi_noir);
         }
     }
     /**
@@ -216,7 +216,29 @@ public class Game {
     public void GameInit(){
         PieceInit();
         BoardInit();
+
+        this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
+
         gameTimer.startTime();
+
+        // USAGE EXAMPLE
+        MoveGeneration moveGenerationTest = new MoveGeneration(piecesForMinimax, gameBoard);
+        while(moveGenerationTest.genMove()){
+            System.out.println("salut");
+        }
     }
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce

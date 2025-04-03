@@ -4,12 +4,11 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Position;
 
 public class MoveManager {
-    private final byte originalPiece;
+    // private final byte originalPiece;
     private final byte originalTarget;
     private final Move move;
 
-    public MoveManager(byte originalPiece, byte originalTarget, Move move) {
-        this.originalPiece = originalPiece;
+    public MoveManager(byte originalTarget, Move move) {
         this.originalTarget = originalTarget;
         this.move = move;
     }
@@ -35,5 +34,9 @@ public class MoveManager {
         Position posNew = new Position(move.getNextPosition().getPosX(), move.getNextPosition().getPosY());
         board.movePieceTo(posNew, posOriginal);
         board.setPieceAt(originalTarget, posNew);
+    }
+
+    public void prettyPrint(){
+        System.out.println(originalTarget + " " + move.getCurrentPosition().getPosX() + "," + move.getCurrentPosition().getPosY() + " to " + move.getNextPosition().getPosX() + "," + move.getNextPosition().getPosY());
     }
 }

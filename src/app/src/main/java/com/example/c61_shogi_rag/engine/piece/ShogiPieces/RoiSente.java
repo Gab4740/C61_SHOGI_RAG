@@ -17,9 +17,12 @@ public class RoiSente extends ShogiPiece {
         int finalX = move.getNextPosition().getPosX();
         int finalY = move.getNextPosition().getPosY();
 
-        int deltaX = currX - finalX;
-        int deltaY = currY - finalY;
+        if(finalY > 9 || finalY < 0 || finalX > 9 || finalX < 0){
+            return false;
+        }
 
+        int deltaX = finalX - currX;
+        int deltaY = finalY - currY;
         return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS());
     }
 }

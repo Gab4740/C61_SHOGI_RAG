@@ -7,13 +7,18 @@ public class MoveUtils {
         int displacementXDragon = (finalX != currX) ? (finalX > currX ? 1 : -1) : 0;
         int displacementYDragon = (finalY != currY) ? (finalY > currY ? 1 : -1) : 0;
 
+        // True = white, False = black
+        boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+
         while (currX != finalX || currY != finalY) {
             int previousX = currX;
             int previousY = currY;
             currX += displacementXDragon;
             currY += displacementYDragon;
 
-            if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || board.getBoard()[currX][currY] != 0) {
+            boolean currPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+
+            if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || (board.getBoard()[currX][currY] != 0 && pieceColor == currPieceColor)) {
                 return false;
             }
         }
@@ -25,13 +30,18 @@ public class MoveUtils {
             int displacementX = finalX > currX ? 1 : -1;
             int displacementY = finalY > currY ? 1 : -1;
 
+            // True = white, False = black
+            boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+
             while(currX != finalX && currY != finalY){
                 int previousX = currX;
                 int previousY = currY;
                 currX += displacementX;
                 currY += displacementY;
 
-                if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || board.getBoard()[currX][currY] != 0) {
+                boolean currPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+
+                if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || (board.getBoard()[currX][currY] != 0 && pieceColor == currPieceColor)) {
                     return false;
                 }
             }
