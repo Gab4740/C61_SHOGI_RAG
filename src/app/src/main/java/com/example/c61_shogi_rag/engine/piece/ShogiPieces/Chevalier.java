@@ -3,6 +3,7 @@ package com.example.c61_shogi_rag.engine.piece.ShogiPieces;
 import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.MoveUtils;
+import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 public class Chevalier extends ShogiPiece {
@@ -21,8 +22,14 @@ public class Chevalier extends ShogiPiece {
             return false;
         }
 
+        boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+        boolean targetPieceColor = board.getPieceAt(new Position(finalX, finalY)) > 0;
+        if(pieceColor == targetPieceColor){
+            return false;
+        }
+
         int deltaX = finalX - currX;
         int deltaY = finalY - currY;
-        return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS());
+        return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS() );
     }
 }

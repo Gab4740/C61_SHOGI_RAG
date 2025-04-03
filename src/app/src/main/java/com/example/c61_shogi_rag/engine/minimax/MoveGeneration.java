@@ -89,9 +89,9 @@ public class MoveGeneration {
         }
         else{
             getNewPieceFromList();
+            getNewPieceFromBoard();
+            return (currListIndex - 1) != pieces.size();
         }
-
-        return (currListIndex + 1) != pieces.size();
+        return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
-
 }

@@ -234,11 +234,14 @@ public class Game {
 
         gameTimer.startTime();
 
-        // USAGE EXAMPLE
+        Vector<MoveManager> moveessssGEn = new Vector<>();
         MoveGeneration moveGenerationTest = new MoveGeneration(piecesForMinimax, gameBoard);
         while(moveGenerationTest.genMove()){
-            System.out.println("salut");
+            if(moveGenerationTest.getCurrMoveToReturn() != null){
+                moveessssGEn.add(moveGenerationTest.getCurrMoveToReturn());
+            }
         }
+        System.out.println(moveessssGEn.size());
     }
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce

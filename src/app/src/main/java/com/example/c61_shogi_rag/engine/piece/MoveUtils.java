@@ -16,9 +16,12 @@ public class MoveUtils {
             currX += displacementXDragon;
             currY += displacementYDragon;
 
-            boolean currPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+            boolean targetPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+            if(pieceColor == targetPieceColor){
+                return false;
+            }
 
-            if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || (board.getBoard()[currX][currY] != 0 && pieceColor == currPieceColor)) {
+            if ((!checkSteps((currX - previousX), (currY - previousY), directions))) {
                 return false;
             }
         }
@@ -39,9 +42,12 @@ public class MoveUtils {
                 currX += displacementX;
                 currY += displacementY;
 
-                boolean currPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+                boolean targetPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
+                if(pieceColor == targetPieceColor){
+                    return false;
+                }
 
-                if ((!checkSteps((currX - previousX), (currY - previousY), directions)) || (board.getBoard()[currX][currY] != 0 && pieceColor == currPieceColor)) {
+                if ((!checkSteps((currX - previousX), (currY - previousY), directions))) {
                     return false;
                 }
             }

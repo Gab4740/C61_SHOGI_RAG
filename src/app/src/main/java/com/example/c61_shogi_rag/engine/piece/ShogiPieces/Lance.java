@@ -24,14 +24,6 @@ public class Lance extends ShogiPiece {
         int deltaY = currY - finalY;
         int displacementY = 0;
 
-        displacementY = getID() > 0 ? -1 : 1; // Noir ou Blanc : Directionnel
-        while(currX != finalX){
-            int previousX = currX;
-            currX += displacementY ;
-            if(!MoveUtils.checkSteps((currX - previousX), deltaY, getDIRECTIONS()) || board.getBoard()[currX][currY] != 0){
-                return false;
-            }
-        }
-        return true;
+        return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS());
     }
 }
