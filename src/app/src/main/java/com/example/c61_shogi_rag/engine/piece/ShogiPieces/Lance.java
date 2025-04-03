@@ -21,9 +21,6 @@ public class Lance extends ShogiPiece {
             return false;
         }
 
-        int deltaY = currY - finalY;
-        int displacementY = 0;
-
         return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS());
     }
 }

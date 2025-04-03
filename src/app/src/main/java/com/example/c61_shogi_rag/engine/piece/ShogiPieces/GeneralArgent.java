@@ -23,7 +23,7 @@ public class GeneralArgent extends ShogiPiece {
 
         boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
         boolean targetPieceColor = board.getPieceAt(new Position(finalX, finalY)) > 0;
-        if(pieceColor == targetPieceColor){
+        if(pieceColor == targetPieceColor && board.getPieceAt(new Position(finalX, finalY)) != 0){
             return false;
         }
 

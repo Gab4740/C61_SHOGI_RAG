@@ -17,7 +17,7 @@ public class MoveUtils {
             currY += displacementYDragon;
 
             boolean targetPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
-            if(pieceColor == targetPieceColor){
+            if(pieceColor == targetPieceColor && board.getPieceAt(new Position(currX, currY)) != 0){
                 return false;
             }
 
@@ -43,7 +43,7 @@ public class MoveUtils {
                 currY += displacementY;
 
                 boolean targetPieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
-                if(pieceColor == targetPieceColor){
+                if(pieceColor == targetPieceColor && board.getPieceAt(new Position(currX, currY)) != 0){
                     return false;
                 }
 

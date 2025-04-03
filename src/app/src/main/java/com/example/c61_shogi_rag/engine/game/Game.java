@@ -59,6 +59,21 @@ public class Game {
 
         this.capturedPieceWhiteHM = new HashMap<>();
         this.capturedPieceBlackHM = new HashMap<>();
+
+        this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Lance.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Chevalier.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralArgent.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -216,32 +231,17 @@ public class Game {
     public void GameInit(){
         PieceInit();
         BoardInit();
-
-        this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Lance.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Lance.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Chevalier.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Chevalier.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(GeneralArgent.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(GeneralArgent.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(GeneralOr.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
-
         gameTimer.startTime();
 
+        // TEST USAGE GEN MOVES
         Vector<MoveManager> moveessssGEn = new Vector<>();
         MoveGeneration moveGenerationTest = new MoveGeneration(piecesForMinimax, gameBoard);
         while(moveGenerationTest.genMove()){
             if(moveGenerationTest.getCurrMoveToReturn() != null){
                 moveessssGEn.add(moveGenerationTest.getCurrMoveToReturn());
             }
+            // MINIMAX recursive call GOES HERE
         }
-        System.out.println(moveessssGEn.size());
     }
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce
