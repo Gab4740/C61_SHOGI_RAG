@@ -9,7 +9,7 @@ public class Minimax {
      * @param depth : Profondeur de la recherche. (niveau de l'arbre),
      * @param alpha : Valeur treshold minimum (-infini),
      * @param beta : Valeur treshold maximum (+infini),
-     * @param maximizingPlayer : Boolean qui indique pour quel joueur : True : AI, False : Joueur
+     * @param maximizingPlayer : Boolean qui indique pour quel joueur : (True : AI, False : Joueur)
      * */
     public static int minimax(Node node, int depth, int alpha, int beta, boolean maximizingPlayer){
         if (depth == 0){
