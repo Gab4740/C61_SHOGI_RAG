@@ -6,6 +6,7 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 public class MoveGeneration {
@@ -16,9 +17,11 @@ public class MoveGeneration {
     private Vector<Position> posOfSpecificPiece;
     private Position currPosition;
     private Vector<ShogiPiece> pieces;
+    private HashMap<String, Boolean> promotionStateMap;
     private Board board;
     private MoveManager currMoveToReturn;
     private boolean pieceExists;
+    private ShogiPiece previousPiece = null;
 
     public MoveGeneration(Vector<ShogiPiece> pieces, Board board) {
         this.pieces = pieces;
@@ -36,7 +39,10 @@ public class MoveGeneration {
 
     private void getNewPieceFromList(){
         pieceToGenMoveFrom = pieces.get(currListIndex);
-        posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
+        if (pieceToGenMoveFrom != previousPiece) {
+            posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
+            previousPiece = pieceToGenMoveFrom;
+        }
         currListIndex++;
     }
     private void getNewPieceFromBoard(){
@@ -84,6 +90,8 @@ public class MoveGeneration {
             if(pieceToGenMoveFrom.isValidMove(moveToTest, board)){
                 byte originalTraget = board.getPieceAt(moveToTest.getNextPosition());
                 currMoveToReturn = new MoveManager(originalTraget, moveToTest);
+
+                posOfSpecificPiece.set(currPieceCount - 1, moveToTest.getNextPosition());
             }
             currDirectionsIndex++;
         }
@@ -97,5 +105,14 @@ public class MoveGeneration {
 
     public void setBoard(Board board) {
         this.board = board;
+        currListIndex = 0;
+        currPieceCount = 0;
+        currDirectionsIndex = 0;
+    }
+    public Board getBoard(){
+        return this.board;
+    }
+    public HashMap<String, Boolean> getPromotionStateMap() {
+        return promotionStateMap;
     }
 }

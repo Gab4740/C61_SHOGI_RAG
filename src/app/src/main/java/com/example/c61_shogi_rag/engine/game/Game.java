@@ -3,6 +3,7 @@ package com.example.c61_shogi_rag.engine.game;
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
+import com.example.c61_shogi_rag.engine.minimax.Minimax;
 import com.example.c61_shogi_rag.engine.minimax.MoveGeneration;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
@@ -30,7 +31,7 @@ public class Game {
     private Vector<ShogiPiece> piecesForMinimax;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
-    private LinkedHashMap<String , Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
+    private LinkedHashMap<String, Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
 
     private final Time gameTimer;
     private Boolean isPlayerStarting;
@@ -43,8 +44,8 @@ public class Game {
 
     /**
      * @param isPlayerStarting : Si le joueur commence : true, si le AI commence : false
-     * */
-    public Game(Boolean isPlayerStarting){
+     */
+    public Game(Boolean isPlayerStarting) {
         this.pieces = new Hashtable<>();
         this.piecesForMinimax = new Vector<>();
         this.capturedPieceBlack = new Vector<>();
@@ -77,10 +78,11 @@ public class Game {
         this.capturedPieceWhiteHM.put(Charriot.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
     }
+
     /**
      * Permet de créer les pièce nécessaire au jeux
-     * */
-    private void PieceInit(){
+     */
+    private void PieceInit() {
         ShogiPiece pionBlanc = InitPiece.create("Pion_blanc");
         pieces.put(pionBlanc.getID(), pionBlanc);
 
@@ -144,7 +146,7 @@ public class Game {
         pieces.put(Cheval_Dragon_noir.getID(), Cheval_Dragon_noir);
         piecesForMinimax.add(Cheval_Dragon_noir);
 
-        if(isPlayerStarting){
+        if (isPlayerStarting) {
             ShogiPiece Roi_blanc = InitPiece.create("roisente_blanc");
             pieces.put(Roi_blanc.getID(), Roi_blanc);
 
@@ -152,7 +154,7 @@ public class Game {
             pieces.put(Roi_noir.getID(), Roi_noir);
             piecesForMinimax.add(Roi_noir);
 
-        }else{
+        } else {
             ShogiPiece Roi_blanc = InitPiece.create("roigote_blanc");
             pieces.put(Roi_blanc.getID(), Roi_blanc);
 
@@ -161,105 +163,111 @@ public class Game {
             piecesForMinimax.add(Roi_noir);
         }
     }
+
     /**
      * Place les pièces a leur positon de départ sur l'échiquier
-     * */
-    private void BoardInit(){
+     */
+    private void BoardInit() {
         ShogiPiece pieceToPlace;
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Pion.getValue());
-        for(int i =0; i<9; i++){
-            gameBoard.setPieceAt(pieceToPlace, new Position(6,i));
+        pieceToPlace = pieces.get((byte) PieceIDs.Pion.getValue());
+        for (int i = 0; i < 9; i++) {
+            gameBoard.setPieceAt(pieceToPlace, new Position(6, i));
         }
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Pion.getValue());
-        for(int i =0; i<9; i++){
-            gameBoard.setPieceAt(pieceToPlace, new Position(2,i));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Pion.getValue());
+        for (int i = 0; i < 9; i++) {
+            gameBoard.setPieceAt(pieceToPlace, new Position(2, i));
         }
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Lance.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,0));
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,8));
+        pieceToPlace = pieces.get((byte) PieceIDs.Lance.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 0));
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 8));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Lance.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,0));
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,8));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Lance.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 0));
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 8));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Chevalier.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,1));
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,7));
+        pieceToPlace = pieces.get((byte) PieceIDs.Chevalier.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 1));
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 7));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Chevalier.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,1));
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,7));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Chevalier.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 1));
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 7));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.GeneralArgent.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,2));
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,6));
+        pieceToPlace = pieces.get((byte) PieceIDs.GeneralArgent.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 2));
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 6));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.GeneralArgent.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,2));
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,6));
+        pieceToPlace = pieces.get((byte) -PieceIDs.GeneralArgent.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 2));
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 6));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.GeneralOr.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,3));
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,5));
+        pieceToPlace = pieces.get((byte) PieceIDs.GeneralOr.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 3));
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 5));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.GeneralOr.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,3));
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,5));
+        pieceToPlace = pieces.get((byte) -PieceIDs.GeneralOr.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 3));
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 5));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Roi.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(8,4));
+        pieceToPlace = pieces.get((byte) PieceIDs.Roi.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(8, 4));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Roi.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(0,4));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Roi.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(0, 4));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Fou.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(7,1));
+        pieceToPlace = pieces.get((byte) PieceIDs.Fou.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(7, 1));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Fou.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(1,7));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Fou.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(1, 7));
 
-        pieceToPlace = pieces.get((byte)PieceIDs.Char.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(7,7));
+        pieceToPlace = pieces.get((byte) PieceIDs.Char.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(7, 7));
 
-        pieceToPlace = pieces.get((byte)-PieceIDs.Char.getValue());
-        gameBoard.setPieceAt(pieceToPlace, new Position(1,1));
+        pieceToPlace = pieces.get((byte) -PieceIDs.Char.getValue());
+        gameBoard.setPieceAt(pieceToPlace, new Position(1, 1));
     }
+
     /**
      * Initialise tous les variables nécessaire pour jouer la partie
-     * */
-    public void GameInit(){
+     */
+    public void GameInit() {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
+
+        Minimax minimax = new Minimax(gameBoard, piecesForMinimax);
+        minimax.minimax(gameBoard, 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
     }
+
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce
      *
-     * @param firstPos : La pièce choisi,
+     * @param firstPos  : La pièce choisi,
      * @param secondPos : La nouvelle position choisi
-     * */
-    public boolean playTurn(Position firstPos, Position secondPos){
+     */
+    public boolean playTurn(Position firstPos, Position secondPos) {
         boolean valid = false;
         boolean pieceIsPromoted = false;
-        boolean enemyPieceToCapture =  isEnemyPieceAtPos(secondPos);
+        boolean enemyPieceToCapture = isEnemyPieceAtPos(secondPos);
 
-        if(isPlayerPieceAtPos(firstPos) && (enemyPieceToCapture || isPositionEmpty(secondPos))){
+        if (isPlayerPieceAtPos(firstPos) && (enemyPieceToCapture || isPositionEmpty(secondPos))) {
             ShogiPiece pieceToPlay;
-            if(isPromoted(firstPos)){
+            if (isPromoted(firstPos)) {
                 ShogiPiece basePiece = getPieceAt(firstPos);
                 pieceToPlay = pieces.get(basePiece.getID_PROMU());
                 pieceIsPromoted = true;
 
-            }else{
+            } else {
                 pieceToPlay = getPieceAt(firstPos);
             }
             Move pieceMove = new Move(firstPos, secondPos);
 
-            if(pieceToPlay.isValidMove(pieceMove, gameBoard)){
-                if(enemyPieceToCapture){
+            if (pieceToPlay.isValidMove(pieceMove, gameBoard)) {
+                if (enemyPieceToCapture) {
                     capturePieceAtPos(secondPos, true);
                 }
                 gameBoard.movePieceTo(firstPos, secondPos);
@@ -271,7 +279,7 @@ public class Game {
                 isPlayerTurn = true;
                 valid = true;
 
-                if(pieceIsPromoted){
+                if (pieceIsPromoted) {
                     promotionStateMap.remove(getPositionKey(firstPos.getPosX(), firstPos.getPosY()));
                     promotionStateMap.put(getPositionKey(secondPos.getPosX(), secondPos.getPosY()), true);
                 }
@@ -280,85 +288,113 @@ public class Game {
         }
         return valid;
     }
+
     /**
      * Méthode qui permet de d'effectuer le parachutage d'une piece
      *
      * @param parachutePos : La position cliquer,
-     * @param piece : Pièce a parachuter
-     * */
-    public boolean parachute(Position parachutePos, byte piece){
+     * @param piece        : Pièce a parachuter
+     */
+    public boolean parachute(Position parachutePos, byte piece) {
         boolean valid = false;
 
 
         return valid;
     }
-    public boolean getIsGameEnded(){ return isGameEnded; }
+
+    public boolean getIsGameEnded() {
+        return isGameEnded;
+    }
+
     /**
      * Retourne la classe qui possede la liste de l'historique de coup
-     * */
-    public static GameSaver getGameSaver() {return gameSaver; }
+     */
+    public static GameSaver getGameSaver() {
+        return gameSaver;
+    }
+
     /**
      * Retourne la classe du GameBoard
-     * */
-    public Board getGameBoard(){ return gameBoard; }
+     */
+    public Board getGameBoard() {
+        return gameBoard;
+    }
+
     /**
      * Retourne un booléen qui indique si c'est le tour du joueur = true ou au AI = false
-     * */
-    public boolean getIsPlayerTurn(){ return isPlayerTurn; }
+     */
+    public boolean getIsPlayerTurn() {
+        return isPlayerTurn;
+    }
+
     /**
      * Retourne un objet piece pour la position donné
-     * */
-    private ShogiPiece getPieceAt(Position pos){
+     */
+    private ShogiPiece getPieceAt(Position pos) {
         return pieces.get(gameBoard.getPieceAt(pos));
     }
+
     private boolean isPromoted(Position pos) {
         return Boolean.TRUE.equals(promotionStateMap.get(getPositionKey(pos.getPosX(), pos.getPosY())));
     }
+
     private String getPositionKey(int row, int col) {
         return row + "-" + col;  // Use row-column as the key
     }
-    public Integer getPieceDrawable(Position pos){
+
+    public Integer getPieceDrawable(Position pos) {
         Integer drawable = null;
-        if(getPieceAt(pos) != null){
+        if (getPieceAt(pos) != null) {
             drawable = isPromoted(pos) ? getPieceAt(pos).getIMAGE_ID_PROMU() : getPieceAt(pos).getIMAGE_ID();
         }
         return drawable;
     }
+
     /**
      * Retourn True si c'est une pièce enemy, False si ce n'est pas une piece enemy ou pas de piece
-     * */
-    private boolean isEnemyPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) < 0; }
+     */
+    private boolean isEnemyPieceAtPos(Position pos) {
+        return gameBoard.getPieceAt(pos) < 0;
+    }
+
     /**
      * Retourn True si une piece du joeur est a la positon, false si non
-     * */
-    public boolean isPlayerPieceAtPos(Position pos){ return gameBoard.getPieceAt(pos) > 0; }
+     */
+    public boolean isPlayerPieceAtPos(Position pos) {
+        return gameBoard.getPieceAt(pos) > 0;
+    }
+
     /**
      * Retourn True si la case de l'échiquier est vide
-     * */
-    private boolean isPositionEmpty(Position pos){ return gameBoard.getPieceAt(pos) == 0; }
+     */
+    private boolean isPositionEmpty(Position pos) {
+        return gameBoard.getPieceAt(pos) == 0;
+    }
+
     /**
      * Retourne true si les deux rois sont encore en vie, si au moins un roi est mort, retourne false
-     * */
-    private boolean isKingsAlive(){
-        for(byte id : capturedPieceBlack){
-            if(Math.abs(id) == PieceIDs.Roi.getValue()){
+     */
+    private boolean isKingsAlive() {
+        for (byte id : capturedPieceBlack) {
+            if (Math.abs(id) == PieceIDs.Roi.getValue()) {
                 return true;
             }
         }
-        for(byte id : capturedPieceWhite){
-            if(Math.abs(id) == PieceIDs.Roi.getValue()){
+        for (byte id : capturedPieceWhite) {
+            if (Math.abs(id) == PieceIDs.Roi.getValue()) {
                 return true;
             }
         }
         return false;
     }
+
     /**
      * Méthode pour capturer une pièce a la position donné.
      *
-     * @param pos : Position de la pièce a captuer,
+     * @param pos   : Position de la pièce a captuer,
      * @param color : True = Les blancs capture (joueur), False = Les noirs capture (AI)
-     * */
-    private void capturePieceAtPos(Position pos, boolean color){
+     */
+    private void capturePieceAtPos(Position pos, boolean color) {
         if (color) {
             capturedPieceWhite.add(gameBoard.getPieceAt(pos));
             captureWhitePiece(getPieceAt(pos).getClass().getCanonicalName());
@@ -367,22 +403,6 @@ public class Game {
             captureBlackPiece(getPieceAt(pos).getClass().getCanonicalName());
         }
         gameBoard.removePieceAt(pos);
-    }
-    private void promotePiece(int row, int col) {
-        String positionKey = getPositionKey(row, col);
-        if (promotionStateMap.containsKey(positionKey)) {
-            promotionStateMap.put(positionKey, true);
-        } else {
-            System.out.println("Invalid position!");
-        }
-    }
-    private void revertPiece(int row, int col) {
-        String positionKey = getPositionKey(row, col);
-        if (promotionStateMap.containsKey(positionKey)) {
-            promotionStateMap.put(positionKey, false);
-        } else {
-            System.out.println("No piece at position (" + row + ", " + col + ") to revert.");
-        }
     }
 
     // --------------------------------------------
@@ -409,10 +429,10 @@ public class Game {
         return maxLength;
     }
 
-    public void archiverPartie(int id_gagnant, int id_perdant){
+    public void archiverPartie(int id_gagnant, int id_perdant) {
 
-        if (isGameEnded){
-            try{
+        if (isGameEnded) {
+            try {
                 Gson gson = new Gson();
 
                 String jsonString = gson.toJson(gameSaver.getTurnList());
@@ -429,7 +449,7 @@ public class Game {
                     }
                 });
 
-            }catch (Exception exception){
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
 
@@ -438,15 +458,15 @@ public class Game {
 
     public Boolean parachuteWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
-        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
+        if (capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
             int quantity = capturedPieceWhiteHM.get(shogiPieceClass);
-            if(quantity > 0) {
+            if (quantity > 0) {
                 isValid = true;
             }
         }
 
-        return isValid;    }
-
+        return isValid;
+    }
     public Boolean parachuteBlackPiece(String shogiPieceClass) {
         boolean isValid = false;
         if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
@@ -456,6 +476,22 @@ public class Game {
             }
         }
         return isValid;
+    }
+    private void promotePiece(int row, int col) {
+        String positionKey = getPositionKey(row, col);
+        if (promotionStateMap.containsKey(positionKey)) {
+            promotionStateMap.put(positionKey, true);
+        } else {
+            System.out.println("Invalid position!");
+        }
+    }
+    private void revertPiece(int row, int col) {
+        String positionKey = getPositionKey(row, col);
+        if (promotionStateMap.containsKey(positionKey)) {
+            promotionStateMap.put(positionKey, false);
+        } else {
+            System.out.println("No piece at position (" + row + ", " + col + ") to revert.");
+        }
     }
 
     public Boolean captureWhitePiece(String shogiPieceClass) {
@@ -476,6 +512,7 @@ public class Game {
         }
         return isValid;
     }
+
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;

@@ -23,9 +23,9 @@ public class Minimax {
      * @param beta : Valeur treshold maximum (+infini),
      * @param maximizingPlayer : Boolean qui indique pour quel joueur : (True : AI, False : Joueur)
      * */
-    public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer){
+    public int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer){
         if (depth == 0){
-            return 0; // Evaluation(node.getBoard());
+            return 0; // Evaluation(board, moveGenerator.getPromotionStateMap());
         }
 
         moveGenerator.setBoard(board);
