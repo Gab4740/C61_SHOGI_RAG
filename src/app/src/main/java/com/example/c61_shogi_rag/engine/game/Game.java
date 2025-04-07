@@ -460,20 +460,21 @@ public class Game {
 
     public Boolean captureWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
-        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceBlackHM.get(shogiPieceClass) + 1;
-            capturedPieceBlackHM.put(shogiPieceClass, quantity);
+        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceWhiteHM.get(shogiPieceClass) + 1;
+            capturedPieceWhiteHM.put(shogiPieceClass, quantity);
             isValid = true;
         }
         return isValid;
     }
     public Boolean captureBlackPiece(String shogiPieceClass) {
         boolean isValid = false;
-        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceWhiteHM.get(shogiPieceClass) + 1;
-            capturedPieceWhiteHM.put(shogiPieceClass, quantity);
+        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceBlackHM.get(shogiPieceClass) + 1;
+            capturedPieceBlackHM.put(shogiPieceClass, quantity);
             isValid = true;
         }
+
         return isValid;
     }
 
