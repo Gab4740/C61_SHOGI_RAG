@@ -126,4 +126,109 @@ public class  InitPiece {
                 throw new IllegalArgumentException("Unknown piece type: " + piece);
         }
     }
+
+    public static Pion GetPion() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.Pion.getValue();
+        promu_id = PieceIDs.GeneralOr.getValue();
+        image_id = R.drawable.pawn_0;
+        image_id_promu = R.drawable.p_pawn_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new Pion((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "Pion", mR);
+    }
+
+    public static Lance GetLance() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.Lance.getValue();
+        promu_id = PieceIDs.GeneralOr.getValue();
+        image_id = R.drawable.lance_0;
+        image_id_promu = R.drawable.p_lance_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new Lance((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "Lance", mR);
+    }
+    public static Chevalier GetChevalier() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.Chevalier.getValue();
+        promu_id = PieceIDs.GeneralOr.getValue();
+        image_id = R.drawable.knight_0;
+        image_id_promu = R.drawable.p_knight_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new Chevalier((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "Chevalier", mR);
+    }
+
+    public static GeneralArgent GetGeneralArgent() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.GeneralArgent.getValue();
+        promu_id = PieceIDs.GeneralOr.getValue();
+        image_id = R.drawable.silver_0;
+        image_id_promu = R.drawable.p_gold_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new GeneralArgent((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "GeneralArgent", mR);
+    }
+
+    public static GeneralOr GetGeneralOr() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.GeneralOr.getValue();
+        promu_id = PieceIDs.GeneralOr.getValue();
+        image_id = R.drawable.gold_0;
+        image_id_promu = R.drawable.p_gold_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new GeneralOr((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "GeneralOr", mR);
+    }
+
+    public static Fou GetFou() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.Fou.getValue();
+        promu_id = PieceIDs.ChevalDragon.getValue();
+        image_id = R.drawable.bishop_0;
+        image_id_promu = R.drawable.p_bishop_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new Fou((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "Fou", mR);
+    }
+
+    public static Charriot GetCharriot() {
+        int piece_id = 0;
+        int promu_id = 0;
+        int image_id = 0;
+        int image_id_promu = 0;
+        int[][] mR;
+
+        piece_id = PieceIDs.Char.getValue();
+        promu_id = PieceIDs.RoiDragon.getValue();
+        image_id = R.drawable.rook_0;
+        image_id_promu = R.drawable.p_rook_0;
+        mR = (piece_id > 0 ? MoveSet.PionBlanc.getMoveSet() : MoveSet.PionNoir.getMoveSet());
+        return new Charriot((byte)piece_id, (byte)promu_id, image_id, image_id_promu, "Fou", mR);
+    }
+
 }
