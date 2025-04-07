@@ -112,7 +112,4 @@ public class MoveGeneration {
     public Board getBoard(){
         return this.board;
     }
-    public HashMap<String, Boolean> getPromotionStateMap() {
-        return promotionStateMap;
-    }
 }

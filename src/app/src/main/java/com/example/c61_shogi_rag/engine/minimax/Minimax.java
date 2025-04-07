@@ -7,11 +7,11 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 import java.util.Vector;
 
 public class Minimax {
-    private static MoveGeneration moveGenerator;
-    private static Board minimaxBoard;
+    private Vector<ShogiPiece> pieces;
+    private Board board;
     public Minimax(Board board, Vector<ShogiPiece> pieces){
-        minimaxBoard = board;
-        moveGenerator = new MoveGeneration(pieces, board);
+        this.board = board;
+        this.pieces = pieces;
     }
     /**
      * Méthode récursive pour rechercher dans l'arbre de recherche, Algorithme Minimax
@@ -30,7 +30,7 @@ public class Minimax {
             return 0; // Evaluation(board, moveGenerator.getPromotionStateMap());
         }
 
-        moveGenerator.setBoard(board);
+        MoveGeneration moveGenerator = new MoveGeneration(pieces, board);
 
         if(maximizingPlayer){
             int maxEval = Integer.MIN_VALUE;
@@ -40,6 +40,7 @@ public class Minimax {
                     move.do_move_on_board(board);
                     int eval = minimax(board, depth - 1, alpha, beta, false);
                     move.undo_move_on_board(board);
+
 
                     maxEval = Math.max(maxEval, eval);
                     alpha = Math.max(alpha, eval);

@@ -240,7 +240,7 @@ public class Game {
         gameTimer.startTime();
 
         Minimax minimax = new Minimax(gameBoard, piecesForMinimax);
-        minimax.minimax(gameBoard, 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+        minimax.minimax(gameBoard, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
     }
 
     /**
