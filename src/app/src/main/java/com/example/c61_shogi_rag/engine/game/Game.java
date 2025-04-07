@@ -39,7 +39,7 @@ public class Game {
     private Boolean isGameEnded;
     private Boolean GameWinner;
     private static GameSaver gameSaver;
-    private HashMap<String, Boolean> promotionStateMap;
+    private static HashMap<String, Boolean> promotionStateMap;
 
 
     /**
@@ -496,20 +496,21 @@ public class Game {
 
     public Boolean captureWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
-        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceBlackHM.get(shogiPieceClass) + 1;
-            capturedPieceBlackHM.put(shogiPieceClass, quantity);
+        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceWhiteHM.get(shogiPieceClass) + 1;
+            capturedPieceWhiteHM.put(shogiPieceClass, quantity);
             isValid = true;
         }
         return isValid;
     }
     public Boolean captureBlackPiece(String shogiPieceClass) {
         boolean isValid = false;
-        if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceWhiteHM.get(shogiPieceClass) + 1;
-            capturedPieceWhiteHM.put(shogiPieceClass, quantity);
+        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
+            int quantity = capturedPieceBlackHM.get(shogiPieceClass) + 1;
+            capturedPieceBlackHM.put(shogiPieceClass, quantity);
             isValid = true;
         }
+
         return isValid;
     }
 
@@ -522,4 +523,7 @@ public class Game {
         return capturedPieceWhiteHM;
     }
 
+    public HashMap<String, Boolean> getPromotionStateMap() {
+        return promotionStateMap;
+    }
 }
