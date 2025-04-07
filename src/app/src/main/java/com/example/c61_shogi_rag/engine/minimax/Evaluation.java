@@ -23,6 +23,25 @@ public class Evaluation {
         return playerScore;
     }
 
+
+    public int controleCenter(Position pos){
+
+        int x = pos.getPosX();
+        int y = pos.getPosY();
+
+        int centerX = 4;
+        int centerY = 4;
+
+        int distanceFromCenter = Math.abs(x- centerX) + Math.abs(y-centerY);
+
+        if (distanceFromCenter > 4){
+            return 0;
+        }
+
+        return 5 - distanceFromCenter;
+
+    }
+
     //TODO rajouter les autres methodes d'evaluations
 
 
