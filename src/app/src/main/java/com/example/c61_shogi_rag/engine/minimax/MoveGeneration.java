@@ -21,7 +21,6 @@ public class MoveGeneration {
     private Board board;
     private MoveManager currMoveToReturn;
     private boolean pieceExists;
-    private ShogiPiece previousPiece = null;
 
     public MoveGeneration(Vector<ShogiPiece> pieces, Board board) {
         this.pieces = pieces;
@@ -39,10 +38,7 @@ public class MoveGeneration {
 
     private void getNewPieceFromList(){
         pieceToGenMoveFrom = pieces.get(currListIndex);
-        if (pieceToGenMoveFrom != previousPiece) {
-            posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
-            previousPiece = pieceToGenMoveFrom;
-        }
+        posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
         currListIndex++;
     }
     private void getNewPieceFromBoard(){
@@ -90,8 +86,6 @@ public class MoveGeneration {
             if(pieceToGenMoveFrom.isValidMove(moveToTest, board)){
                 byte originalTraget = board.getPieceAt(moveToTest.getNextPosition());
                 currMoveToReturn = new MoveManager(originalTraget, moveToTest);
-
-                posOfSpecificPiece.set(currPieceCount - 1, moveToTest.getNextPosition());
             }
             currDirectionsIndex++;
         }
