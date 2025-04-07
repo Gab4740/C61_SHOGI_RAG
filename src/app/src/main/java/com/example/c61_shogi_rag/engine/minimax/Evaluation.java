@@ -24,21 +24,24 @@ public class Evaluation {
     }
 
 
-    public int controleCenter(Position pos){
+    public int controleCenter(Board board){
 
-        int x = pos.getPosX();
-        int y = pos.getPosY();
+        int totalEvalCenter = 0;
 
         int centerX = 4;
         int centerY = 4;
 
-        int distanceFromCenter = Math.abs(x- centerX) + Math.abs(y-centerY);
+        Vector<Position> playerPieces = board.getPositionFromColor(true);
 
-        if (distanceFromCenter > 4){
-            return 0;
+        for(Position pos: playerPieces){
+
+            int distanceFromCenter = Math.abs(pos.getPosX()- centerX) + Math.abs(pos.getPosY()-centerY);
+
+            totalEvalCenter += (5 - distanceFromCenter);
+
         }
 
-        return 5 - distanceFromCenter;
+        return totalEvalCenter;
 
     }
 
