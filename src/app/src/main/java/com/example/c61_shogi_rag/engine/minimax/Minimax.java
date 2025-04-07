@@ -52,6 +52,7 @@ public class Minimax {
         }
         else{
             int minEval = Integer.MAX_VALUE;
+
             while(moveGenerator.genMove()){
                 MoveManager move = moveGenerator.getCurrMoveToReturn();
                 if(move != null) {
@@ -70,3 +71,5 @@ public class Minimax {
         }
     }
 }
+
+// PROBLEM : Lorsque l'appel recursif remonte de 1 niveau, les index dans move generator ne reprenne pas a l'endroit qu'ils étaient avant la reccursivité.
