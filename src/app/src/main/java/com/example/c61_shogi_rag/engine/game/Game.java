@@ -38,7 +38,7 @@ public class Game {
     private Boolean isGameEnded;
     private Boolean GameWinner;
     private static GameSaver gameSaver;
-    private HashMap<String, Boolean> promotionStateMap;
+    private static HashMap<String, Boolean> promotionStateMap;
 
 
     /**
@@ -485,4 +485,7 @@ public class Game {
         return capturedPieceWhiteHM;
     }
 
+    public HashMap<String, Boolean> getPromotionStateMap() {
+        return promotionStateMap;
+    }
 }
