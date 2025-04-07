@@ -234,25 +234,6 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-
-        // TEST USAGE GEN MOVES
-        Vector<MoveManager> moveessssGEn = new Vector<>();
-        MoveGeneration moveGenerationTest = new MoveGeneration(piecesForMinimax, gameBoard);
-        while(moveGenerationTest.genMove()){
-            if(moveGenerationTest.getCurrMoveToReturn() != null){
-                moveessssGEn.add(moveGenerationTest.getCurrMoveToReturn());
-            }
-            // MINIMAX recursive call GOES HERE
-        }
-        for(MoveManager m : moveessssGEn){
-            m.do_move_on_board(gameBoard);
-            System.out.println("_____________________________________");
-            prettyPrintConsoleBoard(gameBoard.getBoard());
-            System.out.println("            -------------------");
-            m.undo_move_on_board(gameBoard);
-            prettyPrintConsoleBoard(gameBoard.getBoard());
-            m.prettyPrint();
-        }
     }
     /**
      * Méthode qui permet de d'effectuer le déplacement d'une pièce
@@ -380,8 +361,10 @@ public class Game {
     private void capturePieceAtPos(Position pos, boolean color){
         if (color) {
             capturedPieceWhite.add(gameBoard.getPieceAt(pos));
+            captureWhitePiece(getPieceAt(pos).getClass().getCanonicalName());
         } else {
             capturedPieceBlack.add(gameBoard.getPieceAt(pos));
+            captureBlackPiece(getPieceAt(pos).getClass().getCanonicalName());
         }
         gameBoard.removePieceAt(pos);
     }
@@ -402,7 +385,8 @@ public class Game {
         }
     }
 
-    // DEBUG TOOLS
+    // --------------------------------------------
+    // DEBUG TOOL
     public void prettyPrintConsoleBoard(byte[][] array) {
         int maxLength = getMaxNumberLength(array);
 
@@ -413,6 +397,7 @@ public class Game {
             System.out.println();
         }
     }
+    // --------------------------------------------
 
     private int getMaxNumberLength(byte[][] array) {
         int maxLength = 0;
