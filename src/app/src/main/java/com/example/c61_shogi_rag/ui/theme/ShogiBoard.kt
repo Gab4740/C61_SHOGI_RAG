@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
@@ -144,7 +145,7 @@ fun CapturedPieces(modifier: Modifier = Modifier,
         modifier = modifier
     ) {
         items(keys.size) { index: Int ->
-            var imageRes: Int = 0
+            var imageRes: Int = -1
             var counter: Int = 0
             when(keys[index]) {
                 Pion::class.java.canonicalName -> imageRes = R.drawable.pawn_0
@@ -153,12 +154,17 @@ fun CapturedPieces(modifier: Modifier = Modifier,
                 GeneralArgent::class.java.canonicalName -> imageRes = R.drawable.silver_0
                 GeneralOr::class.java.canonicalName -> imageRes = R.drawable.gold_0
                 Fou::class.java.canonicalName -> imageRes = R.drawable.bishop_0
-                Char::class.java.canonicalName -> imageRes = R.drawable.rook_0
+                Charriot::class.java.canonicalName -> imageRes = R.drawable.rook_0
             }
-            if (imageRes != 0) {
+
+            if (imageRes >= 0) {
                 counter = hashMapCapturedPieces[keys[index]] ?: 0
-                CapturedPiece(imageRes = imageRes, value = counter)
-                println(imageRes)
+                CapturedPiece(
+                    modifier = Modifier
+                        .then(if (isClickable) Modifier.clickable {  } else Modifier),
+                    imageRes = imageRes,
+                    value = counter
+                )
             }
 
         }

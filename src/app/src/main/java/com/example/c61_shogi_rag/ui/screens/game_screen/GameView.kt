@@ -13,6 +13,7 @@ import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
+import kotlin.math.truncate
 
 @Composable
 fun GameView(modifier: Modifier = Modifier,
@@ -34,19 +35,16 @@ fun GameView(modifier: Modifier = Modifier,
         )
         CapturedPieces(
             modifier = Modifier
-                .padding(vertical = 5.dp)
+                .padding(vertical = 5.dp),
+            isClickable = false,
+            hashMapCapturedPieces = gameViewModel.game.capturedPieceBlackHM,
         )
         BoardView(gameViewModel = gameViewModel)
         CapturedPieces(
             modifier = Modifier
                 .padding(vertical = 5.dp),
-            isClickable = true
-        )
-        CapturedPieces(
-            modifier = Modifier
-                .padding(vertical = 5.dp),
-            isClickable = false,
-            hashMapCapturedPieces = gameViewModel.game.capturedPieceBlackHM
+            isClickable = true,
+            hashMapCapturedPieces = gameViewModel.game.capturedPieceWhiteHM,
         )
         PlayerTag(
             modifier = Modifier
