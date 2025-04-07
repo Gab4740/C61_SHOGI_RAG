@@ -139,7 +139,8 @@ fun CapturedPieces(modifier: Modifier = Modifier, isClickable: Boolean = false) 
 @Composable
 fun CapturedPieces(modifier: Modifier = Modifier,
                    hashMapCapturedPieces: HashMap<String, Int>,
-                   isClickable: Boolean = false) {
+                   isClickable: Boolean = false,
+                   onClick:() -> Unit = {}) {
     val keys = hashMapCapturedPieces.keys.toList()
     LazyRow(
         modifier = modifier
@@ -161,7 +162,7 @@ fun CapturedPieces(modifier: Modifier = Modifier,
                 counter = hashMapCapturedPieces[keys[index]] ?: 0
                 CapturedPiece(
                     modifier = Modifier
-                        .then(if (isClickable) Modifier.clickable {  } else Modifier),
+                        .then(if (isClickable) Modifier.clickable {onClick()} else Modifier),
                     imageRes = imageRes,
                     value = counter
                 )
