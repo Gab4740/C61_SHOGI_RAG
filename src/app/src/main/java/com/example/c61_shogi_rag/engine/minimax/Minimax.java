@@ -25,8 +25,8 @@ public class Minimax {
      * */
     public int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer){
         if (depth == 0){
-            board.prettyPrintConsoleBoard();
-            System.out.println("_________________________________");
+            // board.prettyPrintConsoleBoard();
+            // System.out.println("_________________________________");
             return 0; // Evaluation(board, moveGenerator.getPromotionStateMap());
         }
 
@@ -72,5 +72,3 @@ public class Minimax {
         }
     }
 }
-
-// PROBLEM : Lorsque l'appel recursif remonte de 1 niveau, les index dans move generator ne reprenne pas a l'endroit qu'ils étaient avant la reccursivité.
