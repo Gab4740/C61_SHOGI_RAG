@@ -16,7 +16,7 @@ public class Fou extends ShogiPiece {
         int finalX = move.getNextPosition().getPosX();
         int finalY = move.getNextPosition().getPosY();
 
-        if(finalY > 9 || finalY < 0 || finalX > 9 || finalX < 0){
+        if(finalY >= 9 || finalY < 0 || finalX >= 9 || finalX < 0){
             return false;
         }
 
