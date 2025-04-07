@@ -1,7 +1,7 @@
 package com.example.c61_shogi_rag.engine.piece;
 
 import com.example.c61_shogi_rag.R;
-import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Char;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.ChevalierDragon;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou;
@@ -59,7 +59,7 @@ public class  InitPiece {
                 image_id = color ? R.drawable.rook_0 : R.drawable.rook_1;
                 image_id_promu = color ? R.drawable.p_rook_0 : R.drawable.p_rook_1;
                 mR = MoveSet.Char.getMoveSet();
-                return new Char((byte)piece_id, (byte)promu_id, image_id, image_id_promu, pieceName, mR);
+                return new Charriot((byte)piece_id, (byte)promu_id, image_id, image_id_promu, pieceName, mR);
 
             case "fou" :
                 piece_id = PieceIDs.Fou.getValue() * (color ? adjust : inverse);

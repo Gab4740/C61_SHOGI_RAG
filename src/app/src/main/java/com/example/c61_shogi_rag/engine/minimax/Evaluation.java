@@ -6,13 +6,15 @@ import com.example.c61_shogi_rag.engine.piece.Position;
 import java.util.Vector;
 
 public class Evaluation {
+    private static final int MATERIAL_EVAL_ADJUST = 100;
+    private static final int CONTROL_CENTER_ADJUST = 100;
 
 
-    public static int evaluate(Board board) {
+    public static int material_eval(Board board) {
         int playerScore = 0;
 
         //changer la couleur du joueur car hardcoder
-        Vector<Position> playerPieces = board.getPositionFromColor(true);
+        Vector<Position> playerPieces = board.getPositionFromColor(false);
 
         for(Position pos : playerPieces){
             byte pieceId = board.getPieceAt(pos);
@@ -20,7 +22,7 @@ public class Evaluation {
             playerScore += pieceId;
         }
 
-        return playerScore;
+        return (1 / playerScore) * MATERIAL_EVAL_ADJUST;
     }
 
 

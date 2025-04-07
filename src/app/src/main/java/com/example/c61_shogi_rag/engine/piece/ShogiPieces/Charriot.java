@@ -5,8 +5,8 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.MoveUtils;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
-public class Char extends ShogiPiece {
-    public Char(byte id, byte idPromu, int imageId, int imageIdPromu, String nom, int[][] directions) {
+public class Charriot extends ShogiPiece {
+    public Charriot(byte id, byte idPromu, int imageId, int imageIdPromu, String nom, int[][] directions) {
         super(id, idPromu, imageId, imageIdPromu, nom, directions);
     }
 

@@ -94,4 +94,8 @@ public class MoveGeneration {
         }
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }

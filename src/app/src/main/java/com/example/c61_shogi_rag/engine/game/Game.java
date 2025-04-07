@@ -9,7 +9,7 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
-import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Char;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent;
@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -29,7 +30,7 @@ public class Game {
     private Vector<ShogiPiece> piecesForMinimax;
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
-    private HashMap<String , Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
+    private LinkedHashMap<String , Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
 
     private final Time gameTimer;
     private Boolean isPlayerStarting;
@@ -57,8 +58,9 @@ public class Game {
         this.GameWinner = null;
         this.promotionStateMap = new HashMap<>();
 
-        this.capturedPieceWhiteHM = new HashMap<>();
-        this.capturedPieceBlackHM = new HashMap<>();
+        this.capturedPieceWhiteHM = new LinkedHashMap<>(20);
+        this.capturedPieceBlackHM = new LinkedHashMap<>(20);
+
 
         this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
@@ -72,8 +74,8 @@ public class Game {
         this.capturedPieceBlackHM.put(GeneralOr.class.getCanonicalName(), 0);
         this.capturedPieceWhiteHM.put(Fou.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
-        this.capturedPieceWhiteHM.put(Char.class.getCanonicalName(), 0);
-        this.capturedPieceBlackHM.put(Char.class.getCanonicalName(), 0);
+        this.capturedPieceWhiteHM.put(Charriot.class.getCanonicalName(), 0);
+        this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
     }
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -490,11 +492,11 @@ public class Game {
         return isValid;
     }
 
-    public HashMap<String, Integer> getCapturedPieceBlackHM() {
+    public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
     }
 
-    public HashMap<String, Integer> getCapturedPieceWhiteHM() {
+    public LinkedHashMap<String, Integer> getCapturedPieceWhiteHM() {
         return capturedPieceWhiteHM;
     }
 
