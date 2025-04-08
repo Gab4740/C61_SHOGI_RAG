@@ -241,7 +241,7 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(2,true, piecesForMinimax, true, pieces);
+        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces);
     }
 
     /**
@@ -256,6 +256,7 @@ public class Game {
         }
         if(calculatedMove.checkIfShouldBePromoted()){
             // BUG HERE, PROMOTE PLAYER PIECES
+            // UPDATE HASHTABLE WHEN PIECE MOVES TO FIX
             promotePiece(calculatedMove.getMove().getNextPosition());
         }
         calculatedMove.do_move_on_board(gameBoard);
@@ -314,7 +315,6 @@ public class Game {
         else{
             isPlayerTurn = true;
         }
-        gameBoard.prettyPrintConsoleBoard();
     }
 
     /**

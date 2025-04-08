@@ -21,6 +21,7 @@ public class MinimaxManager {
     private final int ALPHA = Integer.MIN_VALUE;
     private final int BETA = Integer.MAX_VALUE;
     private PromotionState promotionStateMap;
+    private Vector<ShogiPiece> piece;
 
     public MinimaxManager(int searchDepth, boolean maximizingPlayer, Vector<ShogiPiece> piece, boolean debug, Hashtable<Byte, ShogiPiece> pieces) {
         this.currGameBoard = null;
@@ -29,7 +30,7 @@ public class MinimaxManager {
         this.maximizingPlayer = maximizingPlayer;
         this.debug = debug;
         this.piecesObj = pieces;
-        this.minimaxObj = new Minimax(piece, piecesObj);
+        this.piece = piece;
     }
 
     public void resetMinimax(Board currGameBoard, HashMap<String, Boolean> promotionStateMap){
@@ -38,6 +39,7 @@ public class MinimaxManager {
     }
     public MoveManager executeMinimax() {
         long start = System.nanoTime();
+        minimaxObj = new Minimax(piece, piecesObj);
         MoveScore moveToDo = minimaxObj.minimax(currGameBoard, searchDepth, ALPHA, BETA, maximizingPlayer, promotionStateMap);
         long end = System.nanoTime();
 
