@@ -4,7 +4,9 @@ import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
 import com.example.c61_shogi_rag.engine.minimax.Minimax;
+import com.example.c61_shogi_rag.engine.minimax.MinimaxManager;
 import com.example.c61_shogi_rag.engine.minimax.MoveGeneration;
+import com.example.c61_shogi_rag.engine.minimax.MoveScore;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
@@ -40,6 +42,7 @@ public class Game {
     private Boolean GameWinner;
     private static GameSaver gameSaver;
     private static HashMap<String, Boolean> promotionStateMap;
+    private MinimaxManager manager;
 
 
     /**
@@ -238,10 +241,24 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
+        manager = new MinimaxManager(2,true, piecesForMinimax, true, pieces);
+    }
 
-        Minimax minimax = new Minimax(gameBoard, piecesForMinimax);
-        minimax.minimax(gameBoard, 5, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
-        System.out.println(gameTimer.getDisplayTime());
+    /**
+     * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
+     */
+    public void executeMinimax(){
+        manager.resetMinimax(gameBoard, promotionStateMap);
+        MoveManager calculatedMove = manager.executeMinimax();
+
+        calculatedMove.do_move_on_board(gameBoard);
+        if(calculatedMove.checkIfPieceEaten()){
+            capturePieceAtPos(calculatedMove.getMove().getNextPosition(), false);
+        }
+        if(calculatedMove.checkIfShouldBePromoted()){
+            promotePiece(calculatedMove.getMove().getNextPosition());
+        }
+        flipPlayerTurn(false);
     }
 
     /**
@@ -275,9 +292,7 @@ public class Game {
 
                 gameSaver.addNewTurn(new OneTurn(pieceToPlay.getID(), firstPos, secondPos, false));
 
-                // isPlayerTurn = !isPlayerTurn;
-                // DEBUG
-                isPlayerTurn = true;
+                flipPlayerTurn(true);
                 valid = true;
 
                 if (pieceIsPromoted) {
@@ -288,6 +303,15 @@ public class Game {
             isGameEnded = isKingsAlive();
         }
         return valid;
+    }
+    private void flipPlayerTurn(boolean flip){
+        if(flip){
+            isPlayerTurn = false;
+            executeMinimax();
+        }
+        else{
+            isPlayerTurn = true;
+        }
     }
 
     /**
@@ -478,13 +502,11 @@ public class Game {
         }
         return isValid;
     }
-    private void promotePiece(int row, int col) {
+    private void promotePiece(Position pos) {
+        int row = pos.getPosX();
+        int col = pos.getPosY();
         String positionKey = getPositionKey(row, col);
-        if (promotionStateMap.containsKey(positionKey)) {
-            promotionStateMap.put(positionKey, true);
-        } else {
-            System.out.println("Invalid position!");
-        }
+        promotionStateMap.put(positionKey, true);
     }
     private void revertPiece(int row, int col) {
         String positionKey = getPositionKey(row, col);

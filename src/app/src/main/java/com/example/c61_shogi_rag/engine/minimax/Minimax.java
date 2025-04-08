@@ -2,17 +2,27 @@ package com.example.c61_shogi_rag.engine.minimax;
 
 import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.game.MoveManager;
+import com.example.c61_shogi_rag.engine.game.PromotionState;
+import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Random;
 import java.util.Vector;
 
 public class Minimax {
     private Vector<ShogiPiece> pieces;
-    private Board board;
-    public Minimax(Board board, Vector<ShogiPiece> pieces){
-        this.board = board;
+    private Hashtable<Byte, ShogiPiece> piecesObj;
+    private int leafCounter;
+    private Random rand;
+    public Minimax(Vector<ShogiPiece> pieces, Hashtable<Byte, ShogiPiece> piecesObj){
         this.pieces = pieces;
+        this.leafCounter = 0;
+        this.rand = new Random();
+        this.piecesObj = piecesObj;
     }
+
     /**
      * Méthode récursive pour rechercher dans l'arbre de recherche, Algorithme Minimax
      * @return : Le score de l'échiquier a jouer comme prochain tour
@@ -23,27 +33,29 @@ public class Minimax {
      * @param beta : Valeur treshold maximum (+infini),
      * @param maximizingPlayer : Boolean qui indique pour quel joueur : (True : AI, False : Joueur)
      * */
-    public int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer){
+    public MoveScore minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, PromotionState promotions){
         if (depth == 0){
-            // board.prettyPrintConsoleBoard();
-            // System.out.println("_________________________________");
-            return 0; // Evaluation(board, moveGenerator.getPromotionStateMap());
+            leafCounter++;
+            return new MoveScore(rand.nextInt(100), null); // Evaluation(board, moveGenerator.getPromotionStateMap());
         }
 
-        MoveGeneration moveGenerator = new MoveGeneration(pieces, board);
+        MoveGeneration moveGenerator = new MoveGeneration(pieces, board, promotions, piecesObj);
 
         if(maximizingPlayer){
-            int maxEval = Integer.MIN_VALUE;
+            MoveScore maxEval = new MoveScore(Integer.MIN_VALUE, null);
+            MoveManager move;
             while(moveGenerator.genMove()){
-                MoveManager move = moveGenerator.getCurrMoveToReturn();
+                move = moveGenerator.getCurrMoveToReturn();
                 if(move != null){
                     move.do_move_on_board(board);
-                    int eval = minimax(board, depth - 1, alpha, beta, false);
+                    MoveScore eval = minimax(board, depth - 1, alpha, beta, false, promotions);
                     move.undo_move_on_board(board);
 
-
-                    maxEval = Math.max(maxEval, eval);
-                    alpha = Math.max(alpha, eval);
+                    if(eval.getScore() > maxEval.getScore()){
+                        maxEval.setScore(eval.getScore());
+                        maxEval.setMove(move);
+                    }
+                    alpha = Math.max(alpha, eval.getScore());
                     if (beta <= alpha){
                         break;
                     }
@@ -52,17 +64,20 @@ public class Minimax {
             return maxEval;
         }
         else{
-            int minEval = Integer.MAX_VALUE;
-
+            MoveScore minEval = new MoveScore(Integer.MAX_VALUE, null);
+            MoveManager move;
             while(moveGenerator.genMove()){
-                MoveManager move = moveGenerator.getCurrMoveToReturn();
+                move = moveGenerator.getCurrMoveToReturn();
                 if(move != null) {
                     move.do_move_on_board(board);
-                    int eval = minimax(board, depth - 1, alpha, beta, true);
+                    MoveScore eval = minimax(board, depth - 1, alpha, beta, true, promotions);
                     move.undo_move_on_board(board);
 
-                    minEval = Math.min(minEval, eval);
-                    beta = Math.min(beta, eval);
+                    if(eval.getScore() < minEval.getScore()){
+                        minEval.setScore(eval.getScore());
+                        minEval.setMove(move);
+                    }
+                    beta = Math.min(beta, eval.getScore());
                     if (beta <= alpha) {
                         break;
                     }
@@ -70,5 +85,9 @@ public class Minimax {
             }
             return minEval;
         }
+    }
+
+    public int getLeafCounter() {
+        return leafCounter;
     }
 }

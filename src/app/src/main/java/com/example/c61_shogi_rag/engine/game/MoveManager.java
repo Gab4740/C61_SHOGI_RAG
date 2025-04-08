@@ -36,6 +36,21 @@ public class MoveManager {
         board.setPieceAt(originalTarget, posNew);
     }
 
+    public boolean checkIfPieceEaten(){
+        return originalTarget != 0;
+    }
+    public boolean checkIfShouldBePromoted(){
+        return move.getNextPosition().getPosX() >= 6;
+    }
+
+    public byte getOriginalTarget() {
+        return originalTarget;
+    }
+
+    public Move getMove() {
+        return move;
+    }
+
     public void prettyPrint(){
         System.out.println("(" + move.getCurrentPosition().getPosX() + "," + move.getCurrentPosition().getPosY() + ") to " + "(" + move.getNextPosition().getPosX() + "," + move.getNextPosition().getPosY() + ")");
     }

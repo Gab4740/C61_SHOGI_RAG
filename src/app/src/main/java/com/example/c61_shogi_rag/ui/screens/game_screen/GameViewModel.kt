@@ -31,7 +31,7 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
     init {
         game.GameInit()
         if(!isPlayerTurn) {
-            // Appeler l'ai
+            game.executeMinimax();
             isPlayerTurn = game.isPlayerTurn
         }
     }

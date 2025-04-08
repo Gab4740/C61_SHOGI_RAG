@@ -47,8 +47,8 @@ public class Board {
     * */
     public Vector<Position> getPositionsFromPiece(ShogiPiece piece){
         Vector<Position> allPos = new Vector<>();
-        byte pieceId = piece.getID();
 
+        byte pieceId = piece.getID();
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
                 if(board[i][j] == pieceId){

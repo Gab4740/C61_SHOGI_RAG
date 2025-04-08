@@ -2,11 +2,13 @@ package com.example.c61_shogi_rag.engine.minimax;
 
 import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.game.MoveManager;
+import com.example.c61_shogi_rag.engine.game.PromotionState;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Vector;
 
 public class MoveGeneration {
@@ -17,15 +19,18 @@ public class MoveGeneration {
     private Vector<Position> posOfSpecificPiece;
     private Position currPosition;
     private Vector<ShogiPiece> pieces;
-    private HashMap<String, Boolean> promotionStateMap;
+    private Hashtable<Byte, ShogiPiece> piecesObj;
+    private PromotionState promotionStateMap;
     private Board board;
     private MoveManager currMoveToReturn;
     private boolean pieceExists;
 
-    public MoveGeneration(Vector<ShogiPiece> pieces, Board board) {
+    public MoveGeneration(Vector<ShogiPiece> pieces, Board board, PromotionState promotionState, Hashtable<Byte, ShogiPiece> piecesObj) {
         this.pieces = pieces;
         this.board = board;
         this.pieceToGenMoveFrom = null;
+        this.promotionStateMap = promotionState;
+        this.piecesObj = piecesObj;
 
         this.currListIndex = 0;
         this.currPieceCount = 0;
@@ -77,15 +82,36 @@ public class MoveGeneration {
         }
 
         if(pieceExists){
-            int[] direction = pieceToGenMoveFrom.getDIRECTIONS()[currDirectionsIndex];
+            int[] direction;
+            ShogiPiece PieceToTest;
+            boolean promote = false;
+            if(promotionStateMap.isPiecePromoted(currPosition)){
+                direction = piecesObj.get(pieceToGenMoveFrom.getID_PROMU()).getDIRECTIONS()[currDirectionsIndex];
+                PieceToTest = piecesObj.get(pieceToGenMoveFrom.getID_PROMU());
+                promote = true;
+            }
+            else{
+                direction = pieceToGenMoveFrom.getDIRECTIONS()[currDirectionsIndex];
+                PieceToTest = pieceToGenMoveFrom;
+            }
+
             Position startPos = new Position(currPosition.getPosX(), currPosition.getPosY());
             Position endPos = new Position(currPosition.getPosX() + direction[1], currPosition.getPosY() + direction[0]);
             Move moveToTest = new Move(startPos, endPos);
 
             currMoveToReturn = null;
-            if(pieceToGenMoveFrom.isValidMove(moveToTest, board)){
-                byte originalTraget = board.getPieceAt(moveToTest.getNextPosition());
+            if(PieceToTest.isValidMove(moveToTest, board)){
+                byte originalTraget = board.getPieceAt(endPos);
                 currMoveToReturn = new MoveManager(originalTraget, moveToTest);
+
+                if(promote){
+                    promotionStateMap.removePromotedPosition(startPos);
+                    promotionStateMap.promotePiece(endPos);
+                }
+                // ALWAYS PROMOTE
+                else if (currMoveToReturn.checkIfShouldBePromoted()) {
+                    promotionStateMap.promotePiece(endPos);
+                }
             }
             currDirectionsIndex++;
         }
