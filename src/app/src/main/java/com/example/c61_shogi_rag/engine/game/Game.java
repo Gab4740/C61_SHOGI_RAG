@@ -251,13 +251,15 @@ public class Game {
         manager.resetMinimax(gameBoard, promotionStateMap);
         MoveManager calculatedMove = manager.executeMinimax();
 
-        calculatedMove.do_move_on_board(gameBoard);
         if(calculatedMove.checkIfPieceEaten()){
             capturePieceAtPos(calculatedMove.getMove().getNextPosition(), false);
         }
         if(calculatedMove.checkIfShouldBePromoted()){
+            // BUG HERE, PROMOTE PLAYER PIECES
             promotePiece(calculatedMove.getMove().getNextPosition());
         }
+        calculatedMove.do_move_on_board(gameBoard);
+        isGameEnded = isKingsAlive();
         flipPlayerTurn(false);
     }
 
@@ -312,6 +314,7 @@ public class Game {
         else{
             isPlayerTurn = true;
         }
+        gameBoard.prettyPrintConsoleBoard();
     }
 
     /**
