@@ -5,10 +5,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.game.Game
 import com.example.c61_shogi_rag.engine.piece.InitPiece
-import com.example.c61_shogi_rag.engine.piece.PieceIDs
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot
@@ -40,16 +38,10 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
         if(game.isPlayerTurn) {
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
-            } else {
-                destinationPosition = position
-            }
-
-            if(selectedPosition != null && destinationPosition != null) {
-                game.playTurn(selectedPosition, destinationPosition)
+            } else if(selectedPosition != null) {
+                game.playTurn(selectedPosition, position)
                 selectedPosition = null
-                destinationPosition = null
                 isPlayerTurn = game.isPlayerTurn // Force la récomposition
-                // Appeler l'ai ici?
             }
         }
     }
