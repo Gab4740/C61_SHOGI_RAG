@@ -19,31 +19,21 @@ public class Evaluation {
         int playerScore = 0;
         boolean pionExiste = false;
 
-        //changer la couleur du joueur car hardcoder
         Vector<Position> playerPieces = board.getPositionFromColor(false);
 
         for(Position pos : playerPieces){
 
-            // remplacer board.getPieceAt(pos); par la hash
-
-            /*
-            * faire en sorte que a chaque piece recuperer sur le board on
-            * verifier dans la hasmap si la piece et Promue ou non si oui get sa valeur promote
-            * */
-
             byte pieceValue = board.getPieceAt(pos);
+
+            if(pieceValue == PieceIDs.Pion.getValue()){
+                pionExiste = true;
+            }
 
             if (Boolean.TRUE.equals(promotionStateMap.get(pos.getPosX() + "-" + pos.getPosY()))){
                 pieceValue = piece.get(pieceValue).getID_PROMU();
             }
 
-            if (pieceValue == piece.get(pieceValue).getID()){
-                pionExiste = true;
-            }
-
-
             playerScore += pieceValue;
-
 
         }
 
@@ -74,9 +64,126 @@ public class Evaluation {
 
         }
 
+        //rajouter un valeur pour ajuster l'evaluation
         return totalEvalCenter;
 
     }
+
+    public static int evaluateCastling(Board board){
+        int castlingScore = 0;
+
+        Position kingPos = findKingPosition(board);
+
+        if (kingPos == null){
+            return 0;
+        }
+
+        castlingScore += checkYaguraCastle(board, kingPos);
+        castlingScore += checkAnagumaCastle(board, kingPos);
+
+        return castlingScore;
+
+    }
+
+    private static int checkYaguraCastle(Board board, Position kingPos){
+
+        int score = 0;
+        int goldCount = 0;
+        int silverCount = 0;
+
+        int kx = kingPos.getPosX();
+        int ky = kingPos.getPosY();
+
+        //check si le roi est assez haut pour faire la formation
+        if (kx > 2) {
+            return 0;
+        }
+
+        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+        //verification de la position des pieces a cote du roi
+        for (int[] pos : pieceACoter){
+            int x = kx + pos[0];
+            int y = ky + pos[1];
+
+            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+                byte pieceValue = board.getPieceAt(new Position(x, y));
+
+                if (pieceValue == PieceIDs.GeneralOr.getValue()) {
+                    goldCount++;
+                } else if (pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                    silverCount++;
+                }
+
+                score += 5;
+            }
+        }
+
+        if (goldCount >=2 && silverCount >= 1){
+            score += 30;
+        } else if (goldCount >= 1 && silverCount >= 1) {
+            score += 15;
+        }
+
+        return score;
+    }
+
+    private static int checkAnagumaCastle(Board board, Position kingPos){
+
+        int score = 0;
+        int nbrPieceAutour = 0;
+
+        int kx = kingPos.getPosX();
+        int ky = kingPos.getPosY();
+
+        //check si le roi est dans un coin
+        if (kx <= 1 && (ky <= 1 || ky >= 7)){
+            return 0;
+        }
+
+        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+        //verification si y'a des piece autour du roi
+        for (int[] pos : pieceACoter){
+            int x = kx + pos[0];
+            int y = ky + pos[1];
+
+            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+                byte pieceValue = board.getPieceAt(new Position(x, y));
+
+                nbrPieceAutour++;
+                score += 5;
+
+                //rajout d'un bonus si il y a un general
+                if (pieceValue == PieceIDs.GeneralOr.getValue() ||
+                        pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                    score += 5;
+                }
+            }
+        }
+
+        if (nbrPieceAutour >= 3){
+            score += 50;
+        } else if (nbrPieceAutour >= 2) {
+            score += 25;
+        }
+
+        return score;
+    }
+
+    private static Position findKingPosition(Board board){
+        Vector<Position> piece = board.getPositionFromColor(false);
+        byte kingValue = (byte) PieceIDs.Roi.getValue();
+
+        for (Position pos: piece){
+            if (board.getPieceAt(pos) == kingValue){
+                return pos;
+            }
+        }
+        return null;
+    }
+
+
 
     //TODO rajouter les autres methodes d'evaluations
 
