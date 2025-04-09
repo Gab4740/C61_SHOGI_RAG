@@ -18,13 +18,13 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
 
 
-class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
-    var game by mutableStateOf(Game(_isPlayerFirst))
+class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
+    var game by mutableStateOf(Game(isPlayerFirst))
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
     var counter by mutableIntStateOf(0)
     private var selectedPosition: Position? = null
-    private var destinationPosition: Position? = null
+    private var selectedPieceToParchute: ShogiPiece? = null
 
     init {
         game.GameInit()
@@ -36,6 +36,7 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
     fun selectPosition(position: Position) {
         counter++
         if(game.isPlayerTurn) {
+
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
             } else if(selectedPosition != null) {
@@ -43,8 +44,15 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
                 selectedPosition = null
                 isPlayerTurn = game.isPlayerTurn // Force la récomposition
             }
+            else if(selectedPieceToParchute != null) {
+                game.gameBoard.setPieceAt(selectedPieceToParchute, position)
+                selectedPieceToParchute = null
+            }
         }
+
     }
+
+
 
     fun parachutePiece(pieceCanonicalName: String) {
         var shogiPiece: ShogiPiece? = null
@@ -57,8 +65,8 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
             GeneralOr::class.java.canonicalName -> shogiPiece = InitPiece.GetGeneralOr()
             Fou::class.java.canonicalName -> shogiPiece = InitPiece.GetFou()
             Charriot::class.java.canonicalName -> shogiPiece = InitPiece.GetCharriot()
-
         }
-        game.gameBoard.setPieceAt(shogiPiece, Position(5,5))
+        selectedPieceToParchute = shogiPiece
+
     }
 }
