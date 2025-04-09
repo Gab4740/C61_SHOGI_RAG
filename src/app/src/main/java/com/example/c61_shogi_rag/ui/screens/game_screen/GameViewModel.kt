@@ -36,16 +36,16 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
     fun selectPosition(position: Position) {
         counter++
         if(game.isPlayerTurn) {
-
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
+                selectedPieceToParchute = null
             } else if(selectedPosition != null) {
                 game.playTurn(selectedPosition, position)
                 selectedPosition = null
                 isPlayerTurn = game.isPlayerTurn // Force la récomposition
             }
             else if(selectedPieceToParchute != null) {
-                game.gameBoard.setPieceAt(selectedPieceToParchute, position)
+                game.gameBoard.setPieceAt(selectedPieceToParchute, position) //TODO Utiliser une méthode propre du modèle pour les vérifications
                 selectedPieceToParchute = null
             }
         }
