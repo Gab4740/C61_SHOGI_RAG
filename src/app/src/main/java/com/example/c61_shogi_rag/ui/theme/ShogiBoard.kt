@@ -100,7 +100,6 @@ fun BoardBackground(modifier: Modifier = Modifier, boardSize: Int = 9, onTap: (P
 
 @Composable
 fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel: GameViewModel) {
-    key(gameViewModel.counter) { // Forcer la récomposition
         Box(modifier = modifier) {
             Column {
                 for (row in 0 until boardSize) {
@@ -116,7 +115,7 @@ fun BoardLayout(modifier: Modifier = Modifier, boardSize: Int = 9, gameViewModel
                 }
             }
         }
-    }
+
 
 }
 
@@ -140,7 +139,7 @@ fun CapturedPieces(modifier: Modifier = Modifier, isClickable: Boolean = false) 
 fun CapturedPieces(modifier: Modifier = Modifier,
                    hashMapCapturedPieces: HashMap<String, Int>,
                    isClickable: Boolean = false,
-                   onClick:() -> Unit = {}) {
+                   onClick:(shogiPiece:String) -> Unit = {}) {
     val keys = hashMapCapturedPieces.keys.toList()
     LazyRow(
         modifier = modifier
@@ -160,9 +159,10 @@ fun CapturedPieces(modifier: Modifier = Modifier,
 
             if (imageRes >= 0) {
                 counter = hashMapCapturedPieces[keys[index]] ?: 0
+                val canonicalName:String = keys[index]
                 CapturedPiece(
                     modifier = Modifier
-                        .then(if (isClickable) Modifier.clickable {onClick()} else Modifier),
+                        .then(if (isClickable) Modifier.clickable {onClick(canonicalName)} else Modifier),
                     imageRes = imageRes,
                     value = counter
                 )
