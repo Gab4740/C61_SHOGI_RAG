@@ -25,7 +25,7 @@ public class MinimaxManager {
 
     public MinimaxManager(int searchDepth, boolean maximizingPlayer, Vector<ShogiPiece> piece, boolean debug, Hashtable<Byte, ShogiPiece> pieces) {
         this.currGameBoard = null;
-        this.promotionStateMap = null;
+        this.promotionStateMap = new PromotionState(new HashMap<>());
         this.searchDepth = searchDepth;
         this.maximizingPlayer = maximizingPlayer;
         this.debug = debug;
@@ -33,9 +33,8 @@ public class MinimaxManager {
         this.piece = piece;
     }
 
-    public void resetMinimax(Board currGameBoard, HashMap<String, Boolean> promotionStateMap){
+    public void resetMinimax(Board currGameBoard){
         this.currGameBoard = currGameBoard;
-        this.promotionStateMap = new PromotionState(promotionStateMap);
     }
     public MoveManager executeMinimax() {
         long start = System.nanoTime();

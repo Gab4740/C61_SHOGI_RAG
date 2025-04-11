@@ -37,7 +37,7 @@ public class Game {
     private Boolean isGameEnded;
     private Boolean GameWinner;
     private static GameSaver gameSaver;
-    private static PromotionState promotionStateMap; // TO CHANGE
+    private static PromotionState promotionStateMap;
     private MinimaxManager manager;
 
 
@@ -75,7 +75,7 @@ public class Game {
         this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
 
         gameSaver = new GameSaver();
-        promotionStateMap = new PromotionState(new HashMap<String, Boolean>());
+        promotionStateMap = new PromotionState(new HashMap<>());
     }
 
     /**
@@ -244,7 +244,7 @@ public class Game {
      * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
      */
     public void executeMinimax(){
-        manager.resetMinimax(gameBoard, promotionStateMap.getMap());
+        manager.resetMinimax(gameBoard);
         MoveManager calculatedMove = manager.executeMinimax();
 
         if(calculatedMove.checkIfPieceEaten()){
@@ -260,7 +260,7 @@ public class Game {
     }
 
     /**
-     * Méthode qui permet de d'effectuer le déplacement d'une pièce
+     * Méthode qui permet de d'effectuer le déplacement d'une pièce par le joeur
      *
      * @param firstPos  : La pièce choisi,
      * @param secondPos : La nouvelle position choisi
@@ -299,17 +299,22 @@ public class Game {
                     // PIECE ALWAYS PROMOTE
                     promotionStateMap.shouldPlayerPiecePromote(secondPos);
                 }
-            }
-            if(!isGameEnded){
-                flipPlayerTurn(true);
-            }
-            else{
-                // GAME ENDING FUNCTION SHOULD BE CALLED HERE
-                // TODO
+
+                if(!isGameEnded){
+                    flipPlayerTurn(true);
+                }
+                else{
+                    // GAME ENDING FUNCTION SHOULD BE CALLED HERE
+                    // TODO
+                }
             }
         }
         return valid;
     }
+
+    /**
+     * Sert a flipper le booléen de tour. Si c'est au tour du AI, appel minimax
+     * */
     private void flipPlayerTurn(boolean flip){
         if(flip){
             isPlayerTurn = false;
@@ -320,6 +325,9 @@ public class Game {
         }
     }
 
+    /**
+     * Retourne un booléen qui représente si la partie est termine, pour la vue
+     * */
     public boolean getIsGameEnded() {
         return isGameEnded;
     }
@@ -352,10 +360,16 @@ public class Game {
         return pieces.get(gameBoard.getPieceAt(pos));
     }
 
+    /**
+     * Retourne un booléen qui indique si la position est promu
+     * */
     private boolean isPromoted(Position pos) {
         return promotionStateMap.isPiecePromoted(pos);
     }
 
+    /**
+     * Retourne un Integer qui représente un Drawable pour la vue
+     * */
     public Integer getPieceDrawable(Position pos) {
         Integer drawable = null;
         if (getPieceAt(pos) != null) {
@@ -419,32 +433,7 @@ public class Game {
         gameBoard.removePieceAt(pos);
     }
 
-    // --------------------------------------------
-    // DEBUG TOOL
-    public void prettyPrintConsoleBoard(byte[][] array) {
-        int maxLength = getMaxNumberLength(array);
-
-        for (byte[] row : array) {
-            for (int num : row) {
-                System.out.printf("%" + maxLength + "d ", num);
-            }
-            System.out.println();
-        }
-    }
-    // --------------------------------------------
-
-    private int getMaxNumberLength(byte[][] array) {
-        int maxLength = 0;
-        for (byte[] row : array) {
-            for (int num : row) {
-                maxLength = Math.max(maxLength, String.valueOf(num).length());
-            }
-        }
-        return maxLength;
-    }
-
     public void archiverPartie(int id_gagnant, int id_perdant) {
-
         if (isGameEnded) {
             try {
                 Gson gson = new Gson();
@@ -462,11 +451,9 @@ public class Game {
                         //voir pour peut etre mettre un toast
                     }
                 });
-
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-
         }
     }
 
@@ -478,7 +465,6 @@ public class Game {
                 isValid = true;
             }
         }
-
         return isValid;
     }
     public Boolean parachuteBlackPiece(String shogiPieceClass) {
@@ -508,19 +494,15 @@ public class Game {
             capturedPieceBlackHM.put(shogiPieceClass, quantity);
             isValid = true;
         }
-
         return isValid;
     }
-
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
     }
-
     public LinkedHashMap<String, Integer> getCapturedPieceWhiteHM() {
         return capturedPieceWhiteHM;
     }
-
     public HashMap<String, Boolean> getPromotionStateMap() {
         return promotionStateMap.getMap();
     }

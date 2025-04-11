@@ -17,7 +17,7 @@ public class ChevalierDragon extends ExceptionPiece {
         if(secondaryStep(board)){
             int deltaX = finalX - currX;
             int deltaY = finalY - currY;
-            if(deltaX > 1 && deltaY > 1){ return MoveUtils.checkDiagonals(finalX, finalY, currX, currY, board, getDIRECTIONS()); }
+            if(Math.abs(deltaX) > 1 && Math.abs(deltaY) > 1){ return MoveUtils.checkDiagonals(finalX, finalY, currX, currY, board, getDIRECTIONS()); }
             else{ return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS()); }
         }
         return false;
