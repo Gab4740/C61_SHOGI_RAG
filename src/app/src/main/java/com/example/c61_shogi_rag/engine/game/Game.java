@@ -3,10 +3,7 @@ package com.example.c61_shogi_rag.engine.game;
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
-import com.example.c61_shogi_rag.engine.minimax.Minimax;
 import com.example.c61_shogi_rag.engine.minimax.MinimaxManager;
-import com.example.c61_shogi_rag.engine.minimax.MoveGeneration;
-import com.example.c61_shogi_rag.engine.minimax.MoveScore;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
@@ -34,14 +31,13 @@ public class Game {
     private Vector<Byte> capturedPieceBlack;
     private Vector<Byte> capturedPieceWhite;
     private LinkedHashMap<String, Integer> capturedPieceWhiteHM, capturedPieceBlackHM;
-
     private final Time gameTimer;
     private Boolean isPlayerStarting;
     private Boolean isPlayerTurn;
     private Boolean isGameEnded;
     private Boolean GameWinner;
     private static GameSaver gameSaver;
-    private static HashMap<String, Boolean> promotionStateMap;
+    private static PromotionState promotionStateMap; // TO CHANGE
     private MinimaxManager manager;
 
 
@@ -58,13 +54,10 @@ public class Game {
         this.isPlayerStarting = isPlayerStarting;
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
-        this.gameSaver = new GameSaver();
         this.GameWinner = null;
-        this.promotionStateMap = new HashMap<>();
 
         this.capturedPieceWhiteHM = new LinkedHashMap<>(20);
         this.capturedPieceBlackHM = new LinkedHashMap<>(20);
-
 
         this.capturedPieceWhiteHM.put(Pion.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Pion.class.getCanonicalName(), 0);
@@ -80,6 +73,9 @@ public class Game {
         this.capturedPieceBlackHM.put(Fou.class.getCanonicalName(), 0);
         this.capturedPieceWhiteHM.put(Charriot.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
+
+        gameSaver = new GameSaver();
+        promotionStateMap = new PromotionState(new HashMap<String, Boolean>());
     }
 
     /**
@@ -241,23 +237,22 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces);
+        manager = new MinimaxManager(3,true, piecesForMinimax, true, pieces);
     }
 
     /**
      * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
      */
     public void executeMinimax(){
-        manager.resetMinimax(gameBoard, promotionStateMap);
+        manager.resetMinimax(gameBoard, promotionStateMap.getMap());
         MoveManager calculatedMove = manager.executeMinimax();
 
         if(calculatedMove.checkIfPieceEaten()){
             capturePieceAtPos(calculatedMove.getMove().getNextPosition(), false);
         }
         if(calculatedMove.checkIfShouldBePromoted()){
-            // BUG HERE, PROMOTE PLAYER PIECES
-            // UPDATE HASHTABLE WHEN PIECE MOVES TO FIX
-            promotePiece(calculatedMove.getMove().getNextPosition());
+            promotionStateMap.removePromotedPosition(calculatedMove.getMove().getCurrentPosition());
+            promotionStateMap.promotePiece(calculatedMove.getMove().getNextPosition());
         }
         calculatedMove.do_move_on_board(gameBoard);
         isGameEnded = isKingsAlive();
@@ -290,20 +285,28 @@ public class Game {
             if (pieceToPlay.isValidMove(pieceMove, gameBoard)) {
                 if (enemyPieceToCapture) {
                     capturePieceAtPos(secondPos, true);
+                    isGameEnded = isKingsAlive();
                 }
                 gameBoard.movePieceTo(firstPos, secondPos);
-
                 gameSaver.addNewTurn(new OneTurn(pieceToPlay.getID(), firstPos, secondPos, false));
-
-                flipPlayerTurn(true);
                 valid = true;
 
                 if (pieceIsPromoted) {
-                    promotionStateMap.remove(getPositionKey(firstPos.getPosX(), firstPos.getPosY()));
-                    promotionStateMap.put(getPositionKey(secondPos.getPosX(), secondPos.getPosY()), true);
+                    promotionStateMap.removePromotedPosition(firstPos);
+                    promotionStateMap.promotePiece(secondPos);
+                }
+                else{
+                    // PIECE ALWAYS PROMOTE
+                    promotionStateMap.shouldPlayerPiecePromote(secondPos);
                 }
             }
-            isGameEnded = isKingsAlive();
+            if(!isGameEnded){
+                flipPlayerTurn(true);
+            }
+            else{
+                // GAME ENDING FUNCTION SHOULD BE CALLED HERE
+                // TODO
+            }
         }
         return valid;
     }
@@ -315,19 +318,6 @@ public class Game {
         else{
             isPlayerTurn = true;
         }
-    }
-
-    /**
-     * Méthode qui permet de d'effectuer le parachutage d'une piece
-     *
-     * @param parachutePos : La position cliquer,
-     * @param piece        : Pièce a parachuter
-     */
-    public boolean parachute(Position parachutePos, byte piece) {
-        boolean valid = false;
-
-
-        return valid;
     }
 
     public boolean getIsGameEnded() {
@@ -363,11 +353,7 @@ public class Game {
     }
 
     private boolean isPromoted(Position pos) {
-        return Boolean.TRUE.equals(promotionStateMap.get(getPositionKey(pos.getPosX(), pos.getPosY())));
-    }
-
-    private String getPositionKey(int row, int col) {
-        return row + "-" + col;  // Use row-column as the key
+        return promotionStateMap.isPiecePromoted(pos);
     }
 
     public Integer getPieceDrawable(Position pos) {
@@ -505,20 +491,6 @@ public class Game {
         }
         return isValid;
     }
-    private void promotePiece(Position pos) {
-        int row = pos.getPosX();
-        int col = pos.getPosY();
-        String positionKey = getPositionKey(row, col);
-        promotionStateMap.put(positionKey, true);
-    }
-    private void revertPiece(int row, int col) {
-        String positionKey = getPositionKey(row, col);
-        if (promotionStateMap.containsKey(positionKey)) {
-            promotionStateMap.put(positionKey, false);
-        } else {
-            System.out.println("No piece at position (" + row + ", " + col + ") to revert.");
-        }
-    }
 
     public Boolean captureWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
@@ -550,6 +522,6 @@ public class Game {
     }
 
     public HashMap<String, Boolean> getPromotionStateMap() {
-        return promotionStateMap;
+        return promotionStateMap.getMap();
     }
 }
