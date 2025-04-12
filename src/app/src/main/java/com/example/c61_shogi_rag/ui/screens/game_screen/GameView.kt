@@ -47,6 +47,9 @@ fun GameView(modifier: Modifier = Modifier,
                 modifier = Modifier
                     .padding(vertical = 5.dp),
                 isClickable = true,
+                onClick = {
+                          shogiPiece -> gameViewModel.parachutePiece(shogiPiece)
+                },
                 hashMapCapturedPieces = gameViewModel.game.capturedPieceWhiteHM,
             )
             PlayerTag(

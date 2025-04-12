@@ -5,10 +5,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.game.Game
 import com.example.c61_shogi_rag.engine.piece.InitPiece
-import com.example.c61_shogi_rag.engine.piece.PieceIDs
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot
@@ -20,13 +18,13 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
 
 
-class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
-    var game by mutableStateOf(Game(_isPlayerFirst))
+class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
+    var game by mutableStateOf(Game(isPlayerFirst))
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
     var counter by mutableIntStateOf(0)
     private var selectedPosition: Position? = null
-    private var destinationPosition: Position? = null
+    private var selectedPieceToParchute: ShogiPiece? = null
 
     init {
         game.GameInit()
@@ -40,19 +38,21 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
         if(game.isPlayerTurn) {
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
-            } else {
-                destinationPosition = position
-            }
-
-            if(selectedPosition != null && destinationPosition != null) {
-                game.playTurn(selectedPosition, destinationPosition)
+                selectedPieceToParchute = null
+            } else if(selectedPosition != null) {
+                game.playTurn(selectedPosition, position)
                 selectedPosition = null
-                destinationPosition = null
                 isPlayerTurn = game.isPlayerTurn // Force la récomposition
-                // Appeler l'ai ici?
+            }
+            else if(selectedPieceToParchute != null) {
+                game.gameBoard.setPieceAt(selectedPieceToParchute, position) //TODO Utiliser une méthode propre du modèle pour les vérifications
+                selectedPieceToParchute = null
             }
         }
+
     }
+
+
 
     fun parachutePiece(pieceCanonicalName: String) {
         var shogiPiece: ShogiPiece? = null
@@ -65,8 +65,8 @@ class GameViewModel(_isPlayerFirst: Boolean): ViewModel() {
             GeneralOr::class.java.canonicalName -> shogiPiece = InitPiece.GetGeneralOr()
             Fou::class.java.canonicalName -> shogiPiece = InitPiece.GetFou()
             Charriot::class.java.canonicalName -> shogiPiece = InitPiece.GetCharriot()
-
         }
-        game.gameBoard.setPieceAt(shogiPiece, Position(5,5))
+        selectedPieceToParchute = shogiPiece
+
     }
 }

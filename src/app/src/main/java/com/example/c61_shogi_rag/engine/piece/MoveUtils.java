@@ -23,6 +23,8 @@ public class MoveUtils {
 
             if ((!checkSteps((currX - previousX), (currY - previousY), directions))) {
                 return false;
+            } else if ((currX != finalX || currY != finalY) && board.getPieceAt(new Position(currX, currY)) != 0) {
+                return false;
             }
         }
         return true;
@@ -48,6 +50,8 @@ public class MoveUtils {
                 }
 
                 if ((!checkSteps((currX - previousX), (currY - previousY), directions))) {
+                    return false;
+                } else if (currX != finalX && currY != finalY && board.getPieceAt(new Position(currX, currY)) != 0) {
                     return false;
                 }
             }
