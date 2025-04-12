@@ -12,6 +12,7 @@ import java.util.Vector;
 public class Evaluation {
     private static final int MATERIAL_EVAL_ADJUST = 100;
     private static final int CONTROL_CENTER_ADJUST = 100;
+    //rajouter d'autre adjust
 
 
     public static int material_eval(Board board, HashMap<String, Boolean> promotionStateMap,
@@ -46,6 +47,7 @@ public class Evaluation {
         return (1 / playerScore) * MATERIAL_EVAL_ADJUST;
     }
 
+    //========================================================================================================
 
     public int controleCenter(Board board){
 
@@ -69,6 +71,9 @@ public class Evaluation {
 
     }
 
+    //========================================================================================================
+
+    //evaluation du castling
     public static int evaluateCastling(Board board){
         int castlingScore = 0;
 
@@ -85,6 +90,7 @@ public class Evaluation {
 
     }
 
+    //check si il y a assez de piece pour faire la formation Yagura autour du rois
     private static int checkYaguraCastle(Board board, Position kingPos){
 
         int score = 0;
@@ -128,6 +134,7 @@ public class Evaluation {
         return score;
     }
 
+    //check si il y a assez de piece pour faire la formation Anaguma autour du rois
     private static int checkAnagumaCastle(Board board, Position kingPos){
 
         int score = 0;
@@ -171,6 +178,7 @@ public class Evaluation {
         return score;
     }
 
+    //fonction pour trouver la position du roi de L'ia
     private static Position findKingPosition(Board board){
         Vector<Position> piece = board.getPositionFromColor(false);
         byte kingValue = (byte) PieceIDs.Roi.getValue();
@@ -181,6 +189,124 @@ public class Evaluation {
             }
         }
         return null;
+    }
+
+    //========================================================================================================
+
+    //evaluation de la safety du roi
+    public static int evaluateKingSafety(Board board){
+        Position kingPos = findKingPosition(board);
+
+        int score = 0;
+
+        score += checkThinckeness(board, kingPos);
+        score += checkEscapeRoute(board, kingPos);
+        score += evaluateEnteringKing(board, kingPos);
+
+        return score;
+    }
+
+    //check le nombre de piece allie autoure du rois pour evaluer sa protection
+    private static int checkThinckeness(Board board, Position kingPos){
+        int score = 0;
+
+        int kx = kingPos.getPosX();
+        int ky = kingPos.getPosY();
+
+        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+        int nbrPieceAutour = 0;
+
+        for (int[] pos : pieceACoter){
+            int x = kx + pos[0];
+            int y = ky + pos[1];
+
+            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+                byte pieceValue = board.getPieceAt(new Position(x, y));
+
+                nbrPieceAutour++;
+                score += 10;
+
+                //rajout d'un bonus si il y a un general
+                if (pieceValue == PieceIDs.GeneralOr.getValue() ||
+                        pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                    score += 5;
+                }
+            }
+        }
+
+
+        if (nbrPieceAutour >= 6){
+            score += 30;
+        }
+        else if (nbrPieceAutour >= 4){
+            score += 20;
+        }
+        else if (nbrPieceAutour <= 1){
+            score -= 30;
+        }
+
+
+
+        return score;
+    }
+
+    //regarde les cases autoure du roi plus il y a case vide mieux c'est, si il y a piece ennemy le rois peut le manger mais plus dangereux
+    private static int checkEscapeRoute(Board board, Position kingPos){
+        int score = 0;
+
+        int kx = kingPos.getPosX();
+        int ky = kingPos.getPosY();
+
+        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+        int nbrEscapeRoute = 0;
+
+        for (int[] pos : pieceACoter){
+            int x = kx + pos[0];
+            int y = ky + pos[1];
+
+
+            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+                byte pieceValue = board.getPieceAt(new Position(x, y));
+
+                //poser la question pour savoir si l'index est negatif ou positif pour les ia
+                if (pieceValue == 0){
+                    nbrEscapeRoute++;
+
+                    // si case vide
+                    if (pieceValue == 0){
+                        score += 10;
+                    }else {
+                        //si case avec piece ennemy
+                        score += 5;
+                    }
+                }
+            }
+        }
+
+        if (nbrEscapeRoute >= 4){
+            score += 10;
+        }else if (nbrEscapeRoute >= 2){
+            score += 5;
+        }else if (nbrEscapeRoute == 0){ //si zero route pas bon car king vas mourire
+            score -= 30;
+        }
+
+        return score;
+
+    }
+
+    //regarde si le roi ce trouve dans le camps ennemy, plus le roi est loin dans le camps mieux c'est
+    private static int evaluateEnteringKing(Board board, Position kingPos){
+        int score = 0;
+        int ky = kingPos.getPosY();
+
+        if (ky >= 5){
+            score += 10 * (ky - 4);
+        }
+
+        return score;
     }
 
 
