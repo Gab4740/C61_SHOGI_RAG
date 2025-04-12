@@ -4,22 +4,10 @@ import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.MoveUtils;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
+import com.example.c61_shogi_rag.engine.piece.StraightPathPiece;
 
-public class Charriot extends ShogiPiece {
+public class Charriot extends StraightPathPiece {
     public Charriot(byte id, byte idPromu, int imageId, int imageIdPromu, String nom, int[][] directions) {
         super(id, idPromu, imageId, imageIdPromu, nom, directions);
-    }
-
-    @Override
-    public boolean isValidMove(Move move, Board board) {
-        int currX = move.getCurrentPosition().getPosX();
-        int currY = move.getCurrentPosition().getPosY();
-        int finalX = move.getNextPosition().getPosX();
-        int finalY = move.getNextPosition().getPosY();
-
-        if(finalY > 9 || finalY < 0 || finalX > 9 || finalX < 0){
-            return false;
-        }
-        return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS());
     }
 }

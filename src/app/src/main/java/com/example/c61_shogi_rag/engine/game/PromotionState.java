@@ -43,6 +43,11 @@ public class PromotionState {
         }
         return false;
     }
+    public void shouldPlayerPiecePromote(Position pos){
+        if(pos.getPosX() <= 2){
+            promotePiece(pos);
+        }
+    }
 
     // DEBUG
     public void printMap() {
