@@ -31,10 +31,10 @@ public class Evaluation {
             }
 
             if (Boolean.TRUE.equals(promotionStateMap.get(pos.getPosX() + "-" + pos.getPosY()))){
-                pieceValue = piece.get(pieceValue).getID_PROMU();
+                pieceValue = piece.get(pieceValue).getID_PROMU() ;
             }
 
-            playerScore += pieceValue;
+            playerScore += pieceValue *-1;
 
         }
 
@@ -56,7 +56,7 @@ public class Evaluation {
         int centerX = 4;
         int centerY = 4;
 
-        Vector<Position> playerPieces = board.getPositionFromColor(true);
+        Vector<Position> playerPieces = board.getPositionFromColor(false);
 
         for(Position pos: playerPieces){
 
@@ -115,13 +115,15 @@ public class Evaluation {
             if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
-                if (pieceValue == PieceIDs.GeneralOr.getValue()) {
-                    goldCount++;
-                } else if (pieceValue == PieceIDs.GeneralArgent.getValue()) {
-                    silverCount++;
-                }
+                if (pieceValue < 0) {
+                    if (pieceValue == PieceIDs.GeneralOr.getValue()) {
+                        goldCount++;
+                    } else if (pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                        silverCount++;
+                    }
 
-                score += 5;
+                    score += 5;
+                }
             }
         }
 
@@ -158,13 +160,17 @@ public class Evaluation {
             if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
-                nbrPieceAutour++;
-                score += 5;
-
-                //rajout d'un bonus si il y a un general
-                if (pieceValue == PieceIDs.GeneralOr.getValue() ||
-                        pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                //check si piece allier
+                if (pieceValue < 0) {
+                    nbrPieceAutour++;
                     score += 5;
+
+                    //rajout d'un bonus si il y a un general
+                    if (pieceValue == PieceIDs.GeneralOr.getValue() ||
+                            pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                        score += 5;
+                    }
+
                 }
             }
         }
@@ -224,13 +230,16 @@ public class Evaluation {
             if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
-                nbrPieceAutour++;
-                score += 10;
+                //pour voir si piece allier
+                if (pieceValue < 0){
+                    nbrPieceAutour++;
+                    score += 10;
 
-                //rajout d'un bonus si il y a un general
-                if (pieceValue == PieceIDs.GeneralOr.getValue() ||
-                        pieceValue == PieceIDs.GeneralArgent.getValue()) {
-                    score += 5;
+                    //rajout d'un bonus si il y a un general qui protege le roi
+                    if (pieceValue == PieceIDs.GeneralOr.getValue() ||
+                            pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                        score += 5;
+                    }
                 }
             }
         }
@@ -270,8 +279,8 @@ public class Evaluation {
             if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
-                //poser la question pour savoir si l'index est negatif ou positif pour les ia
-                if (pieceValue == 0){
+                //si case vide ou piece ennemy capturable
+                if (pieceValue == 0 || pieceValue > 0){
                     nbrEscapeRoute++;
 
                     // si case vide
@@ -289,7 +298,7 @@ public class Evaluation {
             score += 10;
         }else if (nbrEscapeRoute >= 2){
             score += 5;
-        }else if (nbrEscapeRoute == 0){ //si zero route pas bon car king vas mourire
+        }else if (nbrEscapeRoute == 0){ //si zero route pas bon car king peut pas partir en cas de danger
             score -= 30;
         }
 
