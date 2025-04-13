@@ -40,20 +40,25 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
                 selectedPosition = position
                 selectedPieceToParchute = null
             } else if(selectedPosition != null) {
-                game.playTurn(selectedPosition, position)
+                if(game.playTurn(selectedPosition, position)) {
+                    aiTurn()
+                }
                 selectedPosition = null
                 isPlayerTurn = game.isPlayerTurn // Force la récomposition
             }
             else if(selectedPieceToParchute != null) {
-                game.gameBoard.setPieceAt(selectedPieceToParchute, position) //TODO Utiliser une méthode propre du modèle pour les vérifications
+                if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
+                    aiTurn()
+                }
                 selectedPieceToParchute = null
             }
         }
-
     }
 
-
-
+    private fun aiTurn() {
+        counter++
+        game.aiTurn()
+    }
     fun parachutePiece(pieceCanonicalName: String) {
         var shogiPiece: ShogiPiece? = null
 

@@ -299,9 +299,8 @@ public class Game {
                     // PIECE ALWAYS PROMOTE
                     promotionStateMap.shouldPlayerPiecePromote(secondPos);
                 }
-
                 if(!isGameEnded){
-                    flipPlayerTurn(true);
+                    //flipPlayerTurn(true); à faire dans gameViewModel
                 }
                 else{
                     // GAME ENDING FUNCTION SHOULD BE CALLED HERE
@@ -323,6 +322,10 @@ public class Game {
         else{
             isPlayerTurn = true;
         }
+    }
+
+    public void aiTurn() {
+        flipPlayerTurn(true);
     }
 
     /**
@@ -457,17 +460,47 @@ public class Game {
         }
     }
 
-    public Boolean parachuteWhitePiece(String shogiPieceClass) {
-        boolean isValid = false;
-        if (capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceWhiteHM.get(shogiPieceClass);
-            if (quantity > 0) {
-                isValid = true;
+    public boolean parachuteWhitePiece(ShogiPiece shogiPiece, Position position) {
+        boolean valid = false;
+        if(isDroppable(shogiPiece, position)) {
+            String pieceCanonicalName = shogiPiece.getClass().getCanonicalName();
+            int quantity = capturedPieceWhiteHM.get(pieceCanonicalName) - 1;
+            capturedPieceWhiteHM.put(pieceCanonicalName, quantity);
+            gameBoard.setPieceAt(shogiPiece, position);
+            valid = true;
+        }
+        return  valid;
+    }
+
+    public boolean isDroppable(ShogiPiece shogiPiece, Position position) {
+        String pieceCanonicalName = shogiPiece.getClass().getCanonicalName();
+        final int LAST_ROW = 0;
+
+        boolean valid = false;
+        if(capturedPieceWhiteHM.containsKey(pieceCanonicalName)) {
+            int quantity = capturedPieceWhiteHM.get(pieceCanonicalName);
+            if(quantity > 0 && isPositionEmpty(position)) {
+                valid = true;
+                if(shogiPiece instanceof Pion) {
+                    // TODO Vérifier la colonne pour un autre pion
+                    // TODO Vérifier si le pion fait échec et mat
+                    if(position.getPosX() == LAST_ROW) {
+                        valid = false;
+                    }
+                } else if (shogiPiece instanceof  Lance) {
+                    if(position.getPosX() == LAST_ROW) {
+                        valid = false;
+                    }
+                } else if (shogiPiece instanceof Chevalier) {
+                    if(position.getPosX() == LAST_ROW  || position.getPosX() == LAST_ROW + 1) {
+                        valid = false;
+                    }
+                }
             }
         }
-        return isValid;
+        return valid;
     }
-    public Boolean parachuteBlackPiece(String shogiPieceClass) {
+    public void parachuteBlackPiece(String shogiPieceClass) {
         boolean isValid = false;
         if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
             int quantity = capturedPieceBlackHM.get(shogiPieceClass);
@@ -475,7 +508,6 @@ public class Game {
                 isValid = true;
             }
         }
-        return isValid;
     }
 
     public Boolean captureWhitePiece(String shogiPieceClass) {

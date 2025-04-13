@@ -40,6 +40,7 @@ public class Board {
         setPieceAt(temp, newPosition);
     }
 
+
     /**
     * Retourne un vecteur de positions de la pièce recherché
     *
