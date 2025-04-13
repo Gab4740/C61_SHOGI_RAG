@@ -23,6 +23,7 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
     var counter by mutableIntStateOf(0)
+    var isGameEnded by mutableStateOf(game.isGameEnded)
     private var selectedPosition: Position? = null
     private var selectedPieceToParchute: ShogiPiece? = null
 
@@ -34,17 +35,24 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
         }
     }
     fun selectPosition(position: Position) {
-        counter++
         if(game.isPlayerTurn) {
+            playerTurn(position)
+        }
+    }
+    private fun playerTurn(position: Position) {
+        counter++
+        if(!isGameEnded) {
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
                 selectedPieceToParchute = null
             } else if(selectedPosition != null) {
                 if(game.playTurn(selectedPosition, position)) {
+                    isGameEnded = game.isGameEnded
+
                     aiTurn()
                 }
                 selectedPosition = null
-                isPlayerTurn = game.isPlayerTurn // Force la récomposition
+                isPlayerTurn = game.isPlayerTurn
             }
             else if(selectedPieceToParchute != null) {
                 if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
@@ -54,10 +62,12 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
             }
         }
     }
-
     private fun aiTurn() {
         counter++
-        game.aiTurn()
+        if(!isGameEnded) {
+            game.aiTurn()
+            isGameEnded = game.isGameEnded
+        }
     }
     fun parachutePiece(pieceCanonicalName: String) {
         var shogiPiece: ShogiPiece? = null
