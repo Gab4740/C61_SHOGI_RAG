@@ -12,15 +12,17 @@ import java.util.Random;
 import java.util.Vector;
 
 public class Minimax {
+    private final EvaluationStrategies difficulty;
     private Vector<ShogiPiece> pieces;
     private Hashtable<Byte, ShogiPiece> piecesObj;
     private int leafCounter;
     private Random rand;
-    public Minimax(Vector<ShogiPiece> pieces, Hashtable<Byte, ShogiPiece> piecesObj){
+    public Minimax(Vector<ShogiPiece> pieces, Hashtable<Byte, ShogiPiece> piecesObj, EvaluationStrategies difficulty){
         this.pieces = pieces;
         this.leafCounter = 0;
         this.rand = new Random();
         this.piecesObj = piecesObj;
+        this.difficulty = difficulty;
     }
 
     /**
@@ -36,7 +38,7 @@ public class Minimax {
     public MoveScore minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, PromotionState promotions){
         if (depth == 0){
             leafCounter++;
-            return new MoveScore(rand.nextInt(100), null); // Evaluation(board, moveGenerator.getPromotionStateMap());
+            return new MoveScore(difficulty.evaluate(board, promotions, piecesObj), null); // Evaluation(board, moveGenerator.getPromotionStateMap());
         }
 
         MoveGeneration moveGenerator = new MoveGeneration(pieces, board, promotions, piecesObj);

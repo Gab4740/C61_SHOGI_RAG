@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 public class MinimaxManager {
+    private final EvaluationStrategies difficulty;
     private Minimax minimaxObj;
     private Hashtable<Byte, ShogiPiece> piecesObj;
     private Board currGameBoard;
@@ -23,7 +24,7 @@ public class MinimaxManager {
     private PromotionState promotionStateMap;
     private Vector<ShogiPiece> piece;
 
-    public MinimaxManager(int searchDepth, boolean maximizingPlayer, Vector<ShogiPiece> piece, boolean debug, Hashtable<Byte, ShogiPiece> pieces) {
+    public MinimaxManager(int searchDepth, boolean maximizingPlayer, Vector<ShogiPiece> piece, boolean debug, Hashtable<Byte, ShogiPiece> pieces, EvaluationStrategies difficulty) {
         this.currGameBoard = null;
         this.promotionStateMap = new PromotionState(new HashMap<>());
         this.searchDepth = searchDepth;
@@ -31,6 +32,7 @@ public class MinimaxManager {
         this.debug = debug;
         this.piecesObj = pieces;
         this.piece = piece;
+        this.difficulty = difficulty;
     }
 
     public void resetMinimax(Board currGameBoard){
@@ -38,7 +40,7 @@ public class MinimaxManager {
     }
     public MoveManager executeMinimax() {
         long start = System.nanoTime();
-        minimaxObj = new Minimax(piece, piecesObj);
+        minimaxObj = new Minimax(piece, piecesObj, difficulty);
         MoveScore moveToDo = minimaxObj.minimax(currGameBoard, searchDepth, ALPHA, BETA, maximizingPlayer, promotionStateMap);
         long end = System.nanoTime();
 

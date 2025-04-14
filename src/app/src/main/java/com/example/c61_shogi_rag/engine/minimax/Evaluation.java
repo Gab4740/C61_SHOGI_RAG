@@ -1,6 +1,7 @@
 package com.example.c61_shogi_rag.engine.minimax;
 
 import com.example.c61_shogi_rag.engine.game.Board;
+import com.example.c61_shogi_rag.engine.game.PromotionState;
 import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
@@ -15,7 +16,7 @@ public class Evaluation {
     //rajouter d'autre adjust
 
 
-    public static int material_eval(Board board, HashMap<String, Boolean> promotionStateMap,
+    public static int material_eval(Board board, PromotionState promotionStateMap,
                                     Hashtable<Byte, ShogiPiece> piece) {
         int playerScore = 0;
         boolean pionExiste = false;
@@ -30,7 +31,7 @@ public class Evaluation {
                 pionExiste = true;
             }
 
-            if (Boolean.TRUE.equals(promotionStateMap.get(pos.getPosX() + "-" + pos.getPosY()))){
+            if (promotionStateMap.isPiecePromoted(pos)){
                 pieceValue = piece.get(pieceValue).getID_PROMU() ;
             }
 
@@ -44,7 +45,7 @@ public class Evaluation {
             playerScore -= 50; // a changer
         }
 
-        return (1 / playerScore) * MATERIAL_EVAL_ADJUST;
+        return (1 / playerScore);
     }
 
     //========================================================================================================
@@ -187,7 +188,8 @@ public class Evaluation {
     //fonction pour trouver la position du roi de L'ia
     private static Position findKingPosition(Board board, boolean color){
         Vector<Position> piece = board.getPositionFromColor(color);
-        byte kingValue = (byte) PieceIDs.Roi.getValue();
+        int adjust = color ? 1 : -1;
+        byte kingValue = (byte) (PieceIDs.Roi.getValue() * adjust);
 
         for (Position pos: piece){
             if (board.getPieceAt(pos) == kingValue){
