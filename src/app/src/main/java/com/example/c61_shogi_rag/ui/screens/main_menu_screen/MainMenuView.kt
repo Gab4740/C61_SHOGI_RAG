@@ -1,15 +1,26 @@
 package com.example.c61_shogi_rag.ui.screens.main_menu_screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCbrt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
@@ -116,5 +127,35 @@ fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
 
 
 
+@Composable
+fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
+    val radioOptions = listOf("Easy", "Medium", "Hard")
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+    // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
+    Row(modifier.selectableGroup()) {
+        radioOptions.forEach { text ->
+            Column(
+                Modifier
+                    .height(56.dp)
+                    .selectable(
+                        selected = (text == selectedOption),
+                        onClick = { onOptionSelected(text) },
+                        role = Role.RadioButton
 
+                    )
+                    .padding(horizontal = 16.dp)
+                    .then(if (text == selectedOption) Modifier.background(Color.Yellow) else Modifier),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+
+                )
+            }
+        }
+    }
+}
 
