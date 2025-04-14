@@ -1,5 +1,6 @@
 package com.example.c61_shogi_rag.engine.game;
 
+import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
@@ -131,4 +132,16 @@ public class Board {
         return maxLength;
     }
     // --------------------------------------------
+
+    public boolean isWhitePawnInColumn(final int column) {
+        boolean valid = true;
+        for(int row = 0; row < BOARD_SIZE; row++) {
+            byte temp =  getPieceAt(new Position(row, column));
+            if(temp == PieceIDs.Pion.getValue()) {
+                valid = false;
+                break;
+            }
+        }
+        return valid;
+    }
 }
