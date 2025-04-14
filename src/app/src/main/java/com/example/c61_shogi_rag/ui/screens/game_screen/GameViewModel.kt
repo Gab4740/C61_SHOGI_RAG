@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.c61_shogi_rag.engine.game.Game
 import com.example.c61_shogi_rag.engine.piece.InitPiece
 import com.example.c61_shogi_rag.engine.piece.Position
@@ -16,6 +17,7 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
+import kotlinx.coroutines.launch
 
 
 class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
@@ -41,26 +43,29 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
     }
     private fun playerTurn(position: Position) {
         counter++
-        if(!isGameEnded) {
-            if(game.isPlayerPieceAtPos(position)) {
-                selectedPosition = position
-                selectedPieceToParchute = null
-            } else if(selectedPosition != null) {
-                if(game.playTurn(selectedPosition, position)) {
-                    isGameEnded = game.isGameEnded
+        viewModelScope.launch{
+            if(!isGameEnded) {
+                if(game.isPlayerPieceAtPos(position)) {
+                    selectedPosition = position
+                    selectedPieceToParchute = null
+                } else if(selectedPosition != null) {
+                    if(game.playTurn(selectedPosition, position)) {
+                        isGameEnded = game.isGameEnded
 
-                    aiTurn()
+                        aiTurn()
+                    }
+                    selectedPosition = null
+                    isPlayerTurn = game.isPlayerTurn
                 }
-                selectedPosition = null
-                isPlayerTurn = game.isPlayerTurn
-            }
-            else if(selectedPieceToParchute != null) {
-                if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
-                    aiTurn()
+                else if(selectedPieceToParchute != null) {
+                    if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
+                        aiTurn()
+                    }
+                    selectedPieceToParchute = null
                 }
-                selectedPieceToParchute = null
             }
         }
+
     }
     private fun aiTurn() {
         counter++

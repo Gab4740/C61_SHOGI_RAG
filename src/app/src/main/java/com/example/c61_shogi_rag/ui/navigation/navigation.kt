@@ -43,7 +43,12 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
                 opponent = Joueur(game.opponentID, game.opponentName),
-                gameViewModel = viewModel {GameViewModel(game.isPlayerFirst)}
+                gameViewModel = viewModel {GameViewModel(game.isPlayerFirst)},
+                navigateToMainMenu = {
+                    navController.navigate(MainMenu) {
+                        popUpTo<MainMenu>{inclusive = true}
+                    }
+                }
             )
         }
 

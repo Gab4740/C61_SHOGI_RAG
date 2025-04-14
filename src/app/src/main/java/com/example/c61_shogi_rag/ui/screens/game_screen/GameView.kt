@@ -21,6 +21,7 @@ import com.example.c61_shogi_rag.ui.theme.GoteComposable
 import com.example.c61_shogi_rag.ui.theme.GoteSenteComposable
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
+import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
 import kotlin.math.truncate
 import kotlin.random.Random
@@ -29,7 +30,8 @@ import kotlin.random.Random
 fun GameView(modifier: Modifier = Modifier,
              gameViewModel: GameViewModel = viewModel(),
              playerShareViewModel: PlayerShareViewModel,
-             opponent: Joueur
+             opponent: Joueur,
+             navigateToMainMenu:() -> Unit
              ) {
     key(gameViewModel.counter)
     {
@@ -72,7 +74,12 @@ fun GameView(modifier: Modifier = Modifier,
     }
     when {
         gameViewModel.isGameEnded -> {
-            GameOverDialog()
+            GameOverDialog(
+                onDismiss = {
+                    gameViewModel.isGameEnded = false
+                    navigateToMainMenu()
+                }
+            )
         }
     }
 }
@@ -80,13 +87,42 @@ fun GameView(modifier: Modifier = Modifier,
 
 @Composable
 fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
-                   onConfirmation:(Boolean) -> Unit = {}) {
+                   onConfirmation:() -> Unit = {}) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
 
-        title = { Title(name = "Game Over") },
-        confirmButton = {
+        title = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Title(name = "Game Over")
+            }
 
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+               PlayerTag(playerName = "player wins")
+            }
+        },
+
+        confirmButton = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ShogiButton(
+                    text = "Save game",
+                    onClick = {onConfirmation()}
+                )
+            }
         }
     )
 }
