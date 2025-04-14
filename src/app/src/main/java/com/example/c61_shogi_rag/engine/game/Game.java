@@ -501,13 +501,7 @@ public class Game {
         return valid;
     }
     public void parachuteBlackPiece(String shogiPieceClass) {
-        boolean isValid = false;
-        if(capturedPieceBlackHM.containsKey(shogiPieceClass)) {
-            int quantity = capturedPieceBlackHM.get(shogiPieceClass);
-            if(quantity > 0) {
-                isValid = true;
-            }
-        }
+
     }
 
     public Boolean captureWhitePiece(String shogiPieceClass) {
