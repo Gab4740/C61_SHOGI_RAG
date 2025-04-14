@@ -482,9 +482,10 @@ public class Game {
             if(quantity > 0 && isPositionEmpty(position)) {
                 valid = true;
                 if(shogiPiece instanceof Pion) {
-                    // TODO Vérifier la colonne pour un autre pion
+
                     // TODO Vérifier si le pion fait échec et mat
-                    if(position.getPosX() == LAST_ROW) {
+                    if(position.getPosX() == LAST_ROW
+                        || !gameBoard.isWhitePawnInColumn(position.getPosY())) {
                         valid = false;
                     }
                 } else if (shogiPiece instanceof  Lance) {
