@@ -16,9 +16,9 @@ public class Hard extends EvaluationStrategies {
     @Override
     public int evaluate(Board board, PromotionState promotions, Hashtable<Byte, ShogiPiece> pieces) {
         int score = 0;
-        //score += Evaluation.evaluateCastling(board);
+        score += Evaluation.evaluateCastling(board);
         score += Evaluation.evaluateKingSafety(board);
-        //score += Evaluation.evaluateDistanceToTheKing(board, pieces);
+        score += Evaluation.evaluateDistanceToTheKing(board, pieces);
         score += Evaluation.material_eval(board, promotions, pieces);
         return score;
     }
