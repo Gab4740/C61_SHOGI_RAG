@@ -237,7 +237,7 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(3,true, piecesForMinimax, true, pieces);
+        manager = new MinimaxManager(3,true, piecesForMinimax, false, pieces);
     }
 
     /**
@@ -248,7 +248,11 @@ public class Game {
         MoveManager calculatedMove = manager.executeMinimax();
 
         if(calculatedMove.checkIfPieceEaten()){
-            capturePieceAtPos(calculatedMove.getMove().getNextPosition(), false);
+            Position nextPos = calculatedMove.getMove().getNextPosition();
+            capturePieceAtPos(nextPos, false);
+            if(promotionStateMap.isPiecePromoted(nextPos)){
+                promotionStateMap.removePromotedPosition(nextPos);
+            };
         }
         if(calculatedMove.checkIfShouldBePromoted()){
             promotionStateMap.removePromotedPosition(calculatedMove.getMove().getCurrentPosition());
@@ -287,6 +291,7 @@ public class Game {
                     capturePieceAtPos(secondPos, true);
                     isGameEnded = isKingsAlive();
                 }
+
                 gameBoard.movePieceTo(firstPos, secondPos);
                 gameSaver.addNewTurn(new OneTurn(pieceToPlay.getID(), firstPos, secondPos, false));
                 valid = true;
@@ -298,13 +303,6 @@ public class Game {
                 else{
                     // PIECE ALWAYS PROMOTE
                     promotionStateMap.shouldPlayerPiecePromote(secondPos);
-                }
-                if(!isGameEnded){
-                    //flipPlayerTurn(true); à faire dans gameViewModel
-                }
-                else{
-                    // GAME ENDING FUNCTION SHOULD BE CALLED HERE
-                    // TODO
                 }
             }
         }
