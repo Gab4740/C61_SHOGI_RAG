@@ -17,7 +17,9 @@ public class RoiDragon extends ExceptionPiece {
         if(secondaryStep(board)){
             int deltaX = finalX - currX;
             int deltaY = finalY - currY;
-            if(Math.abs(deltaY) > 1 || Math.abs(deltaX) > 1){ return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS()); }
+            if((Math.abs(deltaY) > 1 && deltaX == 0)|| (Math.abs(deltaX) > 1 && deltaY == 0)){
+                return MoveUtils.checkCross(finalX, finalY, currX, currY, board, getDIRECTIONS());
+            }
             else{ return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS()); }
         }
         return false;

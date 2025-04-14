@@ -3,6 +3,8 @@ package com.example.c61_shogi_rag.engine.game;
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
+import com.example.c61_shogi_rag.engine.minimax.Difficulty;
+import com.example.c61_shogi_rag.engine.minimax.EvaluationStrategies;
 import com.example.c61_shogi_rag.engine.minimax.MinimaxManager;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
@@ -39,18 +41,19 @@ public class Game {
     private static GameSaver gameSaver;
     private static PromotionState promotionStateMap;
     private MinimaxManager manager;
+    private EvaluationStrategies difficulty;
 
 
     /**
      * @param isPlayerStarting : Si le joueur commence : true, si le AI commence : false
      */
-    public Game(Boolean isPlayerStarting) {
+    public Game(Boolean isPlayerStarting, EvaluationStrategies difficulty) {
+        this.gameTimer = new Time();
+        this.gameBoard = new Board();
         this.pieces = new Hashtable<>();
         this.piecesForMinimax = new Vector<>();
         this.capturedPieceBlack = new Vector<>();
         this.capturedPieceWhite = new Vector<>();
-        this.gameTimer = new Time();
-        this.gameBoard = new Board();
         this.isPlayerStarting = isPlayerStarting;
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
@@ -74,8 +77,13 @@ public class Game {
         this.capturedPieceWhiteHM.put(Charriot.class.getCanonicalName(), 0);
         this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
 
+        this.difficulty = difficulty;
+
         gameSaver = new GameSaver();
         promotionStateMap = new PromotionState(new HashMap<>());
+    }
+    public Game(Boolean isPlayerStarting){
+       this(isPlayerStarting, Difficulty.Hard.getStrategy());
     }
 
     /**
@@ -237,7 +245,7 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(3,true, piecesForMinimax, false, pieces);
+        manager = new MinimaxManager(3,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**
@@ -289,6 +297,9 @@ public class Game {
             if (pieceToPlay.isValidMove(pieceMove, gameBoard)) {
                 if (enemyPieceToCapture) {
                     capturePieceAtPos(secondPos, true);
+                    if(promotionStateMap.isPiecePromoted(secondPos)){
+                        promotionStateMap.removePromotedPosition(secondPos);
+                    }
                     isGameEnded = isKingsAlive();
                 }
 
@@ -303,6 +314,7 @@ public class Game {
                 else{
                     // PIECE ALWAYS PROMOTE
                     promotionStateMap.shouldPlayerPiecePromote(secondPos);
+
                 }
             }
         }
