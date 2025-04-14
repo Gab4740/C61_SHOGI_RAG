@@ -77,7 +77,7 @@ public class Evaluation {
     public static int evaluateCastling(Board board){
         int castlingScore = 0;
 
-        Position kingPos = findKingPosition(board);
+        Position kingPos = findKingPosition(board, false);
 
         if (kingPos == null){
             return 0;
@@ -185,8 +185,8 @@ public class Evaluation {
     }
 
     //fonction pour trouver la position du roi de L'ia
-    private static Position findKingPosition(Board board){
-        Vector<Position> piece = board.getPositionFromColor(false);
+    private static Position findKingPosition(Board board, boolean color){
+        Vector<Position> piece = board.getPositionFromColor(color);
         byte kingValue = (byte) PieceIDs.Roi.getValue();
 
         for (Position pos: piece){
@@ -201,7 +201,7 @@ public class Evaluation {
 
     //evaluation de la safety du roi
     public static int evaluateKingSafety(Board board){
-        Position kingPos = findKingPosition(board);
+        Position kingPos = findKingPosition(board, false);
 
         int score = 0;
 
@@ -317,6 +317,48 @@ public class Evaluation {
 
         return score;
     }
+
+    //========================================================================================================
+
+
+    public static int evaluateDistanceToTheKing(Board board, Hashtable<Byte, ShogiPiece> piece){
+        int score = 0;
+
+        Position kingIa = findKingPosition(board, false);
+        Position kingPlayer = findKingPosition(board, true);
+
+        Vector<Position> piecesIa = board.getPositionFromColor(false);
+
+        for (Position pos : piecesIa){
+            byte pieceValue = board.getPieceAt(pos);
+
+            if (pieceValue == PieceIDs.Roi.getValue()){
+                continue;
+            }
+
+            int disctanceToEnnemyKing = Math.abs(kingPlayer.getPosX() - pos.getPosX()) + Math.abs(kingPlayer.getPosY() - pos.getPosY());
+
+            int disctanceToKingIa =  Math.abs(kingIa.getPosX() - pos.getPosX()) + Math.abs(kingIa.getPosY() - pos.getPosY());
+
+            //plus les pieces sont proche du rois ennemy meilleur sont les point en fonction de l'importance de la piece
+            if (disctanceToEnnemyKing <= 2){
+                score += pieceValue * 10;
+            }else if (disctanceToEnnemyKing <= 4){
+                score += pieceValue * 5;
+            }else {
+                //si piece trop loin du roi ennemy
+                score -= pieceValue * 2;
+            }
+
+            //si piece proche du rois bien car rois proteger
+            if (disctanceToKingIa <= 2){
+                score += pieceValue * 3;
+            }
+        }
+
+        return score;
+    }
+
 
 
 
