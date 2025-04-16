@@ -8,6 +8,7 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 public class Evaluation {
@@ -20,55 +21,15 @@ public class Evaluation {
     private static final int CONTROL_CENTER_ADJUST = 80;
 
 
-    public static int material_eval(Board board, PromotionState promotionStateMap,
-                                    Hashtable<Byte, ShogiPiece> piece) {
-        int iaScore = 0;
-        int playerScore = 0;
-        boolean iaHasPawn = false;
-        boolean playerHasPawn = false;
-
-        Vector<Position> iaPieces = board.getPositionFromColor(false);
-        for(Position pos : iaPieces) {
-            byte pieceValue = board.getPieceAt(pos);
-
-            if(pieceValue == PieceIDs.Pion.getValue() * -1) {
-                iaHasPawn = true;
+    public static int material_eval(Board board, PromotionState promotionStateMap, Hashtable<Byte, ShogiPiece> piece) {
+        int totalScore = 0;
+        byte[][] b = board.getBoard();
+        for(int i = 0; i < board.getBOARD_SIZE(); i++){
+            for(int j = 0; j < board.getBOARD_SIZE(); j++){
+                totalScore -= b[i][j];
             }
-
-            if (promotionStateMap.isPiecePromoted(pos)) {
-                pieceValue = piece.get(pieceValue).getID_PROMU();
-            }
-
-            iaScore += Math.abs(pieceValue);
         }
-
-        if (!iaHasPawn) {
-            iaScore -= 50;
-        }
-
-        Vector<Position> playerPieces = board.getPositionFromColor(true);
-        for(Position pos : playerPieces) {
-            byte pieceValue = board.getPieceAt(pos);
-
-            // Vérifie si le joueur a au moins un pion
-            if(pieceValue == PieceIDs.Pion.getValue()) {
-                playerHasPawn = true;
-            }
-
-
-            if (promotionStateMap.isPiecePromoted(pos)) {
-                pieceValue = piece.get(pieceValue).getID_PROMU();
-            }
-
-            playerScore += pieceValue;
-        }
-
-        if (!playerHasPawn) {
-            playerScore -= 50;
-        }
-
-        int score = iaScore - playerScore;
-        return score * MATERIAL_EVAL_ADJUST;
+        return totalScore * MATERIAL_EVAL_ADJUST;
     }
 
     //========================================================================================================
@@ -111,7 +72,6 @@ public class Evaluation {
         castlingScore += checkAnagumaCastle(board, kingPos);
 
         return castlingScore;
-
     }
 
     //check si il y a assez de piece pour faire la formation Yagura autour du rois
@@ -210,13 +170,15 @@ public class Evaluation {
 
     //fonction pour trouver la position du roi de L'ia
     private static Position findKingPosition(Board board, boolean color){
-        Vector<Position> piece = board.getPositionFromColor(color);
         int adjust = color ? 1 : -1;
         byte kingValue = (byte) (PieceIDs.Roi.getValue() * adjust);
 
-        for (Position pos: piece){
-            if (board.getPieceAt(pos) == kingValue){
-                return pos;
+        byte[][] b = board.getBoard();
+        for(int i = 0; i < board.getBOARD_SIZE(); i++){
+            for(int j = 0; j < board.getBOARD_SIZE(); j++){
+                if(b[i][j] == kingValue){
+                    return new Position(i, j);
+                }
             }
         }
         return null;
@@ -229,7 +191,9 @@ public class Evaluation {
         Position kingPos = findKingPosition(board, false);
 
         int score = 0;
-
+        if (kingPos == null){
+            return score;
+        }
         score += checkThinckeness(board, kingPos);
         score += checkEscapeRoute(board, kingPos);
         score += evaluateEnteringKing(board, kingPos);
@@ -350,7 +314,13 @@ public class Evaluation {
         int score = 0;
 
         Position kingIa = findKingPosition(board, false);
+        if(kingIa == null){
+            return 0;
+        }
         Position kingPlayer = findKingPosition(board, true);
+        if(kingPlayer == null){
+            return 10000000; // AI A MANGER LE ROI.
+        }
 
         Vector<Position> piecesIa = board.getPositionFromColor(false);
 

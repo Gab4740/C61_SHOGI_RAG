@@ -104,34 +104,27 @@ public class MoveGeneration {
                 byte originalTraget = board.getPieceAt(endPos);
                 currMoveToReturn = new MoveManager(originalTraget, moveToTest);
 
+                int absID = Math.abs(pieceToGenMoveFrom.getID());
                 if(promote){
                     promotionStateMap.removePromotedPosition(startPos);
                     promotionStateMap.promotePiece(endPos);
                 }
-                // ALWAYS PROMOTE
-                else if (currMoveToReturn.checkIfShouldBePromoted()) {
+                else if (currMoveToReturn.checkIfShouldBePromoted() && (absID != 127 && absID != 11 && absID != 10)) {
                     promotionStateMap.promotePiece(endPos);
                 }
             }
             currDirectionsIndex++;
 
             // ADD EXCEPTION FOR PIECE THAT ARE PATHING
+
+            // ADD PARACHUTING
         }
         else{
             getNewPieceFromList();
             getNewPieceFromBoard();
             return (currListIndex - 1) != pieces.size();
         }
-        return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
-    }
 
-    public void setBoard(Board board) {
-        this.board = board;
-        currListIndex = 0;
-        currPieceCount = 0;
-        currDirectionsIndex = 0;
-    }
-    public Board getBoard(){
-        return this.board;
+        return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
 }
