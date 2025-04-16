@@ -16,4 +16,6 @@ public enum Difficulty {
     public EvaluationStrategies getStrategy(){
         return this.strategy;
     }
+
+    public String getStrategyString() {return  this.strategy.toString();}
 }
