@@ -23,10 +23,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCbrt
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
+import com.example.c61_shogi_rag.ui.theme.DifficultyOption
 import com.example.c61_shogi_rag.ui.theme.GameTitle
 import com.example.c61_shogi_rag.ui.theme.GoteComposable
 import com.example.c61_shogi_rag.ui.theme.GoteSenteComposable
+import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.japanWaveFontFamily
@@ -86,7 +89,8 @@ fun MainMenuView(modifier: Modifier = Modifier,
     when {
         mainMenuViewModel.openAlertDialog -> {
             ThreeOptionDialog(
-                onDismiss = {mainMenuViewModel.openAlertDialog = false}
+                onDismiss = {mainMenuViewModel.openAlertDialog = false},
+                mainMenuViewModel = mainMenuViewModel
             ) {
                 mainMenuViewModel.openAlertDialog = false
                 mainMenuViewModel.isPlayerFirst = it
@@ -101,59 +105,55 @@ fun MainMenuView(modifier: Modifier = Modifier,
 }
 
 @Composable
-fun ThreeOptionDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
-                      onConfirmation:(Boolean) -> Unit)
+fun ThreeOptionDialog(modifier: Modifier = Modifier, mainMenuViewModel: MainMenuViewModel,
+                      onDismiss:() -> Unit = {},
+                      onConfirmation:(Boolean) -> Unit,)
 {
     AlertDialog(
         onDismissRequest = { onDismiss() },
 
-        title = { Text(text = "Choose an Option") },
-        text = { Text(text = "Please select one of the three options below:") },
+        title = { Text(text = "Game Options") },
         confirmButton = {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-
-
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SenteComposable{onConfirmation(true)}
-                GoteSenteComposable{onConfirmation(Random.nextBoolean())}
-                GoteComposable{onConfirmation(false)}
+                RadioButtonSingleSelection(mainMenuViewModel = mainMenuViewModel)
+                Spacer(modifier = Modifier.padding(15.dp))
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    SenteComposable{onConfirmation(true)}
+                    GoteSenteComposable{onConfirmation(Random.nextBoolean())}
+                    GoteComposable{onConfirmation(false)}
+                }
             }
         }
     )
 }
 
 
-
 @Composable
-fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
-    val radioOptions = listOf("Easy", "Medium", "Hard")
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
-    // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
-    Row(modifier.selectableGroup()) {
-        radioOptions.forEach { text ->
+fun RadioButtonSingleSelection(modifier: Modifier = Modifier, mainMenuViewModel: MainMenuViewModel) {
+    Row(
+        modifier
+            .selectableGroup()
+    ) {
+        mainMenuViewModel.difficultyOptions.forEach {difficulty: Difficulty ->
             Column(
-                Modifier
-                    .height(56.dp)
+                modifier = Modifier
                     .selectable(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected(text) },
+                        selected = (difficulty.strategyString == mainMenuViewModel.selectedDifficulty.strategyString),
+                        onClick = { mainMenuViewModel.onDifficultySelected(difficulty) },
                         role = Role.RadioButton
-
-                    )
-                    .padding(horizontal = 16.dp)
-                    .then(if (text == selectedOption) Modifier.background(Color.Yellow) else Modifier),
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-
-                )
+            )  {
+               DifficultyOption(
+                   difficulty = difficulty,
+                   isSelected = difficulty.strategyString == mainMenuViewModel.selectedDifficulty.strategyString
+               )
             }
         }
     }
