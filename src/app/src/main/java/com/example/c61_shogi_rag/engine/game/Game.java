@@ -83,7 +83,7 @@ public class Game {
         promotionStateMap = new PromotionState(new HashMap<>());
     }
     public Game(Boolean isPlayerStarting){
-       this(isPlayerStarting, Difficulty.Medium.getStrategy());
+       this(isPlayerStarting, Difficulty.Hard.getStrategy());
     }
 
     /**
@@ -245,7 +245,7 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(5,true, piecesForMinimax, true, pieces, difficulty);
+        manager = new MinimaxManager(3,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**

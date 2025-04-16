@@ -11,41 +11,69 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 public class Evaluation {
-    private static final int MATERIAL_EVAL_ADJUST = 100;
-    private static final int CONTROL_CENTER_ADJUST = 100;
+
     //rajouter d'autre adjust
+    private static final int MATERIAL_EVAL_ADJUST = 100;
+    private static final int CASTLING_ADJUST = 150;
+    private static final int KING_SAFETY_ADJUST = 200;
+    private static final int DISTANCE_TO_KING_ADJUST = 120;
+    private static final int CONTROL_CENTER_ADJUST = 80;
 
 
     public static int material_eval(Board board, PromotionState promotionStateMap,
                                     Hashtable<Byte, ShogiPiece> piece) {
+        int iaScore = 0;
         int playerScore = 0;
-        boolean pionExiste = false;
+        boolean iaHasPawn = false;
+        boolean playerHasPawn = false;
 
-        Vector<Position> playerPieces = board.getPositionFromColor(false);
-
-        for(Position pos : playerPieces){
-
+        Vector<Position> iaPieces = board.getPositionFromColor(false);
+        for(Position pos : iaPieces) {
             byte pieceValue = board.getPieceAt(pos);
 
-            if(pieceValue == PieceIDs.Pion.getValue()){
-                pionExiste = true;
+            if(pieceValue == PieceIDs.Pion.getValue()) {
+                iaHasPawn = true;
             }
 
-            if (promotionStateMap.isPiecePromoted(pos)){
-                pieceValue = piece.get(pieceValue).getID_PROMU() ;
+            if (promotionStateMap.isPiecePromoted(pos)) {
+                pieceValue = piece.get(pieceValue).getID_PROMU();
             }
 
-            playerScore += pieceValue *-1;
-
+            iaScore += Math.abs(pieceValue);
         }
 
-        //faire en sorte dans l'evaluation si il n'y a pas de pion
-        // sur le terrain mettre une valeur negatif pour baisser l'evaluation
-        if (!pionExiste){
-            playerScore -= 50; // a changer
+        if (!iaHasPawn) {
+            iaScore -= 50;
         }
 
-        return (1 / playerScore);
+        Vector<Position> playerPieces = board.getPositionFromColor(true);
+        for(Position pos : playerPieces) {
+            byte pieceValue = board.getPieceAt(pos);
+
+            // Vérifie si le joueur a au moins un pion
+            if(pieceValue == PieceIDs.Pion.getValue()) {
+                playerHasPawn = true;
+            }
+
+
+            if (promotionStateMap.isPiecePromoted(pos)) {
+                pieceValue = piece.get(pieceValue).getID_PROMU();
+            }
+
+            playerScore += pieceValue;
+        }
+
+        if (!playerHasPawn) {
+            playerScore -= 50;
+        }
+
+        // Éviter la division par zéro
+        if (playerScore == 0) {
+            playerScore = 1;
+        }
+
+
+        return ((iaScore * 100) / playerScore) ;
     }
 
     //========================================================================================================
@@ -211,7 +239,7 @@ public class Evaluation {
         score += checkEscapeRoute(board, kingPos);
         score += evaluateEnteringKing(board, kingPos);
 
-        return score;
+        return score ;
     }
 
     //check le nombre de piece allie autoure du rois pour evaluer sa protection
@@ -304,7 +332,7 @@ public class Evaluation {
             score -= 30;
         }
 
-        return score;
+        return score ;
 
     }
 
@@ -358,7 +386,7 @@ public class Evaluation {
             }
         }
 
-        return score;
+        return score ;
     }
 
 

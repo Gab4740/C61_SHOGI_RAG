@@ -20,6 +20,7 @@ public class Hard extends EvaluationStrategies {
         score += Evaluation.evaluateKingSafety(board);
         score += Evaluation.evaluateDistanceToTheKing(board, pieces);
         score += Evaluation.material_eval(board, promotions, pieces);
+
         return score;
     }
 }
