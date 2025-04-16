@@ -3,6 +3,7 @@ package com.example.c61_shogi_rag.ui.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -61,7 +63,7 @@ fun DifficultyOption(modifier: Modifier = Modifier,
                      difficulty: Difficulty = Difficulty.Easy,
                      isSelected: Boolean = false,
                      fontFamily: FontFamily = japanWaveFontFamily,
-                     fixedwidth: Dp = 60.dp
+                     fixedwidth: Dp = 70.dp
 ) {
     Text(
         modifier = modifier
@@ -71,10 +73,12 @@ fun DifficultyOption(modifier: Modifier = Modifier,
             else Modifier)
             .border(width = 1.dp, color = Color(0xFF210f17))
             .padding(10.dp)
-            .width(fixedwidth),
+            .width(fixedwidth)
+            .height(40.dp),
+        textAlign = TextAlign.Center,
         text = difficulty.name,
         color = if (isSelected) Color.White else Color.Black,
-        fontSize = 20.sp,
+        fontSize = 24.sp,
         fontFamily = fontFamily,
 
     )
