@@ -114,6 +114,8 @@ public class MoveGeneration {
                 }
             }
             currDirectionsIndex++;
+
+            // ADD EXCEPTION FOR PIECE THAT ARE PATHING
         }
         else{
             getNewPieceFromList();

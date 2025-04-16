@@ -31,7 +31,7 @@ public class Evaluation {
         for(Position pos : iaPieces) {
             byte pieceValue = board.getPieceAt(pos);
 
-            if(pieceValue == PieceIDs.Pion.getValue()) {
+            if(pieceValue == PieceIDs.Pion.getValue() * -1) {
                 iaHasPawn = true;
             }
 
@@ -67,13 +67,8 @@ public class Evaluation {
             playerScore -= 50;
         }
 
-        // Éviter la division par zéro
-        if (playerScore == 0) {
-            playerScore = 1;
-        }
-
-
-        return ((iaScore * 100) / playerScore) ;
+        int score = iaScore - playerScore;
+        return score * MATERIAL_EVAL_ADJUST;
     }
 
     //========================================================================================================

@@ -83,7 +83,7 @@ public class Game {
         promotionStateMap = new PromotionState(new HashMap<>());
     }
     public Game(Boolean isPlayerStarting){
-       this(isPlayerStarting, Difficulty.Hard.getStrategy());
+       this(isPlayerStarting, Difficulty.Medium.getStrategy());
     }
 
     /**
