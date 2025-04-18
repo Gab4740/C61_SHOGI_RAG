@@ -58,6 +58,7 @@ public class MinimaxManager {
     }
 
     private MoveManager executeMinimax() {
+        // MULTI-THREADING FUCKERY :
         //List<MoveManager> allMoves = new ArrayList<>();
         //MoveGeneration moveGenerator = new MoveGeneration(piece, currGameBoard, promotionStateMap, piecesObj);
         //while (moveGenerator.genMove()) {
@@ -66,25 +67,20 @@ public class MinimaxManager {
         //        allMoves.add(move);
         //    }
         //}
-
         //ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         //List<Callable<MoveScore>> tasks = new ArrayList<>();
-
         //for (MoveManager move : allMoves) {
         //    tasks.add(() -> {
         //        Board clonedBoard = currGameBoard.clone(); // Make sure this is a deep clone!
         //        PromotionState copyPromo = promotionStateMap.clone();
         //        move.do_move_on_board(clonedBoard);
-
         //        Minimax minimaxObj = new Minimax(piece, piecesObj, difficulty);
         //        MoveScore eval = minimaxObj.minimax(clonedBoard, searchDepth - 1, ALPHA, BETA, !maximizingPlayer, copyPromo);
         //        eval.setMove(move); // associate the move that led to this score
         //        return eval;
         //    });
         //}
-
         //MoveScore bestMoveScore = null;
-
         //try {
         //    List<Future<MoveScore>> results = executor.invokeAll(tasks);
         //    for (Future<MoveScore> future : results) {
@@ -99,13 +95,6 @@ public class MinimaxManager {
         //    e.printStackTrace();
         //} finally {
         //    executor.shutdown();
-        //}
-
-        //long end = System.nanoTime();
-        //if (debug && bestMoveScore != null) {
-        //    long elapsedTimeNs = end - start;
-        //    int elapsedTimeMs = (int) (elapsedTimeNs / 1_000_000.0);
-        //    System.out.println("Score of best branch: " + bestMoveScore.getScore() + ", time: " + elapsedTimeMs + "ms");
         //}
 
         long start = System.nanoTime();
