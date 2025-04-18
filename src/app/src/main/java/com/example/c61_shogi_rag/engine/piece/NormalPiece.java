@@ -9,11 +9,13 @@ public class NormalPiece extends ShogiPiece{
     }
     @Override
     protected boolean allMoveChecks(Move move, Board board) {
-        if(defaultCheck(move) && secondaryStep(board)){
-            int deltaX = finalX - currX;
-            int deltaY = finalY - currY;
-            return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS());
-        };
+        if(defaultCheck(move)){
+            if(secondaryStep(board)){
+                int deltaX = finalX - currX;
+                int deltaY = finalY - currY;
+                return MoveUtils.checkSteps(deltaX, deltaY, getDIRECTIONS());
+            }
+        }
         return false;
     }
 }

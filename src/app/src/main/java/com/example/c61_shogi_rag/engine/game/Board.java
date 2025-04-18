@@ -17,6 +17,16 @@ public class Board {
     public byte[][] getBoard(){
         return board;
     }
+
+    @Override
+    public Board clone() {
+        Board clonedBoard = new Board();
+        for (int i = 0; i < board.length; i++) {
+            System.arraycopy(this.board[i], 0, clonedBoard.board[i], 0, board[i].length);
+        }
+        return clonedBoard;
+    }
+
     /**
      * Retroune le id de la piece a la positon
      * si retourn 0, ca veux dire qu'il n'y a pas de piece

@@ -1,16 +1,19 @@
 package com.example.c61_shogi_rag.engine.game;
 
 import com.example.c61_shogi_rag.engine.piece.Position;
-import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 public class PromotionState {
     private HashMap<String, Boolean> internalMap;
 
     public PromotionState(HashMap<String, Boolean> inputMap) {
         this.internalMap = new HashMap<>(inputMap);
+    }
+
+    @Override
+    public PromotionState clone() {
+        return new PromotionState(new HashMap<>(this.internalMap));
     }
 
     public HashMap<String, Boolean> getMap() {

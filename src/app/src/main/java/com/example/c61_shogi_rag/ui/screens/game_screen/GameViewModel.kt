@@ -32,7 +32,7 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
     init {
         game.GameInit()
         if(!isPlayerTurn) {
-            game.executeMinimax();
+            game.startMinimaxComputation();
             isPlayerTurn = game.isPlayerTurn
         }
     }
