@@ -245,7 +245,7 @@ public class Game {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces, difficulty);
+        manager = new MinimaxManager(5,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**

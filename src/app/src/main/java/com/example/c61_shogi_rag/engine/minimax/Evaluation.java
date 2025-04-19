@@ -6,9 +6,7 @@ import com.example.c61_shogi_rag.engine.piece.PieceIDs;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Vector;
 
 public class Evaluation {
@@ -20,6 +18,7 @@ public class Evaluation {
     private static final int DISTANCE_TO_KING_ADJUST = 120;
     private static final int CONTROL_CENTER_ADJUST = 80;
 
+    private static final int[][] POSITION_NEXT_TO_KING = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     public static int material_eval(Board board, PromotionState promotionStateMap, Hashtable<Byte, ShogiPiece> piece) {
         int totalScore = 0;
@@ -60,7 +59,7 @@ public class Evaluation {
 
     //evaluation du castling
     public static int evaluateCastling(Board board){
-        int castlingScore = 0;
+        //int castlingScore = 0;
 
         Position kingPos = findKingPosition(board, false);
 
@@ -68,18 +67,14 @@ public class Evaluation {
             return 0;
         }
 
-        castlingScore += checkYaguraCastle(board, kingPos);
-        castlingScore += checkAnagumaCastle(board, kingPos);
+//        castlingScore += checkYaguraCastle(board, kingPos);
+//        castlingScore += checkAnagumaCastle(board, kingPos);
 
-        return castlingScore;
+        return checkYaguraCastle(board, kingPos) + checkAnagumaCastle(board, kingPos);
     }
 
     //check si il y a assez de piece pour faire la formation Yagura autour du rois
     private static int checkYaguraCastle(Board board, Position kingPos){
-
-        int score = 0;
-        int goldCount = 0;
-        int silverCount = 0;
 
         int kx = kingPos.getPosX();
         int ky = kingPos.getPosY();
@@ -89,20 +84,25 @@ public class Evaluation {
             return 0;
         }
 
-        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        int score = 0;
+        int goldCount = 0;
+        int silverCount = 0;
+        int boardSize = board.getBOARD_SIZE();
+
+        //int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
         //verification de la position des pieces a cote du roi
-        for (int[] pos : pieceACoter){
+        for (int[] pos : POSITION_NEXT_TO_KING){
             int x = kx + pos[0];
             int y = ky + pos[1];
 
-            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
                 if (pieceValue < 0) {
-                    if (pieceValue == PieceIDs.GeneralOr.getValue()) {
+                    if (pieceValue == -PieceIDs.GeneralOr.getValue()) {
                         goldCount++;
-                    } else if (pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                    } else if (pieceValue == -PieceIDs.GeneralArgent.getValue()) {
                         silverCount++;
                     }
 
@@ -123,9 +123,6 @@ public class Evaluation {
     //check si il y a assez de piece pour faire la formation Anaguma autour du rois
     private static int checkAnagumaCastle(Board board, Position kingPos){
 
-        int score = 0;
-        int nbrPieceAutour = 0;
-
         int kx = kingPos.getPosX();
         int ky = kingPos.getPosY();
 
@@ -134,14 +131,18 @@ public class Evaluation {
             return 0;
         }
 
-        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        int score = 0;
+        int nbrPieceAutour = 0;
+        int boardSize = board.getBOARD_SIZE();
+
+        //int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
         //verification si y'a des piece autour du roi
-        for (int[] pos : pieceACoter){
+        for (int[] pos : POSITION_NEXT_TO_KING){
             int x = kx + pos[0];
             int y = ky + pos[1];
 
-            if (x >= 0 && x < board.getBOARD_SIZE() && y >= 0 && y < board.getBOARD_SIZE()) {
+            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
                 byte pieceValue = board.getPieceAt(new Position(x, y));
 
                 //check si piece allier
@@ -150,11 +151,10 @@ public class Evaluation {
                     score += 5;
 
                     //rajout d'un bonus si il y a un general
-                    if (pieceValue == PieceIDs.GeneralOr.getValue() ||
-                            pieceValue == PieceIDs.GeneralArgent.getValue()) {
+                    if (pieceValue == -PieceIDs.GeneralOr.getValue() ||
+                            pieceValue == -PieceIDs.GeneralArgent.getValue()) {
                         score += 5;
                     }
-
                 }
             }
         }
@@ -190,15 +190,85 @@ public class Evaluation {
     public static int evaluateKingSafety(Board board){
         Position kingPos = findKingPosition(board, false);
 
-        int score = 0;
         if (kingPos == null){
-            return score;
+            return 0;
         }
-        score += checkThinckeness(board, kingPos);
-        score += checkEscapeRoute(board, kingPos);
-        score += evaluateEnteringKing(board, kingPos);
 
-        return score ;
+        int score = 0;
+
+//        score += checkThinckeness(board, kingPos);
+//        score += checkEscapeRoute(board, kingPos);
+//        score += evaluateEnteringKing(board, kingPos);
+
+        return calculeAllKingSafetyMethode(board, kingPos) ;
+    }
+
+    private static int calculeAllKingSafetyMethode(Board board, Position kingPos){
+        int kx = kingPos.getPosX();
+        int ky = kingPos.getPosY();
+        int boardSize = board.getBOARD_SIZE();
+
+        int thicknessScore = 0;
+        int escapeRouteScore = 0;
+        int nbrPieceAutour = 0;
+        int nbrEscapeRoute = 0;
+
+        // Parcourir les positions adjacentes
+        for (int[] pos : POSITION_NEXT_TO_KING){
+            int x = kx + pos[0];
+            int y = ky + pos[1];
+
+            // Vérifier que la position est valide
+            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
+                byte pieceValue = board.getPieceAt(new Position(x, y));
+
+                // Vérifier si c'est une pièce alliée (pour la protection)
+                if (pieceValue < 0){
+                    nbrPieceAutour++;
+                    thicknessScore += 10;
+
+                    // Bonus pour les généraux qui protègent le roi
+                    if (pieceValue == -PieceIDs.GeneralOr.getValue() ||
+                            pieceValue == -PieceIDs.GeneralArgent.getValue()) {
+                        thicknessScore += 5;
+                    }
+                }
+                // Vérifier si c'est une case vide ou pièce ennemie (pour l'échappatoire)
+                else {
+                    nbrEscapeRoute++;
+
+                    // Si case vide
+                    if (pieceValue == 0){
+                        escapeRouteScore += 10;
+                    } else { // Si case avec pièce ennemie
+                        escapeRouteScore += 5;
+                    }
+                }
+            }
+        }
+
+        // Attribution des bonus/malus en fonction du nombre de pièces autour
+        if (nbrPieceAutour >= 6){
+            thicknessScore += 30;
+        } else if (nbrPieceAutour >= 4){
+            thicknessScore += 20;
+        } else if (nbrPieceAutour <= 1){
+            thicknessScore -= 30;
+        }
+
+        // Attribution des bonus/malus en fonction du nombre d'échappatoires
+        if (nbrEscapeRoute >= 4){
+            escapeRouteScore += 10;
+        } else if (nbrEscapeRoute >= 2){
+            escapeRouteScore += 5;
+        } else if (nbrEscapeRoute == 0){ // Si aucune route, situation dangereuse
+            escapeRouteScore -= 30;
+        }
+
+        // Évaluer si le roi se trouve dans le camp ennemi
+        int enteringScore = (ky >= 5) ? 10 * (ky - 4) : 0;
+
+        return thicknessScore + escapeRouteScore + enteringScore;
     }
 
     //check le nombre de piece allie autoure du rois pour evaluer sa protection
@@ -208,11 +278,11 @@ public class Evaluation {
         int kx = kingPos.getPosX();
         int ky = kingPos.getPosY();
 
-        int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        //int[][] pieceACoter = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
         int nbrPieceAutour = 0;
 
-        for (int[] pos : pieceACoter){
+        for (int[] pos : POSITION_NEXT_TO_KING){
             int x = kx + pos[0];
             int y = ky + pos[1];
 
@@ -311,7 +381,6 @@ public class Evaluation {
 
 
     public static int evaluateDistanceToTheKing(Board board, Hashtable<Byte, ShogiPiece> piece){
-        int score = 0;
 
         Position kingIa = findKingPosition(board, false);
         if(kingIa == null){
@@ -322,37 +391,52 @@ public class Evaluation {
             return 10000000; // AI A MANGER LE ROI.
         }
 
-        Vector<Position> piecesIa = board.getPositionFromColor(false);
+        int kingIaX = kingIa.getPosX();
+        int kingIaY = kingIa.getPosY();
+        int kingPlayerX = kingPlayer.getPosX();
+        int kingPlayerY = kingPlayer.getPosY();
 
+        Vector<Position> piecesIa = board.getPositionFromColor(false);
+        int score = 0;
+
+        // Éviter d'appeler getPieceAt et les calculs de distance répétés
         for (Position pos : piecesIa){
             byte pieceValue = board.getPieceAt(pos);
 
-            if (pieceValue == PieceIDs.Roi.getValue()){
+            // Ignorer le roi, puisque sa position est déjà connue
+            if (pieceValue == -PieceIDs.Roi.getValue()){
                 continue;
             }
 
-            int disctanceToEnnemyKing = Math.abs(kingPlayer.getPosX() - pos.getPosX()) + Math.abs(kingPlayer.getPosY() - pos.getPosY());
+            int posX = pos.getPosX();
+            int posY = pos.getPosY();
 
-            int disctanceToKingIa =  Math.abs(kingIa.getPosX() - pos.getPosX()) + Math.abs(kingIa.getPosY() - pos.getPosY());
+            // Calculer les distances avec une formule de distance de Manhattan
+            int distanceToEnnemyKing = Math.abs(kingPlayerX - posX) + Math.abs(kingPlayerY - posY);
+            int distanceToKingIa = Math.abs(kingIaX - posX) + Math.abs(kingIaY - posY);
 
-            //plus les pieces sont proche du rois ennemy meilleur sont les point en fonction de l'importance de la piece
-            if (disctanceToEnnemyKing <= 2){
-                score += pieceValue * 10;
-            }else if (disctanceToEnnemyKing <= 4){
-                score += pieceValue * 5;
-            }else {
-                //si piece trop loin du roi ennemy
-                score -= pieceValue * 2;
+            // Abstraction de la valeur absolue du pieceValue pour évaluation
+            int absPieceValue = Math.abs(pieceValue);
+
+            // Évaluer la proximité au roi ennemi
+            if (distanceToEnnemyKing <= 2){
+                score += absPieceValue * 10;
+            } else if (distanceToEnnemyKing <= 4){
+                score += absPieceValue * 5;
+            } else {
+                // Pénaliser les pièces trop éloignées
+                score -= absPieceValue * 2;
             }
 
-            //si piece proche du rois bien car rois proteger
-            if (disctanceToKingIa <= 2){
-                score += pieceValue * 3;
+            // Bonus pour les pièces proches du roi allié (protection)
+            if (distanceToKingIa <= 2){
+                score += absPieceValue * 3;
             }
         }
 
-        return score ;
+        return score;
     }
+
 
 
 
