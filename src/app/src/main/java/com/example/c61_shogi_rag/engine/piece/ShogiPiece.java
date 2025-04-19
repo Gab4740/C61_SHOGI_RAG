@@ -24,16 +24,33 @@ public abstract class ShogiPiece {
     }
 
     protected boolean defaultCheck(Move move){
-        this.currX = move.getCurrentPosition().getPosX();
-        this.currY = move.getCurrentPosition().getPosY();
-        this.finalX = move.getNextPosition().getPosX();
-        this.finalY = move.getNextPosition().getPosY();
+        if (move == null || move.getCurrentPosition() == null || move.getNextPosition() == null) {
+            return false;
+        }
 
-        return finalY < 9 && finalY >= 0 && finalX < 9 && finalX >= 0;
+        int currX = move.getCurrentPosition().getPosX();
+        int currY = move.getCurrentPosition().getPosY();
+        int finalX = move.getNextPosition().getPosX();
+        int finalY = move.getNextPosition().getPosY();
+
+        if (isInBounds(currX, currY) && isInBounds(finalX, finalY)) {
+            this.currX = currX;
+            this.currY = currY;
+            this.finalX = finalX;
+            this.finalY = finalY;
+            return true;
+        }
+        return false;
     };
+    private boolean isInBounds(int x, int y) {
+        return x >= 0 && x < 9 && y >= 0 && y < 9;
+    }
     protected boolean secondaryStep(Board board){
         boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
         boolean targetPieceColor = board.getPieceAt(new Position(finalX, finalY)) > 0;
+        if(finalX < 0 || finalY < 0 ){
+            System.out.println(finalX + " " + finalY);
+        }
         return pieceColor != targetPieceColor || board.getPieceAt(new Position(finalX, finalY)) == 0;
     }
     protected abstract boolean allMoveChecks(Move move, Board board);

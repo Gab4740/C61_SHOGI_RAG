@@ -41,31 +41,34 @@ public class MoveGeneration {
         return currMoveToReturn;
     }
 
-    private void getNewPieceFromList(){
+    private void getNewPieceFromList() {
+        if (currListIndex >= pieces.size()) {
+            pieceExists = false;
+            return;
+        }
+
         pieceToGenMoveFrom = pieces.get(currListIndex);
         posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
         currListIndex++;
     }
-    private void getNewPieceFromBoard(){
-        if(posOfSpecificPiece.size() == currPieceCount){
+    private void getNewPieceFromBoard() {
+        if (posOfSpecificPiece == null || posOfSpecificPiece.size() == currPieceCount) {
             getNewPieceFromList();
             currPieceCount = 0;
             currDirectionsIndex = 0;
 
-            if(!posOfSpecificPiece.isEmpty()){
+            if (posOfSpecificPiece != null && !posOfSpecificPiece.isEmpty()) {
                 currPosition = posOfSpecificPiece.get(currPieceCount);
                 pieceExists = true;
                 currPieceCount++;
-            }
-            else{
+            } else {
                 pieceExists = false;
             }
-        }else{
-            if(!posOfSpecificPiece.isEmpty()){
+        } else {
+            if (!posOfSpecificPiece.isEmpty()) {
                 currPosition = posOfSpecificPiece.get(currPieceCount);
                 pieceExists = true;
-            }
-            else{
+            } else {
                 pieceExists = false;
             }
             currPieceCount++;
@@ -124,7 +127,6 @@ public class MoveGeneration {
             getNewPieceFromBoard();
             return (currListIndex - 1) != pieces.size();
         }
-
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
 }

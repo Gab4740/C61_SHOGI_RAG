@@ -5,6 +5,7 @@ import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
 import com.example.c61_shogi_rag.engine.minimax.Difficulty;
 import com.example.c61_shogi_rag.engine.minimax.EvaluationStrategies;
+import com.example.c61_shogi_rag.engine.minimax.MinimaxCallback;
 import com.example.c61_shogi_rag.engine.minimax.MinimaxManager;
 import com.example.c61_shogi_rag.engine.piece.InitPiece;
 import com.example.c61_shogi_rag.engine.piece.Move;
@@ -26,7 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Vector;
 
-public class Game {
+public class Game implements MinimaxCallback {
     private final Board gameBoard;
     private Hashtable<Byte, ShogiPiece> pieces;
     private Vector<ShogiPiece> piecesForMinimax;
@@ -251,22 +252,24 @@ public class Game {
     /**
      * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
      */
-    public void executeMinimax(){
+    public void startMinimaxComputation() {
         manager.resetMinimax(gameBoard);
-        MoveManager calculatedMove = manager.executeMinimax();
-
-        if(calculatedMove.checkIfPieceEaten()){
-            Position nextPos = calculatedMove.getMove().getNextPosition();
+        manager.executeMinimaxAsync(this);
+    }
+    @Override
+    public void onMoveComputed(MoveManager move){
+        if(move.checkIfPieceEaten()){
+            Position nextPos = move.getMove().getNextPosition();
             capturePieceAtPos(nextPos, false);
             if(promotionStateMap.isPiecePromoted(nextPos)){
                 promotionStateMap.removePromotedPosition(nextPos);
             };
         }
-        if(calculatedMove.checkIfShouldBePromoted()){
-            promotionStateMap.removePromotedPosition(calculatedMove.getMove().getCurrentPosition());
-            promotionStateMap.promotePiece(calculatedMove.getMove().getNextPosition());
+        if(move.checkIfShouldBePromoted()){
+            promotionStateMap.removePromotedPosition(move.getMove().getCurrentPosition());
+            promotionStateMap.promotePiece(move.getMove().getNextPosition());
         }
-        calculatedMove.do_move_on_board(gameBoard);
+        move.do_move_on_board(gameBoard);
         isGameEnded = isKingsAlive();
         flipPlayerTurn(false);
     }
@@ -327,7 +330,7 @@ public class Game {
     private void flipPlayerTurn(boolean flip){
         if(flip){
             isPlayerTurn = false;
-            executeMinimax();
+            startMinimaxComputation();
         }
         else{
             isPlayerTurn = true;
