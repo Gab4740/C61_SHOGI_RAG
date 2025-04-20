@@ -1,11 +1,13 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.game.Game
 import com.example.c61_shogi_rag.engine.piece.InitPiece
 import com.example.c61_shogi_rag.engine.piece.Position
@@ -17,6 +19,8 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -43,35 +47,35 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
     }
     private fun playerTurn(position: Position) {
         counter++
-        viewModelScope.launch{
-            if(!isGameEnded) {
-                if(game.isPlayerPieceAtPos(position)) {
-                    selectedPosition = position
-                    selectedPieceToParchute = null
-                } else if(selectedPosition != null) {
-                    if(game.playTurn(selectedPosition, position)) {
-                        isGameEnded = game.isGameEnded
-
-                        aiTurn()
-                    }
-                    selectedPosition = null
-                    isPlayerTurn = game.isPlayerTurn
+        if(!isGameEnded) {
+            if(game.isPlayerPieceAtPos(position)) {
+                selectedPosition = position
+                selectedPieceToParchute = null
+            } else if(selectedPosition != null) {
+                if(game.playTurn(selectedPosition, position)) {
+                    isGameEnded = game.isGameEnded
+                    aiTurn()
                 }
-                else if(selectedPieceToParchute != null) {
-                    if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
-                        aiTurn()
-                    }
-                    selectedPieceToParchute = null
+                selectedPosition = null
+                isPlayerTurn = game.isPlayerTurn
+            }
+            else if(selectedPieceToParchute != null) {
+                if(game.parachuteWhitePiece(selectedPieceToParchute, position)) {
+                    aiTurn()
                 }
+                selectedPieceToParchute = null
             }
         }
 
     }
     private fun aiTurn() {
-        counter++
         if(!isGameEnded) {
-            game.aiTurn()
-            isGameEnded = game.isGameEnded
+            viewModelScope.launch {
+                game.aiTurn()
+                delay(2000) // solution boff
+                counter++
+                isGameEnded = game.isGameEnded
+            }
         }
     }
     fun parachutePiece(pieceCanonicalName: String) {
