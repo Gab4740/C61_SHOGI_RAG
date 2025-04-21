@@ -30,8 +30,8 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
                 navigateToGame = {
-                        player1, player2, isPlayerFirst ->
-                    navController.navigate(Game(player1, player2, isPlayerFirst)) },
+                        player1, player2, isPlayerFirst, difficulty ->
+                    navController.navigate(Game(player1, player2, isPlayerFirst, difficulty)) },
                 navigateToHistory = {
                     navController.navigate(History) },
                 navigateToLogin = {navController.navigate(Login)}
@@ -43,7 +43,7 @@ fun NavigationWrapper(modifier: Modifier = Modifier) {
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
                 opponent = Joueur(game.opponentID, game.opponentName),
-                gameViewModel = viewModel {GameViewModel(game.isPlayerFirst)},
+                gameViewModel = viewModel {GameViewModel(game.isPlayerFirst, game.difficulty)},
                 navigateToMainMenu = {
                     navController.navigate(MainMenu) {
                         popUpTo<MainMenu>{inclusive = true}

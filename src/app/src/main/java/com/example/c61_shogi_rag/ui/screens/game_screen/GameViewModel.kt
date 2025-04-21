@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.game.Game
+import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import com.example.c61_shogi_rag.engine.piece.InitPiece
 import com.example.c61_shogi_rag.engine.piece.Position
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
@@ -24,8 +25,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
-    var game by mutableStateOf(Game(isPlayerFirst))
+class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel() {
+    var game by mutableStateOf(Game(isPlayerFirst, difficulty.strategy))
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
     var counter by mutableIntStateOf(0)
@@ -72,7 +73,7 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
         if(!isGameEnded) {
             viewModelScope.launch {
                 game.aiTurn()
-                delay(2000) // solution boff
+                delay(2500) // solution boff
                 counter++
                 isGameEnded = game.isGameEnded
             }
