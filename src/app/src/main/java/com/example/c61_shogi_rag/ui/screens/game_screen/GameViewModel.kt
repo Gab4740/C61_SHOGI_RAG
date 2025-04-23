@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.c61_shogi_rag.engine.dao.PartieDAO
+import com.example.c61_shogi_rag.engine.entity.Partie
+import com.example.c61_shogi_rag.engine.entity.PartieCallback
 import com.example.c61_shogi_rag.engine.game.Game
 import com.example.c61_shogi_rag.engine.piece.InitPiece
 import com.example.c61_shogi_rag.engine.piece.Position
@@ -17,6 +20,7 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 
@@ -88,5 +92,27 @@ class GameViewModel(isPlayerFirst: Boolean): ViewModel() {
         }
         selectedPieceToParchute = shogiPiece
 
+    }
+
+    fun archiverPartie(id_gagnant: Int, id_perdant: Int) {
+        if (isGameEnded) {
+            try {
+                val gson = Gson()
+
+                val jsonString = gson.toJson(game.getGameSaver())
+
+                PartieDAO.addPartie(id_gagnant, id_perdant, jsonString, object : PartieCallback {
+                    override fun onPartiesRecuperees(partieList: List<Partie>) {
+                        //voir pour peut etre mettre un toast
+                    }
+
+                    override fun onError(e: Exception) {
+                        //voir pour peut etre mettre un toast
+                    }
+                })
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
     }
 }

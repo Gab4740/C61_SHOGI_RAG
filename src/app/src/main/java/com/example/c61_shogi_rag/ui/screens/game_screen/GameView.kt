@@ -73,6 +73,7 @@ fun GameView(modifier: Modifier = Modifier,
         }
     }
     when {
+        //rajouter ici la sauvegarde de partie
         gameViewModel.isGameEnded -> {
             GameOverDialog(
                 onDismiss = {

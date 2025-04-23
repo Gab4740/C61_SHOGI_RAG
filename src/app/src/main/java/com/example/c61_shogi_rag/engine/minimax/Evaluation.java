@@ -8,6 +8,7 @@ import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 public class Evaluation {
@@ -448,36 +449,93 @@ public class Evaluation {
     /** ======================================================================================================== **/
 
     /** CODE A OPTIMISER SA MERE **/
-    public static int evaluateControlleSquares(Board board, Hashtable<Byte, ShogiPiece> piece){
+//    public static int evaluateControlleSquares(Board board, Hashtable<Byte, ShogiPiece> piece){
+//        int score = 0;
+//        int boardSize = board.getBOARD_SIZE();
+//
+//        for(int i = 0; i < boardSize; i++){
+//            for(int j = 0; j < boardSize; j++) {
+//                Position pos = new Position(i, j);
+//
+//                int iaControl = countControllingPieces(board, pos, false, piece);
+//                int joueurControl = countControllingPieces(board, pos, true, piece);
+//
+//                int totalControl = iaControl - joueurControl;
+//
+//                if (i < 3) {
+//                    if (totalControl > 0){
+//                        score += totalControl * 3;
+//                    }
+//                }
+//                else if (i > 5)
+//                {
+//                    if (totalControl < 0)
+//                    {
+//                        score += totalControl * 3;
+//                    }
+//                    else if (totalControl > 0)
+//                    {
+//                        score += totalControl;
+//                    }
+//                }
+//                else{
+//                    score += totalControl;
+//                }
+//            }
+//        }
+//
+//        return score;
+//    }
+//
+//
+//    private static int countControllingPieces(Board board, Position newPos, boolean color, Hashtable<Byte, ShogiPiece> pieces){
+//        int count = 0;
+//
+//        Vector<Position> piecesPos = board.getPositionFromColor(color);
+//
+//        for (Position pos : piecesPos){
+//            if (pos.getPosX() == newPos.getPosX() && pos.getPosY() == newPos.getPosY()){
+//                continue;
+//            }
+//
+//            byte pieceValue = board.getPieceAt(pos);
+//            ShogiPiece shogiPiece = pieces.get(pieceValue);
+//
+//            if (shogiPiece != null){
+//                Move move = new Move(pos, newPos);
+//
+//                if (shogiPiece.isValidMove(move, board)){
+//                    count++;
+//                }
+//            }
+//        }
+//
+//        return count;
+//    }
+
+    public static int evaluateControlleSquares(Board board, Hashtable<Byte, ShogiPiece> pieceTable) {
         int score = 0;
         int boardSize = board.getBOARD_SIZE();
 
-        for(int i = 0; i < boardSize; i++){
-            for(int j = 0; j < boardSize; j++) {
-                Position pos = new Position(i, j);
+        List<Position> iaPieces = board.getPositionFromColor(false);
+        List<Position> joueurPieces = board.getPositionFromColor(true);
 
-                int iaControl = countControllingPieces(board, pos, false, piece);
-                int joueurControl = countControllingPieces(board, pos, true, piece);
+
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                Position target = new Position(i, j);
+
+                int iaControl = countControllingPiecesFast(board, target, iaPieces, pieceTable);
+                int joueurControl = countControllingPiecesFast(board, target, joueurPieces, pieceTable);
 
                 int totalControl = iaControl - joueurControl;
 
                 if (i < 3) {
-                    if (totalControl > 0){
-                        score += totalControl * 3;
-                    }
-                }
-                else if (i > 5)
-                {
-                    if (totalControl < 0)
-                    {
-                        score += totalControl * 3;
-                    }
-                    else if (totalControl > 0)
-                    {
-                        score += totalControl;
-                    }
-                }
-                else{
+                    if (totalControl > 0) score += totalControl * 3;
+                } else if (i > 5) {
+                    if (totalControl < 0) score += totalControl * 3;
+                    else if (totalControl > 0) score += totalControl;
+                } else {
                     score += totalControl;
                 }
             }
@@ -486,31 +544,26 @@ public class Evaluation {
         return score;
     }
 
-
-    private static int countControllingPieces(Board board, Position newPos, boolean color, Hashtable<Byte, ShogiPiece> pieces){
+    private static int countControllingPiecesFast(Board board, Position newPos, List<Position> piecesPos, Hashtable<Byte, ShogiPiece> pieces) {
         int count = 0;
 
-        Vector<Position> piecesPos = board.getPositionFromColor(color);
-
-        for (Position pos : piecesPos){
-            if (pos.getPosX() == newPos.getPosX() && pos.getPosY() == newPos.getPosY()){
-                continue;
-            }
+        for (Position pos : piecesPos) {
+            if (pos.equals(newPos)) continue;
 
             byte pieceValue = board.getPieceAt(pos);
             ShogiPiece shogiPiece = pieces.get(pieceValue);
+            if (shogiPiece == null) continue;
 
-            if (shogiPiece != null){
-                Move move = new Move(pos, newPos);
+            Move tempMove = new Move(pos, newPos);
 
-                if (shogiPiece.isValidMove(move, board)){
-                    count++;
-                }
+            if (shogiPiece.isValidMove(tempMove, board)) {
+                count++;
             }
         }
 
         return count;
     }
+
 
 
     //TODO rajouter les autres methodes d'evaluations

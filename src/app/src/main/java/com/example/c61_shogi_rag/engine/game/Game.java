@@ -321,6 +321,8 @@ public class Game implements MinimaxCallback {
                 }
             }
         }
+
+
         return valid;
     }
 
@@ -351,7 +353,7 @@ public class Game implements MinimaxCallback {
     /**
      * Retourne la classe qui possede la liste de l'historique de coup
      */
-    public static GameSaver getGameSaver() {
+    public GameSaver getGameSaver() {
         return gameSaver;
     }
 
@@ -536,6 +538,8 @@ public class Game implements MinimaxCallback {
         }
         return isValid;
     }
+
+
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
