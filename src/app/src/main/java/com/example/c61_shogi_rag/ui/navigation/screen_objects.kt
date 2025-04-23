@@ -1,5 +1,6 @@
 package com.example.c61_shogi_rag.ui.navigation
 
+import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import kotlinx.serialization.Serializable
 
 
@@ -7,7 +8,7 @@ import kotlinx.serialization.Serializable
 object MainMenu
 
 @Serializable
-data class Game(val opponentID: Int, val opponentName: String, val isPlayerFirst: Boolean)
+data class Game(val opponentID: Int, val opponentName: String, val isPlayerFirst: Boolean, val difficulty: Difficulty)
 
 @Serializable
 object Login

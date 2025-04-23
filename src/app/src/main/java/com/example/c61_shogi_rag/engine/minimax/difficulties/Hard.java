@@ -26,4 +26,4 @@ public class Hard extends EvaluationStrategies {
         return score;
     }
 }
-git 
+git

@@ -17,14 +17,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
-import com.example.c61_shogi_rag.ui.theme.GoteComposable
-import com.example.c61_shogi_rag.ui.theme.GoteSenteComposable
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
-import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
-import kotlin.math.truncate
-import kotlin.random.Random
+
 
 @Composable
 fun GameView(modifier: Modifier = Modifier,

@@ -40,7 +40,7 @@ import kotlin.random.Random
 fun MainMenuView(modifier: Modifier = Modifier,
                  mainMenuViewModel: MainMenuViewModel = viewModel(),
                  playerShareViewModel: PlayerShareViewModel,
-                 navigateToGame: (Int, String, Boolean) -> Unit,
+                 navigateToGame: (Int, String, Boolean, Difficulty) -> Unit,
                  navigateToHistory: () -> Unit,
                  navigateToLogin: () -> Unit) {
 
@@ -97,7 +97,8 @@ fun MainMenuView(modifier: Modifier = Modifier,
                 navigateToGame(
                     mainMenuViewModel.opponent.joueur_id,
                     mainMenuViewModel.opponent.nom_joueur,
-                    mainMenuViewModel.isPlayerFirst
+                    mainMenuViewModel.isPlayerFirst,
+                    mainMenuViewModel.selectedDifficulty
                 )
             }
         }
