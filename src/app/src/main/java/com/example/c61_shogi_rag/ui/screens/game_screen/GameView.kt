@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +30,14 @@ fun GameView(modifier: Modifier = Modifier,
              opponent: Joueur,
              navigateToMainMenu:() -> Unit
              ) {
+    LaunchedEffect(key1 = Unit) {
+        gameViewModel.setPlayerID(
+            playerShareViewModel.isCurrentPlayerSet(),
+            playerShareViewModel.currentPlayer.joueur_id,
+            opponent.joueur_id
+        )
+    }
+
     key(gameViewModel.counter)
     {
         Column(

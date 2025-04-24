@@ -54,7 +54,6 @@ public class PartieDAO {
                     return Transaction.success(currentData);
 
                 }catch (Exception e){
-                    Log.e("Firebase", "Erreur creation de la partie : " + e.getMessage());
                     return Transaction.abort();
                 }
 
@@ -63,16 +62,18 @@ public class PartieDAO {
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error != null){
-                    Log.e("Firebase", "Erreur de transaction : " + error.getMessage());
+
                     if (callback != null){
                         callback.onError(error.toException());
 
                     }
                 } else if (committed) {
                     if (callback != null){
-                        List<Partie> partieList = new ArrayList<>();
-                        partieList.add(currentData.getValue(Partie.class));
-                        callback.onPartiesRecuperees(partieList);
+                       if (currentData != null){
+                           callback.onPartieCree("Partie sauvegarder");
+                       } else {
+                           callback.onError(new Exception("Erreur de creation de la partie"));
+                       }
                     }
                 }
             }
@@ -128,7 +129,6 @@ public class PartieDAO {
                     if (partie != null) {
                         if (partie.getWinner_id() == id_joueur || partie.getLoser_id() == id_joueur){
                             partieList.add(partie);
-                            Log.d("Firebase", "Partie recuperer ID: " + partie.getPartie_id());
                         }
                     }
                 }
@@ -137,7 +137,6 @@ public class PartieDAO {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("Firebase", "Échec de récupération.", error.toException());
                 callback.onError(error.toException());
             }
         });

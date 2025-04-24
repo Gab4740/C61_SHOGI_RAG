@@ -451,29 +451,7 @@ public class Game implements MinimaxCallback {
         gameBoard.removePieceAt(pos);
     }
 
-    public void archiverPartie(int id_gagnant, int id_perdant) {
-        if (isGameEnded) {
-            try {
-                Gson gson = new Gson();
 
-                String jsonString = gson.toJson(gameSaver.getTurnList());
-
-                PartieDAO.addPartie(id_gagnant, id_perdant, jsonString, new PartieCallback() {
-                    @Override
-                    public void onPartiesRecuperees(List<Partie> partieList) {
-                        //voir pour peut etre mettre un toast
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        //voir pour peut etre mettre un toast
-                    }
-                });
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
-    }
 
     public boolean parachuteWhitePiece(ShogiPiece shogiPiece, Position position) {
         boolean valid = false;

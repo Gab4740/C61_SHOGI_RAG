@@ -95,7 +95,7 @@ public class JoueurDAO {
 
     public static void getJoueurById(JoueurCallback callback, int id_joueur){
 
-        if (id_joueur <= 0){
+        if (id_joueur < 0){
             callback.onError("ID joueur invalide.");
             return;
         }

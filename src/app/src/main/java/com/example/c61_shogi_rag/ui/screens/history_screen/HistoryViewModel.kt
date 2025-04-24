@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 sealed class HistoryUiState {
 
@@ -71,10 +69,12 @@ class HistoryViewModel() : ViewModel() {
                     continuation.resumeWith(Result.success(partieList))
                 }
 
+                override fun onPartieCree(succes: String){
+                }
+
                 override fun onError(exception: Exception) {
                     continuation.resumeWith(Result.failure(exception))
                 }
-
             }, id_joueur)
     }
 
