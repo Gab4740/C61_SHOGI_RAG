@@ -35,6 +35,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     var isGameEnded by mutableStateOf(game.isGameEnded)
     private var selectedPosition: Position? = null
     private var selectedPieceToParchute: ShogiPiece? = null
+    var isPlayerFirst: Boolean = isPlayerFirst
 
     private var playerID: Int = -1
     private var opponentID: Int = 0
@@ -154,5 +155,9 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                 exception.printStackTrace()
             }
         }
+    }
+
+    fun playerWon():Boolean {
+        return isPlayerFirst && game.whoLost()
     }
 }

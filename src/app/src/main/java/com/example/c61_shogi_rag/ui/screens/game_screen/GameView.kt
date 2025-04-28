@@ -80,7 +80,13 @@ fun GameView(modifier: Modifier = Modifier,
     when {
         //rajouter ici la sauvegarde de partie
         gameViewModel.isGameEnded -> {
+            val winner = if(gameViewModel.playerWon()) {
+                playerShareViewModel.currentPlayer.nom_joueur
+            } else {
+                opponent.nom_joueur
+            }
             GameOverDialog(
+                winner = winner ,
                 onDismiss = {
                     gameViewModel.isGameEnded = false
                     navigateToMainMenu()
@@ -93,6 +99,7 @@ fun GameView(modifier: Modifier = Modifier,
 
 @Composable
 fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
+                   winner: String = "guest",
                    onConfirmation:() -> Unit = {}) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
@@ -114,7 +121,7 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-               PlayerTag(playerName = "player wins")
+               PlayerTag(playerName = "player: $winner wins")
             }
         },
 
