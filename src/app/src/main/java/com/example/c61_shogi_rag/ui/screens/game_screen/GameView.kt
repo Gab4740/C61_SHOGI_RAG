@@ -80,11 +80,19 @@ fun GameView(modifier: Modifier = Modifier,
     when {
         //rajouter ici la sauvegarde de partie
         gameViewModel.isGameEnded -> {
-            val winner = if(gameViewModel.playerWon()) {
+            val winner = if (gameViewModel.playerWon()) {
                 playerShareViewModel.currentPlayer.nom_joueur
             } else {
                 opponent.nom_joueur
             }
+
+            if(winner ==  playerShareViewModel.currentPlayer.nom_joueur){
+                gameViewModel.archiverPartie(gameViewModel.playerID, gameViewModel.opponentID)
+            }else{
+                gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
+            }
+
+
             GameOverDialog(
                 winner = winner ,
                 onDismiss = {

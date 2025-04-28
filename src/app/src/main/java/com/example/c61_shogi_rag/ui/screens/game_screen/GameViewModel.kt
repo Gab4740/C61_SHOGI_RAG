@@ -37,8 +37,8 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     private var selectedPieceToParchute: ShogiPiece? = null
     var isPlayerFirst: Boolean = isPlayerFirst
 
-    private var playerID: Int = -1
-    private var opponentID: Int = 0
+    var playerID: Int = -1
+    var opponentID: Int = 0
     private var isPlayerConnected: Boolean = false;
 
     init {
@@ -65,13 +65,9 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                     isPlayerTurn = game.isPlayerTurn
 
                     isGameEnded = game.isGameEnded
-                    if(isGameEnded){
-                       archiverPartie(playerID, opponentID)
-                        System.out.println("Game ended")
-                        return
-                    }else {
-                        aiTurn()
-                    }
+
+                    aiTurn()
+
 
                 }
                 else {
@@ -95,10 +91,6 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                 delay(2500) // solution boff
                 counter++
                 isGameEnded = game.isGameEnded
-//                if(isGameEnded) {
-//                    System.out.println("yo")
-//                    archiverPartie(opponentID, playerID)
-//                }
             }
 
         }
