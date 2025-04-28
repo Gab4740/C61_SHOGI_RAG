@@ -83,9 +83,6 @@ public class Game implements MinimaxCallback {
         gameSaver = new GameSaver();
         promotionStateMap = new PromotionState(new HashMap<>());
     }
-    public Game(Boolean isPlayerStarting){
-       this(isPlayerStarting, Difficulty.Hard.getStrategy());
-    }
 
     /**
      * Permet de créer les pièce nécessaire au jeux
@@ -246,16 +243,19 @@ public class Game implements MinimaxCallback {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces, difficulty);
+        manager = new MinimaxManager(5,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**
      * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
      */
     public void startMinimaxComputation() {
-        manager.resetMinimax(gameBoard);
+        manager.resetMinimax(gameBoard, capturedPieceBlackHM);
         manager.executeMinimaxAsync(this);
     }
+    /**
+     * Méthode callback lorsque le minimax fini ses calculs
+     * */
     @Override
     public void onMoveComputed(MoveManager move){
         if(move.checkIfPieceEaten()){
@@ -320,10 +320,7 @@ public class Game implements MinimaxCallback {
 
                 }
             }
-        }
-
-
-        return valid;
+        } return valid;
     }
 
     /**
@@ -494,10 +491,6 @@ public class Game implements MinimaxCallback {
         }
         return valid;
     }
-    public void parachuteBlackPiece(String shogiPieceClass) {
-
-    }
-
     public Boolean captureWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
         if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {

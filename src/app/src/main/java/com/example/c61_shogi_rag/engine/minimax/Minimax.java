@@ -8,6 +8,7 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.Vector;
 
@@ -16,11 +17,9 @@ public class Minimax {
     private Vector<ShogiPiece> pieces;
     private Hashtable<Byte, ShogiPiece> piecesObj;
     private int leafCounter;
-    private Random rand;
     public Minimax(Vector<ShogiPiece> pieces, Hashtable<Byte, ShogiPiece> piecesObj, EvaluationStrategies difficulty){
         this.pieces = pieces;
         this.leafCounter = 0;
-        this.rand = new Random();
         this.piecesObj = piecesObj;
         this.difficulty = difficulty;
     }
@@ -35,13 +34,13 @@ public class Minimax {
      * @param beta : Valeur treshold maximum (+infini),
      * @param maximizingPlayer : Boolean qui indique pour quel joueur : (True : AI, False : Joueur)
      * */
-    public MoveScore minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, PromotionState promotions){
+    public MoveScore minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, PromotionState promotions, LinkedHashMap<String, Integer> capturedPieceBlackHM){
         if (depth == 0){
             leafCounter++;
-            return new MoveScore(difficulty.evaluate(board, promotions, piecesObj), null); // Evaluation(board, moveGenerator.getPromotionStateMap());
+            return new MoveScore(difficulty.evaluate(board, promotions, piecesObj), null);
         }
 
-        MoveGeneration moveGenerator = new MoveGeneration(pieces, board, promotions, piecesObj);
+        MoveGeneration moveGenerator = new MoveGeneration(pieces, board, promotions, piecesObj, capturedPieceBlackHM);
 
         if(maximizingPlayer){
             MoveScore maxEval = new MoveScore(Integer.MIN_VALUE, null);
@@ -50,7 +49,7 @@ public class Minimax {
                 move = moveGenerator.getCurrMoveToReturn();
                 if(move != null){
                     move.do_move_on_board(board);
-                    MoveScore eval = minimax(board, depth - 1, alpha, beta, false, promotions);
+                    MoveScore eval = minimax(board, depth - 1, alpha, beta, false, moveGenerator.getPromotionStateMap(), moveGenerator.getCapturedPieceBlackHM());
                     move.undo_move_on_board(board);
 
                     if(eval.getScore() > maxEval.getScore()){
@@ -72,7 +71,7 @@ public class Minimax {
                 move = moveGenerator.getCurrMoveToReturn();
                 if(move != null) {
                     move.do_move_on_board(board);
-                    MoveScore eval = minimax(board, depth - 1, alpha, beta, true, promotions);
+                    MoveScore eval = minimax(board, depth - 1, alpha, beta, true, moveGenerator.getPromotionStateMap(), moveGenerator.getCapturedPieceBlackHM());
                     move.undo_move_on_board(board);
 
                     if(eval.getScore() < minEval.getScore()){
