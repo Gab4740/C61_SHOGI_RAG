@@ -43,6 +43,8 @@ public class Game implements MinimaxCallback {
     private static PromotionState promotionStateMap;
     private MinimaxManager manager;
     private EvaluationStrategies difficulty;
+    private ShogiPiece capturedKing;
+
 
 
     /**
@@ -59,7 +61,7 @@ public class Game implements MinimaxCallback {
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
         this.GameWinner = null;
-
+        this.capturedKing = null;
         this.capturedPieceWhiteHM = new LinkedHashMap<>(20);
         this.capturedPieceBlackHM = new LinkedHashMap<>(20);
 
@@ -420,11 +422,13 @@ public class Game implements MinimaxCallback {
     private boolean isKingsAlive() {
         for (byte id : capturedPieceBlack) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
+                capturedKing = pieces.get((byte)127);
                 return true;
             }
         }
         for (byte id : capturedPieceWhite) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
+                capturedKing = pieces.get((byte) -127);
                 return true;
             }
         }
@@ -510,7 +514,10 @@ public class Game implements MinimaxCallback {
         return isValid;
     }
 
+    public boolean whoLost() { // sente = true ; gote = false
 
+        return capturedKing.getNOM().equals("roisente");
+    }
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
