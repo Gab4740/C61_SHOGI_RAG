@@ -85,6 +85,9 @@ fun GameView(modifier: Modifier = Modifier,
             } else {
                 opponent.nom_joueur
             }
+
+
+
             GameOverDialog(
                 winner = winner ,
                 onDismiss = {
@@ -121,7 +124,7 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-               PlayerTag(playerName = "player: $winner wins")
+               PlayerTag(playerName = "Player $winner wins")
             }
         },
 

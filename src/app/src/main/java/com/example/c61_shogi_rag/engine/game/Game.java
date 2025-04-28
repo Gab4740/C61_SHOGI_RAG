@@ -425,13 +425,13 @@ public class Game implements MinimaxCallback {
     private boolean isKingsAlive() {
         for (byte id : capturedPieceBlack) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
-                capturedKing = pieces.get((byte)-127);
+                capturedKing = pieces.get((byte)127);
                 return true;
             }
         }
         for (byte id : capturedPieceWhite) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
-                capturedKing = pieces.get((byte) 127);
+                capturedKing = pieces.get((byte) -127);
                 return true;
             }
         }
@@ -521,8 +521,9 @@ public class Game implements MinimaxCallback {
         return isValid;
     }
 
-    public boolean whoLost() { // 0 = gote ; 1 = sente
-        return capturedKing.getID() > 0;
+    public boolean whoLost() { // sente = true ; gote = false
+
+        return capturedKing.getNOM().equals("roisente");
     }
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
