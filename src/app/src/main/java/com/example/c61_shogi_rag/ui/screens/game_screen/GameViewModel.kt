@@ -150,6 +150,10 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     }
 
     fun playerWon():Boolean {
-        return isPlayerFirst && game.whoLost()
+        var win: Boolean = true
+        if(isPlayerFirst == game.whoLost()) {
+            win  = false
+        }
+        return win
     }
 }
