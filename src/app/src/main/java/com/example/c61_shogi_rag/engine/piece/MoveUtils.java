@@ -1,6 +1,9 @@
 package com.example.c61_shogi_rag.engine.piece;
 
 import com.example.c61_shogi_rag.engine.game.Board;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion;
 
 public class MoveUtils {
     public static boolean checkCross(int finalX, int finalY, int currX, int currY, Board board, int[][] directions){
@@ -75,5 +78,26 @@ public class MoveUtils {
             }
         }
         return false;
+    }
+
+    public boolean canParachute(ShogiPiece piece, Position pos, Board gameBoard){
+        boolean valid = true;
+        final int LAST_ROW = 8;
+
+        if(piece instanceof Pion) {
+            // TODO Vérifier si le pion fait échec et mat
+            if(pos.getPosX() == LAST_ROW || !gameBoard.isWhitePawnInColumn(pos.getPosY())) {
+                valid = false;
+            }
+        } else if (piece instanceof  Lance) {
+            if(pos.getPosX() == LAST_ROW) {
+                valid = false;
+            }
+        } else if (piece instanceof Chevalier) {
+            if(pos.getPosX() == LAST_ROW  || pos.getPosX() == LAST_ROW + 1) {
+                valid = false;
+            }
+        }
+        return valid;
     }
 }

@@ -9,12 +9,16 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 public class MoveGeneration {
     private int currListIndex;
     private int currPieceCount;
     private int currDirectionsIndex;
+    private int parachutePieceIndex;
     private ShogiPiece pieceToGenMoveFrom;
     private Vector<Position> posOfSpecificPiece;
     private Position currPosition;
@@ -24,8 +28,10 @@ public class MoveGeneration {
     private Board board;
     private MoveManager currMoveToReturn;
     private boolean pieceExists;
+    private LinkedHashMap<String, Integer> capturedPieceBlackHM;
+    private Vector<ShogiPiece> pieceToParachute;
 
-    public MoveGeneration(Vector<ShogiPiece> pieces, Board board, PromotionState promotionState, Hashtable<Byte, ShogiPiece> piecesObj) {
+    public MoveGeneration(Vector<ShogiPiece> pieces, Board board, PromotionState promotionState, Hashtable<Byte, ShogiPiece> piecesObj, LinkedHashMap<String, Integer> capturedPieceBlackHM) {
         this.pieces = pieces;
         this.board = board;
         this.pieceToGenMoveFrom = null;
@@ -35,6 +41,9 @@ public class MoveGeneration {
         this.currListIndex = 0;
         this.currPieceCount = 0;
         this.currDirectionsIndex = 0;
+        this.parachutePieceIndex = 0;
+
+        this.capturedPieceBlackHM = capturedPieceBlackHM;
     }
 
     public MoveManager getCurrMoveToReturn() {
@@ -75,10 +84,30 @@ public class MoveGeneration {
             currDirectionsIndex = 0;
         }
     }
+    private void getPieceToPrachute(){
+        pieceToParachute = new Vector<>();
+        for (Map.Entry<String, Integer> entry : capturedPieceBlackHM.entrySet()) {
+            String pieceClassName = entry.getKey();
+            int count = entry.getValue();
+            if (count > 0) {
+                ShogiPiece matchingPiece = pieces.stream()
+                        .filter(p -> Objects.equals(p.getClass().getCanonicalName(), pieceClassName))
+                        .findFirst()
+                        .orElse(null);
+
+                if (matchingPiece != null) {
+                    for (int i = 0; i < count; i++) {
+                        pieceToParachute.add(matchingPiece);
+                    }
+                }
+            }
+        }
+    }
     public boolean genMove(){
         if(currListIndex == 0){
             getNewPieceFromList();
             getNewPieceFromBoard();
+            getPieceToPrachute();
         }
         else if(pieceToGenMoveFrom.getDIRECTIONS().length == currDirectionsIndex){
             getNewPieceFromBoard();
@@ -115,18 +144,32 @@ public class MoveGeneration {
                 else if (currMoveToReturn.checkIfShouldBePromoted() && (absID != 127 && absID != 11 && absID != 10)) {
                     promotionStateMap.promotePiece(endPos);
                 }
+
+                if(originalTraget != 0){
+                    ShogiPiece capturedPiece = piecesObj.get(originalTraget);
+                    int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
+                    capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                }
             }
             currDirectionsIndex++;
-
-            // ADD EXCEPTION FOR PIECE THAT ARE PATHING
-
-            // ADD PARACHUTING
         }
         else{
             getNewPieceFromList();
             getNewPieceFromBoard();
             return (currListIndex - 1) != pieces.size();
         }
+
+        if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
+            // Start testing parachuting here
+        }
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
+    }
+
+    public PromotionState getPromotionStateMap() {
+        return promotionStateMap;
+    }
+
+    public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
+        return capturedPieceBlackHM;
     }
 }

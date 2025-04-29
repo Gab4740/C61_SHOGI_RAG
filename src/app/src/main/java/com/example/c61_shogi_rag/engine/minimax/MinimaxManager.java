@@ -10,6 +10,7 @@ import java.time.chrono.MinguoEra;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
@@ -31,6 +32,7 @@ public class MinimaxManager {
     private PromotionState promotionStateMap;
     private Vector<ShogiPiece> piece;
     private ExecutorService executorService;
+    private LinkedHashMap<String, Integer> capturedPieceBlackHM;
 
     public MinimaxManager(int searchDepth, boolean maximizingPlayer, Vector<ShogiPiece> piece, boolean debug, Hashtable<Byte, ShogiPiece> pieces, EvaluationStrategies difficulty) {
         this.currGameBoard = null;
@@ -44,8 +46,9 @@ public class MinimaxManager {
         this.executorService = Executors.newWorkStealingPool();
     }
 
-    public void resetMinimax(Board currGameBoard){
+    public void resetMinimax(Board currGameBoard, LinkedHashMap<String, Integer> capturedPieceBlackHM){
         this.currGameBoard = currGameBoard;
+        this.capturedPieceBlackHM = capturedPieceBlackHM;
     }
 
     public void executeMinimaxAsync(MinimaxCallback callback) {
@@ -100,9 +103,10 @@ public class MinimaxManager {
         long start = System.nanoTime();
         Board boardCopy = currGameBoard.clone();
         PromotionState promotionCopy = promotionStateMap.clone();
+        LinkedHashMap<String, Integer> capturedPieceBlackHMCopy = (LinkedHashMap<String, Integer>) capturedPieceBlackHM.clone();
 
         minimaxObj = new Minimax(piece, piecesObj, difficulty);
-        MoveScore moveToDo = minimaxObj.minimax(boardCopy, searchDepth, ALPHA, BETA, maximizingPlayer, promotionCopy);
+        MoveScore moveToDo = minimaxObj.minimax(boardCopy, searchDepth, ALPHA, BETA, maximizingPlayer, promotionCopy, capturedPieceBlackHMCopy);
         long end = System.nanoTime();
 
         if (debug) {

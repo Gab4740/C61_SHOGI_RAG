@@ -43,6 +43,8 @@ public class Game implements MinimaxCallback {
     private static PromotionState promotionStateMap;
     private MinimaxManager manager;
     private EvaluationStrategies difficulty;
+    private ShogiPiece capturedKing;
+
 
 
     /**
@@ -59,7 +61,7 @@ public class Game implements MinimaxCallback {
         this.isPlayerTurn = isPlayerStarting;
         this.isGameEnded = false;
         this.GameWinner = null;
-
+        this.capturedKing = null;
         this.capturedPieceWhiteHM = new LinkedHashMap<>(20);
         this.capturedPieceBlackHM = new LinkedHashMap<>(20);
 
@@ -82,9 +84,6 @@ public class Game implements MinimaxCallback {
 
         gameSaver = new GameSaver();
         promotionStateMap = new PromotionState(new HashMap<>());
-    }
-    public Game(Boolean isPlayerStarting){
-       this(isPlayerStarting, Difficulty.Hard.getStrategy());
     }
 
     /**
@@ -246,16 +245,19 @@ public class Game implements MinimaxCallback {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces, difficulty);
+        manager = new MinimaxManager(5,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**
      * Méthode qui permet d'executer le minimax selon l'état actuel de la partie
      */
     public void startMinimaxComputation() {
-        manager.resetMinimax(gameBoard);
+        manager.resetMinimax(gameBoard, capturedPieceBlackHM);
         manager.executeMinimaxAsync(this);
     }
+    /**
+     * Méthode callback lorsque le minimax fini ses calculs
+     * */
     @Override
     public void onMoveComputed(MoveManager move){
         if(move.checkIfPieceEaten()){
@@ -320,10 +322,7 @@ public class Game implements MinimaxCallback {
 
                 }
             }
-        }
-
-
-        return valid;
+        } return valid;
     }
 
     /**
@@ -423,11 +422,13 @@ public class Game implements MinimaxCallback {
     private boolean isKingsAlive() {
         for (byte id : capturedPieceBlack) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
+                capturedKing = pieces.get((byte)127);
                 return true;
             }
         }
         for (byte id : capturedPieceWhite) {
             if (Math.abs(id) == PieceIDs.Roi.getValue()) {
+                capturedKing = pieces.get((byte) -127);
                 return true;
             }
         }
@@ -494,10 +495,6 @@ public class Game implements MinimaxCallback {
         }
         return valid;
     }
-    public void parachuteBlackPiece(String shogiPieceClass) {
-
-    }
-
     public Boolean captureWhitePiece(String shogiPieceClass) {
         boolean isValid = false;
         if(capturedPieceWhiteHM.containsKey(shogiPieceClass)) {
@@ -517,7 +514,10 @@ public class Game implements MinimaxCallback {
         return isValid;
     }
 
+    public boolean whoLost() { // sente = true ; gote = false
 
+        return capturedKing.getNOM().equals("roisente");
+    }
 
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
