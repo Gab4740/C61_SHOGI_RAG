@@ -95,7 +95,7 @@ fun HistoryView(
                     LazyColumn {
                         items(parties) { partie ->
 
-                            PartieItem(partie = partie)
+                            MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
                             Spacer(modifier = Modifier.height(15.dp))
                         }
                     }
@@ -109,8 +109,6 @@ fun HistoryView(
             text = state.message,
             color = MaterialTheme.colorScheme.error
         ) }
-
-
     }
 }
 
