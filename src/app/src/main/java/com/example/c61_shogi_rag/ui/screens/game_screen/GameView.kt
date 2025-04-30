@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,8 @@ fun GameView(modifier: Modifier = Modifier,
             opponent.joueur_id
         )
     }
+
+    val gameSaved = remember { mutableStateOf(false) }
 
     key(gameViewModel.counter)
     {
@@ -86,10 +90,13 @@ fun GameView(modifier: Modifier = Modifier,
                 opponent.nom_joueur
             }
 
-            if(winner ==  playerShareViewModel.currentPlayer.nom_joueur){
-                gameViewModel.archiverPartie(gameViewModel.playerID, gameViewModel.opponentID)
-            }else{
-                gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
+            if (!gameSaved.value){
+                if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
+                    gameViewModel.archiverPartie(gameViewModel.playerID, gameViewModel.opponentID)
+                } else {
+                    gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
+                }
+                gameSaved.value = true
             }
 
 
@@ -97,6 +104,7 @@ fun GameView(modifier: Modifier = Modifier,
                 winner = winner ,
                 onDismiss = {
                     gameViewModel.isGameEnded = false
+                    gameSaved.value = false
                     navigateToMainMenu()
                 }
             )
