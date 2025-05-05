@@ -514,26 +514,22 @@ public class Evaluation {
         int score = 0;
         int boardSize = board.getBOARD_SIZE();
 
-        List<Position> iaPieces = board.getPositionFromColor(false);
-        List<Position> joueurPieces = board.getPositionFromColor(true);
-
-
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                Position target = new Position(i, j);
 
-                int iaControl = countControllingPiecesFast(board, target, iaPieces, pieceTable);
-                int joueurControl = countControllingPiecesFast(board, target, joueurPieces, pieceTable);
-
-                int totalControl = iaControl - joueurControl;
-
-                if (i < 3) {
-                    if (totalControl > 0) score += totalControl * 3;
-                } else if (i > 5) {
-                    if (totalControl < 0) score += totalControl * 3;
-                    else if (totalControl > 0) score += totalControl;
-                } else {
-                    score += totalControl;
+                byte piece = board.getBoard()[i][j];
+                if(piece != 0){
+                    ShogiPiece pieceObj = pieceTable.get(piece);
+                    for (int[] direction : pieceObj.getDIRECTIONS()) {
+                        int newX = j + direction[0];
+                        int newY = i + direction[1];
+                        if(piece > 0 && board.getBoard()[newX][newY] <= 0){
+                            score -= 1;
+                        }
+                        else if (piece < 0 && board.getBoard()[newX][newY] >= 0) {
+                            score += 1;
+                        }
+                    }
                 }
             }
         }
