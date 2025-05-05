@@ -526,6 +526,9 @@ public class Game implements MinimaxCallback {
         return capturedKing.getNOM().equals("roisente");
     }
 
+    public String getTimeString(){
+        return gameTimer.getDisplayTime();
+    }
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
     }

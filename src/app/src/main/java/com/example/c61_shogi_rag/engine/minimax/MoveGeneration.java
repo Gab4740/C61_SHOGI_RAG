@@ -147,8 +147,10 @@ public class MoveGeneration {
 
                 if(originalTraget != 0){
                     ShogiPiece capturedPiece = piecesObj.get(originalTraget);
-                    int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
-                    capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                    if(Math.abs(capturedPiece.getID()) != 127){
+                        int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
+                        capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                    }
                 }
             }
             currDirectionsIndex++;

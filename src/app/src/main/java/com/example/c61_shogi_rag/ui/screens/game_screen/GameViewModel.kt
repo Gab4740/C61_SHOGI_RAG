@@ -24,6 +24,8 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -43,12 +45,19 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     private var isPlayerConnected: Boolean = false;
 
     var shouldPiecePromote by mutableStateOf(false)
+    val clock = mutableStateOf(game.timeString)
 
     init {
         game.GameInit()
         if(!isPlayerTurn) {
             game.startMinimaxComputation();
             isPlayerTurn = game.isPlayerTurn
+        }
+        viewModelScope.launch {
+            while (true) {
+                clock.value = game.timeString
+                delay(1000L)
+            }
         }
     }
     fun selectPosition(position: Position) {
