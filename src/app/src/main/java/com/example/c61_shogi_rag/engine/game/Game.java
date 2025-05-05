@@ -1,5 +1,7 @@
 package com.example.c61_shogi_rag.engine.game;
 
+import androidx.compose.runtime.MutableState;
+
 import com.example.c61_shogi_rag.engine.dao.PartieDAO;
 import com.example.c61_shogi_rag.engine.entity.Partie;
 import com.example.c61_shogi_rag.engine.entity.PartieCallback;
@@ -44,13 +46,14 @@ public class Game implements MinimaxCallback {
     private MinimaxManager manager;
     private EvaluationStrategies difficulty;
     private ShogiPiece capturedKing;
+    private MutableState<Integer> counter;
 
 
 
     /**
      * @param isPlayerStarting : Si le joueur commence : true, si le AI commence : false
      */
-    public Game(Boolean isPlayerStarting, EvaluationStrategies difficulty) {
+    public Game(Boolean isPlayerStarting, EvaluationStrategies difficulty, MutableState<Integer> counter) {
         this.gameTimer = new Time();
         this.gameBoard = new Board();
         this.pieces = new Hashtable<>();
@@ -81,6 +84,8 @@ public class Game implements MinimaxCallback {
         this.capturedPieceBlackHM.put(Charriot.class.getCanonicalName(), 0);
 
         this.difficulty = difficulty;
+
+        this.counter = counter;
 
         gameSaver = new GameSaver();
         promotionStateMap = new PromotionState(new HashMap<>());
@@ -272,6 +277,8 @@ public class Game implements MinimaxCallback {
             promotionStateMap.promotePiece(move.getMove().getNextPosition());
         }
         move.do_move_on_board(gameBoard);
+        this.counter.setValue(this.counter.getValue() + 1) ;
+
         isGameEnded = isKingsAlive();
         flipPlayerTurn(false);
     }

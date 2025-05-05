@@ -42,7 +42,7 @@ fun GameView(modifier: Modifier = Modifier,
 
     val gameSaved = remember { mutableStateOf(false) }
 
-    key(gameViewModel.counter)
+    key(gameViewModel.counter.value)
     {
         Column(
             modifier = modifier

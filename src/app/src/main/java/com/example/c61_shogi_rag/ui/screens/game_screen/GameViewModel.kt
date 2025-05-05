@@ -28,10 +28,11 @@ import kotlinx.coroutines.launch
 
 
 class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel() {
-    var game by mutableStateOf(Game(isPlayerFirst, difficulty.strategy))
+    //var counter by mutableIntStateOf(0)
+    val counter = mutableIntStateOf(0)
+    var game by mutableStateOf(Game(isPlayerFirst, difficulty.strategy, counter))
         private set   // Permet d'accéder game à l'extérieur mais pas le modifier
     var isPlayerTurn by mutableStateOf(game.isPlayerTurn)
-    var counter by mutableIntStateOf(0)
     var isGameEnded by mutableStateOf(game.isGameEnded)
     private var selectedPosition: Position? = null
     private var selectedPieceToParchute: ShogiPiece? = null
@@ -54,7 +55,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
         }
     }
     private fun playerTurn(position: Position) {
-        counter++
+        counter.value += 1
         if(!isGameEnded) {
             if(game.isPlayerPieceAtPos(position)) {
                 selectedPosition = position
@@ -88,8 +89,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
         if(!isGameEnded) {
             viewModelScope.launch {
                 game.aiTurn()
-                delay(2500) // solution boff
-                counter++
+
                 isGameEnded = game.isGameEnded
             }
 
