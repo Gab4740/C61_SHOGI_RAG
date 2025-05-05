@@ -42,6 +42,8 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     var opponentID: Int = 0
     private var isPlayerConnected: Boolean = false;
 
+    var shouldPiecePromote by mutableStateOf(false)
+
     init {
         game.GameInit()
         if(!isPlayerTurn) {
@@ -86,7 +88,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
     }
     private fun aiTurn() {
-        if(!isGameEnded) {
+        if(!game.isGameEnded) {
             viewModelScope.launch {
                 game.aiTurn()
 
