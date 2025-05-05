@@ -44,6 +44,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     var opponentID: Int = 0
     private var isPlayerConnected: Boolean = false;
 
+    var shouldPiecePromote by mutableStateOf(false)
     val clock = mutableStateOf(game.timeString)
 
     init {
@@ -96,7 +97,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
     }
     private fun aiTurn() {
-        if(!isGameEnded) {
+        if(!game.isGameEnded) {
             viewModelScope.launch {
                 game.aiTurn()
 
@@ -138,7 +139,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
                 val jsonString = gson.toJson(game.getGameSaver())
 
-                PartieDAO.addPartie(id_gagnant, id_perdant, jsonString, object : PartieCallback {
+                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
                         //voir pour peut etre mettre un toast
                     }

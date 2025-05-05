@@ -51,6 +51,8 @@ fun HistoryView(
     }
 
 
+
+
     when (val state = uiState) {
         is HistoryUiState.Loading -> {
             CircularProgressIndicator()
@@ -94,8 +96,17 @@ fun HistoryView(
                 if (playerShareViewModel.isCurrentPlayerSet()) {
                     LazyColumn {
                         items(parties) { partie ->
+                            //modifier en fonction de la couleur du joueur
 
-                            MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
+//                            historyViewModel.getNomJoueurs(partie)
+//                            val joueurGagnant = historyViewModel.joueursGagnants[partie.partie_id]
+//                            val joueurPerdant = historyViewModel.joueursPerdants[partie.partie_id]
+
+                            //if()
+                                MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
+//                            else()
+//                            MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
+
                             Spacer(modifier = Modifier.height(15.dp))
                         }
                     }

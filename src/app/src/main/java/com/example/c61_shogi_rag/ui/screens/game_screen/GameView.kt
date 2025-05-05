@@ -21,12 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
+import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
+import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
+import kotlin.random.Random
 
 
 @Composable
@@ -121,6 +125,9 @@ fun GameView(modifier: Modifier = Modifier,
                 }
             )
         }
+        gameViewModel.shouldPiecePromote -> {
+
+        }
     }
 }
 
@@ -163,6 +170,30 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                     text = "Save game",
                     onClick = {onConfirmation()}
                 )
+            }
+        }
+    )
+}
+
+@Composable
+fun PromotionDialogue(
+    modifier: Modifier = Modifier,
+    shogiPiece: ShogiPiece,
+    onDismiss: () -> Unit,
+    onConfirmation: (Boolean) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+
+
+        confirmButton = {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
             }
         }
     )

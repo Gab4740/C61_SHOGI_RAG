@@ -34,7 +34,7 @@ public class PartieDAO {
      *
      *
      **/
-    public static void addPartie(int id_winner, int id_loser, String jsonString, PartieCallback callback) {
+    public static void addPartie(int id_winner, int id_loser, boolean playerCouleur, String jsonString, PartieCallback callback) {
 
 
         partieDB.runTransaction(new Transaction.Handler(){
@@ -47,7 +47,7 @@ public class PartieDAO {
                     long newId = nombrePartie + 1;
                     String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-                    Partie partie = new Partie((int) newId, id_winner, id_loser, date, jsonString);
+                    Partie partie = new Partie((int) newId, id_winner, id_loser, date, jsonString , playerCouleur);
 
                     currentData.child(String.valueOf(newId)).setValue(partie);
 
