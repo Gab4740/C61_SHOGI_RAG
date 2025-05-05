@@ -36,7 +36,6 @@ fun GameView(modifier: Modifier = Modifier,
              opponent: Joueur,
              navigateToMainMenu:() -> Unit
              ) {
-    val time by gameViewModel.clock.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         gameViewModel.setPlayerID(
@@ -57,7 +56,11 @@ fun GameView(modifier: Modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            CounterText(value = time)
+            if(gameViewModel.clock.value != null){
+                CounterText(value = gameViewModel.clock.value, fontSize = 30)
+            }else{
+                CounterText(value = "00 : 00", fontSize = 30)
+            }
 
             PlayerTag(
                 modifier = Modifier

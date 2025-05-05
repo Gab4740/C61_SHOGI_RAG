@@ -44,8 +44,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     var opponentID: Int = 0
     private var isPlayerConnected: Boolean = false;
 
-    private val _clock = MutableStateFlow(game.timeString)
-    val clock: StateFlow<String> = _clock
+    val clock = mutableStateOf(game.timeString)
 
     init {
         game.GameInit()
@@ -55,7 +54,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
         }
         viewModelScope.launch {
             while (true) {
-                _clock.value = game.timeString
+                clock.value = game.timeString
                 delay(1000L)
             }
         }

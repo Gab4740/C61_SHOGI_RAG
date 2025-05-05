@@ -37,11 +37,11 @@ fun PlayerTag(modifier: Modifier = Modifier, playerName:String) {
 }
 
 @Composable
-fun CounterText(modifier: Modifier = Modifier, value: Any) {
+fun CounterText(modifier: Modifier = Modifier, value: Any, fontSize : Int = 20) {
     Text(
         modifier = modifier,
         text = value.toString(),
-        fontSize = 20.sp,
+        fontSize = fontSize.sp,
         fontFamily = japanWaveFontFamily
     )
 }
