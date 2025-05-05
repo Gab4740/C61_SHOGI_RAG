@@ -145,11 +145,11 @@ public class MoveGeneration {
                     promotionStateMap.promotePiece(endPos);
                 }
 
-                if(originalTraget != 0){
-                    ShogiPiece capturedPiece = piecesObj.get(originalTraget);
-                    int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
-                    capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
-                }
+                //if(originalTraget != 0){
+                //    ShogiPiece capturedPiece = piecesObj.get(originalTraget);
+                //    int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
+                //    capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                //}
             }
             currDirectionsIndex++;
         }

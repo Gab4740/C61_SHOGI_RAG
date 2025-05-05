@@ -43,15 +43,19 @@ public class  InitPiece {
         switch(pieceName){
             case "roisente" :
                 piece_id = PieceIDs.Roi.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.Roi.getValue() * (color ? adjust : inverse);
                 image_id = color ? R.drawable.sente_king_0 :  R.drawable.sente_king_1;
+                image_id_promu = color ? R.drawable.sente_king_0 :  R.drawable.sente_king_1;
                 mR = MoveSet.Roi.getMoveSet();
-                return new RoiSente((byte)piece_id, (byte)0, image_id, 0, pieceName, mR);
+                return new RoiSente((byte)piece_id, (byte)promu_id, image_id, image_id_promu, pieceName, mR);
 
             case "roigote" :
                 piece_id = PieceIDs.Roi.getValue() * (color ? adjust : inverse);
+                promu_id = PieceIDs.Roi.getValue() * (color ? adjust : inverse);
                 image_id = color ? R.drawable.gote_king_0 :  R.drawable.gote_king_1;
+                image_id_promu = color ? R.drawable.gote_king_0 :  R.drawable.gote_king_1;
                 mR = MoveSet.Roi.getMoveSet();
-                return new RoiGote((byte)piece_id, (byte)0, image_id, 0, pieceName, mR);
+                return new RoiGote((byte)piece_id, (byte)promu_id, image_id, image_id_promu, pieceName, mR);
 
             case "char" :
                 piece_id = PieceIDs.Char.getValue() * (color ? adjust : inverse);
