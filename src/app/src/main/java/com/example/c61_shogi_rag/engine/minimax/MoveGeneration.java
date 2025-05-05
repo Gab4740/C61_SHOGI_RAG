@@ -107,7 +107,7 @@ public class MoveGeneration {
         if(currListIndex == 0){
             getNewPieceFromList();
             getNewPieceFromBoard();
-            getPieceToPrachute();
+            //getPieceToPrachute();
         }
         else if(pieceToGenMoveFrom.getDIRECTIONS().length == currDirectionsIndex){
             getNewPieceFromBoard();
@@ -159,9 +159,9 @@ public class MoveGeneration {
             return (currListIndex - 1) != pieces.size();
         }
 
-        if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
-            // Start testing parachuting here
-        }
+        //if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
+        //    // Start testing parachuting here
+        //}
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
 
