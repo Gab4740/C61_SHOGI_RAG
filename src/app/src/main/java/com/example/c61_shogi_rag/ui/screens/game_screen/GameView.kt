@@ -28,7 +28,7 @@ import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
-import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
+//import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
 import kotlin.random.Random
 
@@ -192,8 +192,8 @@ fun PromotionDialogue(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
-                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
+               // ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
+               // ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
             }
         }
     )
