@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,11 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
+import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
+import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
+import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
+import kotlin.random.Random
 
 
 @Composable
@@ -32,6 +40,7 @@ fun GameView(modifier: Modifier = Modifier,
              opponent: Joueur,
              navigateToMainMenu:() -> Unit
              ) {
+
     LaunchedEffect(key1 = Unit) {
         gameViewModel.setPlayerID(
             playerShareViewModel.isCurrentPlayerSet(),
@@ -50,6 +59,13 @@ fun GameView(modifier: Modifier = Modifier,
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
+            if(gameViewModel.clock.value != null){
+                CounterText(value = gameViewModel.clock.value, fontSize = 30)
+            }else{
+                CounterText(value = "00 : 00", fontSize = 30)
+            }
+
             PlayerTag(
                 modifier = Modifier
                     .align(Alignment.End)
@@ -109,6 +125,9 @@ fun GameView(modifier: Modifier = Modifier,
                 }
             )
         }
+        gameViewModel.shouldPiecePromote -> {
+
+        }
     }
 }
 
@@ -151,6 +170,30 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                     text = "Save game",
                     onClick = {onConfirmation()}
                 )
+            }
+        }
+    )
+}
+
+@Composable
+fun PromotionDialogue(
+    modifier: Modifier = Modifier,
+    shogiPiece: ShogiPiece,
+    onDismiss: () -> Unit,
+    onConfirmation: (Boolean) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+
+
+        confirmButton = {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
             }
         }
     )

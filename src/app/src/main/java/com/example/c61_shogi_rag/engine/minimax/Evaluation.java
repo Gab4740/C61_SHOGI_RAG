@@ -75,9 +75,6 @@ public class Evaluation {
             return 0;
         }
 
-//        castlingScore += checkYaguraCastle(board, kingPos);
-//        castlingScore += checkAnagumaCastle(board, kingPos);
-
         return checkYaguraCastle(board, kingPos) + checkAnagumaCastle(board, kingPos);
     }
 

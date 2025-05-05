@@ -107,7 +107,7 @@ public class MoveGeneration {
         if(currListIndex == 0){
             getNewPieceFromList();
             getNewPieceFromBoard();
-            getPieceToPrachute();
+            //getPieceToPrachute();
         }
         else if(pieceToGenMoveFrom.getDIRECTIONS().length == currDirectionsIndex){
             getNewPieceFromBoard();
@@ -147,8 +147,10 @@ public class MoveGeneration {
 
                 if(originalTraget != 0){
                     ShogiPiece capturedPiece = piecesObj.get(originalTraget);
-                    int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
-                    capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                    if(Math.abs(capturedPiece.getID()) != 127){
+                        int qte = capturedPieceBlackHM.get(capturedPiece.getClass().getCanonicalName()) + 1;
+                        capturedPieceBlackHM.put(capturedPiece.getClass().getCanonicalName(), qte);
+                    }
                 }
             }
             currDirectionsIndex++;
@@ -159,9 +161,9 @@ public class MoveGeneration {
             return (currListIndex - 1) != pieces.size();
         }
 
-        if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
-            // Start testing parachuting here
-        }
+        //if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
+        //    // Start testing parachuting here
+        //}
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
 

@@ -250,7 +250,7 @@ public class Game implements MinimaxCallback {
         PieceInit();
         BoardInit();
         gameTimer.startTime();
-        manager = new MinimaxManager(5,true, piecesForMinimax, true, pieces, difficulty);
+        manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces, difficulty);
     }
 
     /**
@@ -526,6 +526,9 @@ public class Game implements MinimaxCallback {
         return capturedKing.getNOM().equals("roisente");
     }
 
+    public String getTimeString(){
+        return gameTimer.getDisplayTime();
+    }
     public LinkedHashMap<String, Integer> getCapturedPieceBlackHM() {
         return capturedPieceBlackHM;
     }
