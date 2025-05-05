@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
+import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
@@ -32,6 +36,8 @@ fun GameView(modifier: Modifier = Modifier,
              opponent: Joueur,
              navigateToMainMenu:() -> Unit
              ) {
+    val time by gameViewModel.clock.collectAsState()
+
     LaunchedEffect(key1 = Unit) {
         gameViewModel.setPlayerID(
             playerShareViewModel.isCurrentPlayerSet(),
@@ -50,6 +56,9 @@ fun GameView(modifier: Modifier = Modifier,
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
+            CounterText(value = time)
+
             PlayerTag(
                 modifier = Modifier
                     .align(Alignment.End)
