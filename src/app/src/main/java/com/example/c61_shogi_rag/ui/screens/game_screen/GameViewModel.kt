@@ -128,7 +128,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
                 val jsonString = gson.toJson(game.getGameSaver())
 
-                PartieDAO.addPartie(id_gagnant, id_perdant, jsonString, object : PartieCallback {
+                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
                         //voir pour peut etre mettre un toast
                     }

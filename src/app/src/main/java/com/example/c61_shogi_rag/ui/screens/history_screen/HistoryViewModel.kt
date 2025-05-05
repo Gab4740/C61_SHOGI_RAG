@@ -10,6 +10,7 @@ import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.JoueurCallback
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.entity.PartieCallback
+import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +35,9 @@ class HistoryViewModel() : ViewModel() {
 
     val joueursGagnants = mutableStateMapOf<Int, Joueur?>()
     val joueursPerdants = mutableStateMapOf<Int, Joueur?>()
+
+    val senteScore:Int = 0
+    val goteScore:Int = 0
 
     /**
      *
@@ -122,6 +126,12 @@ class HistoryViewModel() : ViewModel() {
                 }
 
             }, id_joueur)
+    }
+
+    private fun winnerPoint(partie:Partie){
+        if (partie.playerCouleur){
+
+        }
     }
 
 

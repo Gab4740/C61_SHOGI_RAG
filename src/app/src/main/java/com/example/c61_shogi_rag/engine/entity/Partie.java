@@ -7,16 +7,17 @@ public class Partie {
     private int loser_id;
     private String date;
     private String historiqueCoups;
-
+    private boolean playerCouleur;
     public Partie() {
     }
 
-    public Partie(int partie_id, int winner_id, int loser_id, String date, String historiqueCoups) {
+    public Partie(int partie_id, int winner_id, int loser_id, String date, String historiqueCoups, boolean playerCouleur) {
         this.partie_id = partie_id;
         this.winner_id = winner_id;
         this.loser_id = loser_id;
         this.date = date;
         this.historiqueCoups = historiqueCoups;
+        this.playerCouleur = playerCouleur;
     }
 
     public int getPartie_id() {
@@ -57,5 +58,13 @@ public class Partie {
 
     public void setHistoriqueCoups(String historiqueCoups) {
         this.historiqueCoups = historiqueCoups;
+    }
+
+    public boolean getPlayerCouleur() {
+        return playerCouleur;
+    }
+
+    public void setPlayerCouleur(boolean playerCouleur) {
+        this.playerCouleur = playerCouleur;
     }
 }
