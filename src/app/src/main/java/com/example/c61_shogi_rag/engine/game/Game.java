@@ -521,8 +521,8 @@ public class Game implements MinimaxCallback {
         return isValid;
     }
 
-    public boolean whoLost() { // sente = true ; gote = false
-
+    public boolean whoLost() {
+        // sente = true ; gote = false
         return capturedKing.getNOM().equals("roisente");
     }
 
@@ -537,5 +537,13 @@ public class Game implements MinimaxCallback {
     }
     public HashMap<String, Boolean> getPromotionStateMap() {
         return promotionStateMap.getMap();
+    }
+
+    public ShogiPiece shouldPromote(Position position) {
+        ShogiPiece shogiPiece = null;
+        if(promotionStateMap.canPiecePromote(position)) {
+            shogiPiece = getPieceAt(position);
+        }
+        return shogiPiece;
     }
 }

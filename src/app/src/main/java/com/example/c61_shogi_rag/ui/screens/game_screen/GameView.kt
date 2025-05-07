@@ -28,9 +28,8 @@ import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
-//import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
+import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
-import kotlin.random.Random
 
 
 @Composable
@@ -114,8 +113,6 @@ fun GameView(modifier: Modifier = Modifier,
                 }
                 gameSaved.value = true
             }
-
-
             GameOverDialog(
                 winner = winner ,
                 onDismiss = {
@@ -125,8 +122,8 @@ fun GameView(modifier: Modifier = Modifier,
                 }
             )
         }
-        gameViewModel.shouldPiecePromote -> {
-
+        gameViewModel.pieceToPromote != null -> {
+            println("bonjour")
         }
     }
 }
@@ -138,7 +135,6 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                    onConfirmation:() -> Unit = {}) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
-
         title = {
             Column(
                 modifier = Modifier
@@ -147,7 +143,6 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
             ) {
                 Title(name = "Game Over")
             }
-
         },
         text = {
             Column(
@@ -159,7 +154,6 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                PlayerTag(playerName = "Player $winner wins")
             }
         },
-
         confirmButton = {
             Column(
                 modifier = Modifier
@@ -184,16 +178,14 @@ fun PromotionDialogue(
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
-
-
         confirmButton = {
             Row(
                 modifier = modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-               // ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
-               // ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
+                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
             }
         }
     )
