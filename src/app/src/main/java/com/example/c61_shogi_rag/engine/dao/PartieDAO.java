@@ -119,7 +119,7 @@ public class PartieDAO {
      *
      **/
     public static void getPartie(PartieCallback callback, int id_joueur) {
-        partieDB.addValueEventListener(new ValueEventListener() {
+        partieDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Partie> partieList = new ArrayList<>();

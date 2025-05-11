@@ -25,7 +25,7 @@ sealed class HistoryUiState {
     data class Error(val message: String) : HistoryUiState()
 }
 
-class HistoryViewModel() : ViewModel() {
+class HistoryViewModel : ViewModel() {
 
 
     private var uiState = MutableStateFlow<HistoryUiState>(HistoryUiState.Loading)
@@ -128,10 +128,41 @@ class HistoryViewModel() : ViewModel() {
             }, id_joueur)
     }
 
-    private fun winnerPoint(partie:Partie){
-        if (partie.playerCouleur){
+    fun calculateScores(partie:Partie, playerId:Int): Pair<Float, Float>  {
+        var senteScore = 0f
+        var goteScore = 0f
+
+        val playerCouleur = partie.playerCouleur
+
+        val isPlayerWinner = partie.winner_id == playerId
+
+        if (playerCouleur){
+            senteScore = if (isPlayerWinner) 1f else 0f
+            goteScore = if (isPlayerWinner) 0f else 1f
+        }else{
+            senteScore = if (isPlayerWinner) 0f else 1f
+            goteScore = if (isPlayerWinner) 1f else 0f
 
         }
+
+        return Pair(senteScore, goteScore)
+    }
+
+    fun getNom(partie: Partie, playerName: String): Pair<String, String> {
+        val playerCouleur = partie.playerCouleur
+
+        val senteName: String
+        val goteName: String
+
+        if (playerCouleur) {
+            senteName = playerName
+            goteName = "IA"
+        } else {
+            senteName = "IA"
+            goteName = playerName
+        }
+
+        return Pair(senteName, goteName)
     }
 
 

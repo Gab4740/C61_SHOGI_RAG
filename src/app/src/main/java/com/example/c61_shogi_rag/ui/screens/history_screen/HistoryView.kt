@@ -44,8 +44,8 @@ fun HistoryView(
 ) {
 
     val uiState by historyViewModel._uiState.collectAsState()
-
     val joueurID = playerShareViewModel.currentPlayer.joueur_id
+
     LaunchedEffect(Unit) {
         historyViewModel.getPartieJouer(joueurID)
     }
@@ -60,33 +60,6 @@ fun HistoryView(
 
         is HistoryUiState.Success -> {
             val parties = state.parties.sortedByDescending { it.date }
-
-//            Column(
-//                modifier = modifier
-//                    .fillMaxSize(),
-//                horizontalAlignment = Alignment.CenterHorizontally) {
-//                Title(name = "Saved games")
-//                if(playerShareViewModel.isCurrentPlayerSet()) {
-//                    LazyColumn {
-//                        items(parties) { partie ->
-//                            PartieItem(partie = partie, historyViewModel = historyViewModel)
-//                            Spacer(modifier = Modifier.height(15.dp))
-//                        }
-//                    }
-//                } else {
-//                    CustomText(text = "Connect to see saved games")
-//                }
-//            }
-//        }
-//
-//        is HistoryUiState.Error -> {
-//            Text(
-//                text = state.message,
-//                color = MaterialTheme.colorScheme.error
-//            )
-//        }
-
-
             Column(
                 modifier = modifier
                     .fillMaxWidth(),
@@ -96,16 +69,22 @@ fun HistoryView(
                 if (playerShareViewModel.isCurrentPlayerSet()) {
                     LazyColumn {
                         items(parties) { partie ->
-                            //modifier en fonction de la couleur du joueur
+                            val (senteScore, goteScore) = historyViewModel.calculateScores(
+                                partie,
+                                playerShareViewModel.currentPlayer.joueur_id
+                            )
 
-//                            historyViewModel.getNomJoueurs(partie)
-//                            val joueurGagnant = historyViewModel.joueursGagnants[partie.partie_id]
-//                            val joueurPerdant = historyViewModel.joueursPerdants[partie.partie_id]
+                            val (senteName, goteName) = historyViewModel.getNom(
+                                partie,
+                                playerShareViewModel.currentPlayer.nom_joueur
+                            )
 
-                            //if()
-                                MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
-//                            else()
-//                            MatchItem(senteName = partie.winner_id.toString(), goteName = partie.loser_id.toString(), senteScore = 1f, goteScore = 0f)
+                            MatchItem(
+                                senteName = senteName,
+                                goteName = goteName,
+                                senteScore = senteScore,
+                                goteScore = goteScore
+                            )
 
                             Spacer(modifier = Modifier.height(15.dp))
                         }

@@ -26,7 +26,7 @@ class PlayerShareViewModel: ViewModel() {
     }
 
     fun removeSelectPartie(): Unit{
-        selectedPartie = Partie(-1, -1, -1, "", "")
+        selectedPartie = Partie(-1, -1, -1, "", "", false)
     }
 
     fun isSelectPartieSet():Boolean{
