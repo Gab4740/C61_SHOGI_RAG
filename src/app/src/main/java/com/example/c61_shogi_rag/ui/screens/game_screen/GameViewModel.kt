@@ -39,12 +39,12 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     private var selectedPosition: Position? = null
     private var selectedPieceToParchute: ShogiPiece? = null
     var isPlayerFirst: Boolean = isPlayerFirst
+    var pieceToPromote: ShogiPiece? by mutableStateOf(null)
 
     var playerID: Int = -1
     var opponentID: Int = 0
     private var isPlayerConnected: Boolean = false;
 
-    var shouldPiecePromote by mutableStateOf(false)
     val clock = mutableStateOf(game.timeString)
 
     init {
@@ -75,7 +75,6 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                 if(game.playTurn(selectedPosition, position)) {
                     selectedPosition = null
                     isPlayerTurn = game.isPlayerTurn
-
                     isGameEnded = game.isGameEnded
 
                     aiTurn()
@@ -100,7 +99,6 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
         if(!game.isGameEnded) {
             viewModelScope.launch {
                 game.aiTurn()
-
                 isGameEnded = game.isGameEnded
             }
 

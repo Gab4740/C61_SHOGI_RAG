@@ -51,8 +51,8 @@ public class PromotionState {
             promotePiece(pos);
         }
     }
-    public boolean checkIfPieceCanPromote(Position pos){
-        return pos.getPosX() <= 2;
+    public boolean canPiecePromote(Position pos){
+        return !this.isPiecePromoted(pos) && pos.getPosX() <= 2;
     }
 
     // DEBUG

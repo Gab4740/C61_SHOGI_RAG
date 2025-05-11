@@ -46,3 +46,19 @@ fun GoteSenteComposable(modifier: Modifier = Modifier,  onClick:() -> Unit = {})
         tint = Color.Unspecified
     )
 }
+
+@Composable
+fun ShogiPieceComposable(modifier: Modifier = Modifier,
+                         pieceId: Int,
+                         onClick:() -> Unit = {}
+) {
+    Icon(
+        modifier = modifier
+            .size(60.dp)
+            .clickable { onClick() },
+        painter = painterResource(pieceId),
+        contentDescription = "Image $pieceId",
+        tint = Color.Unspecified
+    )
+}
+
