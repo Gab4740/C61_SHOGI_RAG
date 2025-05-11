@@ -43,7 +43,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
     var playerID: Int = -1
     var opponentID: Int = 0
-    private var isPlayerConnected: Boolean = false;
+    var isPlayerConnected: Boolean = false;
 
     val clock = mutableStateOf(game.timeString)
 
@@ -137,7 +137,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
                 val jsonString = gson.toJson(game.getGameSaver())
 
-                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, object : PartieCallback {
+                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, isGameEnded, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
                         //voir pour peut etre mettre un toast
                     }
@@ -150,6 +150,35 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                     override fun onError(e: Exception) {
                         //voir pour peut etre mettre un toast
                         System.out.println(e);
+                    }
+                })
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
+    }
+
+    fun archiverPartieEnCours() {
+        if (!isGameEnded && isPlayerConnected) {
+            try {
+                val gson = Gson()
+
+                val jsonString = gson.toJson(game.getGameSaver())
+
+                val idJoueur1 = playerID
+                val idJoueur2 = opponentID
+
+                PartieDAO.addPartie(idJoueur1, idJoueur2, isPlayerFirst, jsonString, false, object : PartieCallback {
+                    override fun onPartiesRecuperees(partieList: List<Partie>) {
+                        // Non utilisé ici
+                    }
+
+                    override fun onPartieCree(succes: String) {
+                        System.out.println("Partie en cours sauvegardée: $succes")
+                    }
+
+                    override fun onError(e: Exception) {
+                        System.out.println("Erreur lors de la sauvegarde de la partie en cours: $e")
                     }
                 })
             } catch (exception: Exception) {

@@ -13,7 +13,7 @@ class PlayerShareViewModel: ViewModel() {
 
     var currentPlayer: Joueur by mutableStateOf(Joueur(-1, "Guest"))
 
-    var selectedPartie: Partie by mutableStateOf(Partie(-1, -1, -1, "", "", false))
+    var selectedPartie: Partie by mutableStateOf(Partie(-1, -1, -1, "", "", false, false))
 
     var currentGameSaver: GameSaver by mutableStateOf(GameSaver())
 
@@ -26,7 +26,7 @@ class PlayerShareViewModel: ViewModel() {
     }
 
     fun removeSelectPartie(): Unit{
-        selectedPartie = Partie(-1, -1, -1, "", "", false)
+        selectedPartie = Partie(-1, -1, -1, "", "", false, false)
         //selectedPartie = Partie(-1, -1, -1, "", "")
     }
 
