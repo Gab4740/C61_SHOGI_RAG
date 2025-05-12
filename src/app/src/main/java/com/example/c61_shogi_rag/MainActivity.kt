@@ -35,36 +35,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        print("stop1")
-
-        activeGameViewModel?.let { viewModel ->
-                print("stop")
-                viewModel.archiverPartieEnCours()
-        }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        print("destroy1")
-        activeGameViewModel?.let { viewModel ->
-                print("destroy")
-                viewModel.archiverPartieEnCours()
-        }
-    }
-
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        activeGameViewModel?.let { viewModel ->
-            print("destroy")
-            viewModel.archiverPartieEnCours()
-        }
-    }
-
 }
 
 
