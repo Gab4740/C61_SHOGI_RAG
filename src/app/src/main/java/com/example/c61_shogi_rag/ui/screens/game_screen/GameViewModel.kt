@@ -1,5 +1,6 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -137,7 +138,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
                 val jsonString = gson.toJson(game.getGameSaver())
 
-                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, isGameEnded, object : PartieCallback {
+                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, true, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
                         //voir pour peut etre mettre un toast
                     }
