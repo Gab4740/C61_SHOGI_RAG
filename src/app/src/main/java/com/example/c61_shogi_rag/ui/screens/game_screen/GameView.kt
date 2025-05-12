@@ -1,6 +1,7 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
 import android.graphics.Paint.Cap
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
@@ -47,6 +52,14 @@ fun GameView(modifier: Modifier = Modifier,
             opponent.joueur_id
         )
     }
+
+    LifeCylceEvents(
+        onAppStopped = {
+            // Fonction appelée lorsque l'app s'arrête ou passe en arrière-plan
+            Log.d("MyApp", "L'application est maintenant en arrière-plan.")
+        },
+        gameViewModel = gameViewModel
+    )
 
     val gameSaved = remember { mutableStateOf(false) }
 
@@ -189,4 +202,34 @@ fun PromotionDialogue(
             }
         }
     )
+}
+
+@Composable
+fun LifeCylceEvents(onAppStopped: () -> Unit, gameViewModel: GameViewModel){
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    // Observer pour les événements de cycle de vie
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_STOP -> {
+                    gameViewModel.archiverPartieEnCours()
+                    Log.d("MyApp", "L'activité a été stop.")
+                    onAppStopped()
+                }
+                Lifecycle.Event.ON_DESTROY -> {
+                    gameViewModel.archiverPartieEnCours()
+                    Log.d("MyApp", "L'activité a été détruite.")
+                }
+                else -> Unit
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // Enlève l'observer lors de la destruction de l'effet
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 }

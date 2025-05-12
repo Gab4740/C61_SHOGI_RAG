@@ -512,23 +512,32 @@ public class Evaluation {
 
     public static int evaluateControlleSquares(Board board, Hashtable<Byte, ShogiPiece> pieceTable) {
         int score = 0;
+        byte[][] boardArray = board.getBoard();
         int boardSize = board.getBOARD_SIZE();
 
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
+        for (int y = 0; y < boardSize; y++) {
+            for (int x = 0; x < boardSize; x++) {
+                byte piece = boardArray[y][x];
+                if (piece == 0) continue;
 
-                byte piece = board.getBoard()[i][j];
-                if(piece != 0){
-                    ShogiPiece pieceObj = pieceTable.get(piece);
-                    for (int[] direction : pieceObj.getDIRECTIONS()) {
-                        int newX = j + direction[0];
-                        int newY = i + direction[1];
-                        if(piece > 0 && board.getBoard()[newX][newY] <= 0){
-                            score -= 1;
-                        }
-                        else if (piece < 0 && board.getBoard()[newX][newY] >= 0) {
-                            score += 1;
-                        }
+                ShogiPiece pieceObj = pieceTable.get(piece);
+                if (pieceObj == null) continue; // sécurité
+
+                for (int[] direction : pieceObj.getDIRECTIONS()) {
+                    int newX = x + direction[0];
+                    int newY = y + direction[1];
+
+                    // Vérification des bords du plateau
+                    if (newX < 0 || newX >= boardSize || newY < 0 || newY >= boardSize) {
+                        continue;
+                    }
+
+                    byte target = boardArray[newY][newX];
+
+                    if (piece > 0 && target <= 0) {
+                        score -= 1;
+                    } else if (piece < 0 && target >= 0) {
+                        score += 1;
                     }
                 }
             }
