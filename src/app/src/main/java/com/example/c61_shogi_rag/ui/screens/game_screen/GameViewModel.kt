@@ -76,10 +76,8 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                     selectedPosition = null
                     isPlayerTurn = game.isPlayerTurn
                     isGameEnded = game.isGameEnded
-
+                    pieceToPromote = game.shouldPromote(position)
                     aiTurn()
-
-
                 }
                 else {
                     selectedPosition = null
