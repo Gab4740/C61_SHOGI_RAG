@@ -47,13 +47,14 @@ public class PartieDAO {
                     long newId = nombrePartie + 1;
                     String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-                    Partie partie = new Partie((int) newId, id_winner, id_loser, date, jsonString , playerCouleur, partieFini);
+                    Partie partie = new Partie((int) newId, id_winner, id_loser, date, jsonString, playerCouleur, partieFini);
 
                     currentData.child(String.valueOf(newId)).setValue(partie);
 
                     return Transaction.success(currentData);
 
                 }catch (Exception e){
+                    Log.e("PartieDAO", "Erreur lors de la transaction: " + e.getMessage(), e);
                     return Transaction.abort();
                 }
 

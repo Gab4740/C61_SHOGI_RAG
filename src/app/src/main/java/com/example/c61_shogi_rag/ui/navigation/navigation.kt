@@ -58,9 +58,9 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
                 gameViewModel = gameViewModel,
                 navigateToMainMenu = {
 
-                    if (!gameViewModel.isGameEnded && gameViewModel.isPlayerConnected) {
-                        gameViewModel.archiverPartieEnCours()
-                    }
+//                    if (!gameViewModel.isGameEnded && gameViewModel.isPlayerConnected) {
+//                        gameViewModel.archiverPartieEnCours()
+//                    }
 
                     navController.navigate(MainMenu) {
                         popUpTo<MainMenu>{inclusive = true}
@@ -72,7 +72,10 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
         composable<History> {
             HistoryView(
                 modifier = modifier,
-                playerShareViewModel = playerShareViewModel
+                playerShareViewModel = playerShareViewModel,
+                navigateToGame = {partie ->
+                    navController.navigate(ArchivedGame(partie.partie_id))
+                }
             )
         }
 
@@ -88,7 +91,13 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
         }
         composable<ArchivedGame> {
             ArchivedGameView(
-                playerShareViewModel = playerShareViewModel
+                playerShareViewModel = playerShareViewModel,
+                navigateToMainMenu = {
+
+                    navController.navigate(MainMenu) {
+                        popUpTo<MainMenu>{inclusive = true}
+                    }
+                }
             )
         }
     }

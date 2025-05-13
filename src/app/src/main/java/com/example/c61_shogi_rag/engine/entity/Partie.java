@@ -63,16 +63,12 @@ public class Partie {
         this.historiqueCoups = historiqueCoups;
     }
 
-    public boolean getPlayerCouleur() {
+    public boolean isPlayerCouleur() {
         return playerCouleur;
     }
 
     public void setPlayerCouleur(boolean playerCouleur) {
         this.playerCouleur = playerCouleur;
-    }
-
-    public boolean isPlayerCouleur() {
-        return playerCouleur;
     }
 
     public boolean isPartieTerminee() {

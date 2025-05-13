@@ -130,30 +130,33 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     }
 
     fun archiverPartie(id_gagnant: Int, id_perdant: Int) {
+        Log.d("GameViewModel", "Archiving game: gameEnded=$isGameEnded, playerConnected=$isPlayerConnected")
+        Log.d("GameViewModel", "Winner ID: $id_gagnant, Loser ID: $id_perdant")
+
         if (isGameEnded && isPlayerConnected) {
             try {
                 val gson = Gson()
-
                 val jsonString = gson.toJson(game.getGameSaver())
+                Log.d("GameViewModel", "JSON data: $jsonString")
 
-                PartieDAO.addPartie(id_gagnant, id_perdant,isPlayerFirst, jsonString, true, object : PartieCallback {
+                PartieDAO.addPartie(id_gagnant, id_perdant, isPlayerFirst, jsonString, true, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
-                        //voir pour peut etre mettre un toast
+                        Log.d("GameViewModel", "Parties récupérées: ${partieList.size}")
                     }
 
                     override fun onPartieCree(succes: String){
-                        System.out.println(succes);
+                        Log.d("GameViewModel", "Partie créée: $succes")
                     }
 
-
                     override fun onError(e: Exception) {
-                        //voir pour peut etre mettre un toast
-                        System.out.println(e);
+                        Log.e("GameViewModel", "Erreur lors de la sauvegarde: ${e.message}", e)
                     }
                 })
             } catch (exception: Exception) {
-                exception.printStackTrace()
+                Log.e("GameViewModel", "Exception lors de la sauvegarde: ${exception.message}", exception)
             }
+        } else {
+            Log.d("GameViewModel", "Conditions non remplies pour archiver la partie")
         }
     }
 

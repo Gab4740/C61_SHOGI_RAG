@@ -9,7 +9,8 @@ import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 @Composable
 fun ArchivedGameView(modifier: Modifier = Modifier,
                      playerShareViewModel: PlayerShareViewModel,
-                     archivedGameViewModel: ArchivedGameViewModel = viewModel()) {
+                     archivedGameViewModel: ArchivedGameViewModel = viewModel(),
+                     navigateToMainMenu: () -> Unit) {
 
     LaunchedEffect(Unit) {
         archivedGameViewModel.partie = playerShareViewModel.selectedPartie

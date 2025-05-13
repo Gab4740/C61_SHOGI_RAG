@@ -33,6 +33,7 @@ import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.CustomText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
+import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
 
 
@@ -40,7 +41,8 @@ import com.example.c61_shogi_rag.ui.theme.Title
 fun HistoryView(
     modifier: Modifier = Modifier,
     historyViewModel: HistoryViewModel = viewModel(),
-    playerShareViewModel: PlayerShareViewModel
+    playerShareViewModel: PlayerShareViewModel,
+    navigateToGame: (Partie) -> Unit
 ) {
 
     val uiState by historyViewModel._uiState.collectAsState()
@@ -80,10 +82,15 @@ fun HistoryView(
                             )
 
                             MatchItem(
+                                partie = partie,
                                 senteName = senteName,
                                 goteName = goteName,
                                 senteScore = senteScore,
-                                goteScore = goteScore
+                                goteScore = goteScore,
+                                onClick = {partieChoisi ->
+                                    playerShareViewModel.selectedPartie = partieChoisi
+                                    navigateToGame(partieChoisi)
+                                }
                             )
 
                             Spacer(modifier = Modifier.height(15.dp))
@@ -104,18 +111,29 @@ fun HistoryView(
 
 @Composable
 fun MatchItem(modifier: Modifier = Modifier,
+              partie: Partie,
               senteName: String,
               goteName: String,
               senteScore: Float,
-              goteScore: Float
+              goteScore: Float,
+              onClick: (Partie) -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SenteComposable(name = senteName, score = senteScore)
-        Text(text = " - ", fontSize = 40.sp)
-        GoteComposable(name = goteName, score = goteScore)
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SenteComposable(name = senteName, score = senteScore)
+            Text(text = " - ", fontSize = 40.sp)
+            GoteComposable(name = goteName, score = goteScore)
+        }
+        Row {
+            if (!partie.isPartieTerminee){
+                ShogiButton(text = "Continuer",
+                    onClick = { onClick(partie) })
+            }
+        }
     }
+
 }
 
 @Composable

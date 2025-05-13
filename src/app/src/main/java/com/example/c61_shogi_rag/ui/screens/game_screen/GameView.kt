@@ -212,14 +212,10 @@ fun LifeCylceEvents(onAppStopped: () -> Unit, gameViewModel: GameViewModel){
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_STOP -> {
-                    gameViewModel.archiverPartieEnCours()
-                    Log.d("MyApp", "L'activité a été stop.")
-                    onAppStopped()
-                }
                 Lifecycle.Event.ON_DESTROY -> {
                     gameViewModel.archiverPartieEnCours()
                     Log.d("MyApp", "L'activité a été détruite.")
+                    onAppStopped()
                 }
                 else -> Unit
             }

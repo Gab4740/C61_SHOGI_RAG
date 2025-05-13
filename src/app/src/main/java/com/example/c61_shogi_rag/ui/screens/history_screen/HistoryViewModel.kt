@@ -132,7 +132,7 @@ class HistoryViewModel : ViewModel() {
         var senteScore = 0f
         var goteScore = 0f
 
-        val playerCouleur = partie.playerCouleur
+        val playerCouleur = partie.isPlayerCouleur
 
         val isPlayerWinner = partie.winner_id == playerId
 
@@ -149,7 +149,7 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun getNom(partie: Partie, playerName: String): Pair<String, String> {
-        val playerCouleur = partie.playerCouleur
+        val playerCouleur = partie.isPlayerCouleur
 
         val senteName: String
         val goteName: String
