@@ -21,6 +21,9 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiDragon;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiGote;
+import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiSente;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -543,6 +546,18 @@ public class Game implements MinimaxCallback {
         ShogiPiece shogiPiece = null;
         if(promotionStateMap.canPiecePromote(position)) {
             shogiPiece = getPieceAt(position);
+            if(shogiPiece instanceof RoiGote || shogiPiece instanceof RoiSente) {
+                shogiPiece = null;
+            } else if ((shogiPiece instanceof Pion || shogiPiece instanceof Lance)
+                    && position.getPosX() == 0) {
+                promotePiece(position);
+                shogiPiece = null;
+            } else if (shogiPiece instanceof Chevalier &&
+                    (position.getPosX() == 1 || position.getPosX() == 0) ) {
+                promotePiece(position);
+                shogiPiece = null;
+            }
+
         }
         return shogiPiece;
     }
