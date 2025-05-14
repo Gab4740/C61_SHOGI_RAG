@@ -41,7 +41,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
     private var selectedPieceToParchute: ShogiPiece? = null
     var isPlayerFirst: Boolean = isPlayerFirst
     var pieceToPromote: ShogiPiece? by mutableStateOf(null)
-
+    var positionPromotedPiece: Position? = null
     var playerID: Int = -1
     var opponentID: Int = 0
     var isPlayerConnected: Boolean = false;
@@ -77,7 +77,10 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
                     selectedPosition = null
                     isPlayerTurn = game.isPlayerTurn
                     isGameEnded = game.isGameEnded
-                    pieceToPromote = game.shouldPromote(position)
+                    if(!isGameEnded) {
+                        pieceToPromote = game.shouldPromote(position)
+                        positionPromotedPiece = position
+                    }
                     aiTurn()
                 }
                 else {

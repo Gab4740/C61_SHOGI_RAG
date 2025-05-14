@@ -325,8 +325,8 @@ public class Game implements MinimaxCallback {
                 }
                 else{
                     // PIECE ALWAYS PROMOTE
-                    promotionStateMap.shouldPlayerPiecePromote(secondPos);
-
+                    // promotionStateMap.shouldPlayerPiecePromote(secondPos);
+                    // Un Dialog apparaît si l'usager veut promouvoir une pièce
                 }
             }
         } return valid;
@@ -545,5 +545,9 @@ public class Game implements MinimaxCallback {
             shogiPiece = getPieceAt(position);
         }
         return shogiPiece;
+    }
+
+    public void promotePiece(Position position) {
+        promotionStateMap.shouldPlayerPiecePromote(position);
     }
 }
