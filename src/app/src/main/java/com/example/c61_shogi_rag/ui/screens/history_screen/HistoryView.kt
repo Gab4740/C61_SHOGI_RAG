@@ -1,6 +1,7 @@
 package com.example.c61_shogi_rag.ui.screens.history_screen
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -120,7 +121,12 @@ fun MatchItem(modifier: Modifier = Modifier,
 ) {
     Column {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable {
+                if (!partie.isPartieTerminee) {
+                    onClick(partie)
+                }
+            }
         ) {
             SenteComposable(name = senteName, score = senteScore)
             Text(text = " - ", fontSize = 40.sp)
