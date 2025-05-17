@@ -33,7 +33,7 @@ import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
-//import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
+import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
 
 
@@ -135,8 +135,14 @@ fun GameView(modifier: Modifier = Modifier,
                 }
             )
         }
-        gameViewModel.pieceToPromote != null -> {
-            println("bonjour")
+        gameViewModel.pieceToPromote != null && !gameViewModel.isGameEnded  -> {
+            PromotionDialogue(
+                shogiPiece = gameViewModel.pieceToPromote!!,
+                onDismiss = {gameViewModel.pieceToPromote = null}
+            ) {
+                gameViewModel.game.promotePiece(gameViewModel.positionPromotedPiece)
+                gameViewModel.pieceToPromote = null
+            }
         }
     }
 }
@@ -187,7 +193,7 @@ fun PromotionDialogue(
     modifier: Modifier = Modifier,
     shogiPiece: ShogiPiece,
     onDismiss: () -> Unit,
-    onConfirmation: (Boolean) -> Unit
+    onConfirmation: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
@@ -195,10 +201,16 @@ fun PromotionDialogue(
             Row(
                 modifier = modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-//                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID)
-//                ShogiPieceComposable(pieceId = shogiPiece.imagE_ID_PROMU)
+                ShogiPieceComposable(
+                    pieceId = shogiPiece.imagE_ID,
+                    onClick = {onDismiss()}
+                )
+                ShogiPieceComposable(
+                    pieceId = shogiPiece.imagE_ID_PROMU,
+                    onClick = {onConfirmation()}
+                    )
             }
         }
     )
