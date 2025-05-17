@@ -9,7 +9,7 @@ import com.example.c61_shogi_rag.engine.minimax.Difficulty
 
 
 class MainMenuViewModel(): ViewModel()  {
-    val opponent: Joueur = Joueur(-2, "AI")
+    val opponent: Joueur = Joueur(0, "AI")
     var openAlertDialog by mutableStateOf(false)
     var isPlayerFirst: Boolean = false
 

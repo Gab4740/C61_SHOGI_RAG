@@ -11,6 +11,7 @@ import com.example.c61_shogi_rag.engine.dao.PartieDAO
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.entity.PartieCallback
 import com.example.c61_shogi_rag.engine.game.Game
+import com.example.c61_shogi_rag.engine.game.GameSaver
 import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import com.example.c61_shogi_rag.engine.piece.InitPiece
 import com.example.c61_shogi_rag.engine.piece.Position
@@ -30,7 +31,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
-class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel() {
+class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSaver: GameSaver? = null):
+    ViewModel() {
+
+
     //var counter by mutableIntStateOf(0)
     val counter = mutableIntStateOf(0)
     var game by mutableStateOf(Game(isPlayerFirst, difficulty.strategy, counter))
@@ -50,7 +54,16 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty): ViewModel()
 
     init {
         game.GameInit()
-        if(!isPlayerTurn) {
+
+        if (savedGameSaver != null){
+            game.gameSaver = savedGameSaver
+            game.loadSavedGame()
+
+            isPlayerTurn = game.isPlayerTurn
+            isGameEnded = game.isGameEnded
+
+        }
+        else if(!isPlayerTurn) {
             game.startMinimaxComputation();
             isPlayerTurn = game.isPlayerTurn
         }

@@ -10,8 +10,19 @@ public class Time{
     private int minutes;
     private int secondes;
     private String displayTime;
+    private boolean isStarted;
 
     public Time(){
+        this.timePassed = 0;
+        this.minutes = 0;
+        this.secondes = 0;
+        this.displayTime = "00 : 00";
+        this.isStarted = false;
+        setTimer();
+
+    }
+
+    public void setTimer(){
         timer = new Timer();
         task = new TimerTask() {
             @Override
@@ -42,7 +53,14 @@ public class Time{
     }
 
     public void startTime(){
+        if (isStarted){
+            return;
+        }
+
+        stopTime();
+        setTimer();
         timer.schedule(task, 0, 1000);
+        isStarted = true;
     }
     public int getTimePassed() {
         return timePassed;
@@ -50,4 +68,13 @@ public class Time{
     public String getDisplayTime(){
         return displayTime;
     }
+
+    public void stopTime(){
+        if (timer != null){
+            timer.cancel();
+            timer.purge();
+        }
+        isStarted = false;
+    }
+
 }

@@ -228,4 +228,8 @@ fun LifeCylceEvents(onAppStopped: () -> Unit, gameViewModel: GameViewModel){
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
+
+
 }
+
+

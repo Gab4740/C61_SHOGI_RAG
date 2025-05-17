@@ -29,12 +29,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.entity.Partie
+import com.example.c61_shogi_rag.engine.game.GameSaver
+import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.CustomText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
+import com.google.gson.Gson
 
 
 @Composable
@@ -42,7 +45,7 @@ fun HistoryView(
     modifier: Modifier = Modifier,
     historyViewModel: HistoryViewModel = viewModel(),
     playerShareViewModel: PlayerShareViewModel,
-    navigateToGame: (Partie) -> Unit
+    navigateToGame: (Int, String, Boolean, Difficulty) -> Unit = { _, _, _, _ -> }
 ) {
 
     val uiState by historyViewModel._uiState.collectAsState()
@@ -89,7 +92,16 @@ fun HistoryView(
                                 goteScore = goteScore,
                                 onClick = {partieChoisi ->
                                     playerShareViewModel.selectedPartie = partieChoisi
-                                    navigateToGame(partieChoisi)
+
+                                    val gameSaver = Gson().fromJson(partieChoisi.historiqueCoups, GameSaver::class.java)
+                                    playerShareViewModel.currentGameSaver = gameSaver
+
+                                    navigateToGame(
+                                        0,
+                                        "AI",
+                                        partieChoisi.isPlayerCouleur,
+                                        Difficulty.Easy
+                                    )
                                 }
                             )
 

@@ -30,4 +30,20 @@ public class OneTurn {
     public void setParachute(boolean parachute) {
         this.parachute = parachute;
     }
+
+    public byte getPiece_jouer() {
+        return piece_jouer;
+    }
+
+    public Position getOld_pos() {
+        return old_pos;
+    }
+
+    public Position getNew_pos() {
+        return new_pos;
+    }
+
+    public boolean isParachute() {
+        return parachute;
+    }
 }

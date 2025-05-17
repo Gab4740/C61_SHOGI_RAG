@@ -546,4 +546,32 @@ public class Game implements MinimaxCallback {
         }
         return shogiPiece;
     }
+
+    public void setGameSaver(GameSaver gameSaver) {
+        Game.gameSaver = gameSaver;
+    }
+
+    public void loadSavedGame(){
+        if (gameSaver != null && gameSaver.getTurnList() != null){
+            GameInit();
+
+            for (OneTurn turn : gameSaver.getTurnList().getTurnsList()){
+                Position oldpos = turn.getOld_pos();
+                Position newpos = turn.getNew_pos();
+                byte pieceId = turn.getPiece_jouer();
+
+                if (turn.isParachute()){
+                    ShogiPiece piece = pieces.get(pieceId);
+                    if (piece != null){
+                        gameBoard.setPieceAt(piece, newpos);
+                    }
+                }else{
+                    gameBoard.movePieceTo(oldpos, newpos);
+                }
+            }
+
+            int nbMoves = gameSaver.getTurnList().getTurnsList().size();
+            isPlayerTurn = (nbMoves % 2 == 0) == isPlayerStarting;
+        }
+    }
 }

@@ -44,11 +44,16 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
             val game:Game = it.toRoute()
 
             val gameViewModel = viewModel {
+                val savedGame = playerShareViewModel.currentGameSaver
+                if (savedGame != null && playerShareViewModel.isSelectPartieSet()) {
+                    GameViewModel(game.isPlayerFirst, game.difficulty, savedGame)
+                } else
                 GameViewModel(game.isPlayerFirst, game.difficulty)
             }
 
             LaunchedEffect(gameViewModel) {
                 onGameViewModel(gameViewModel)
+
             }
 
             GameView(
@@ -57,10 +62,6 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
                 opponent = Joueur(game.opponentID, game.opponentName),
                 gameViewModel = gameViewModel,
                 navigateToMainMenu = {
-
-//                    if (!gameViewModel.isGameEnded && gameViewModel.isPlayerConnected) {
-//                        gameViewModel.archiverPartieEnCours()
-//                    }
 
                     navController.navigate(MainMenu) {
                         popUpTo<MainMenu>{inclusive = true}
@@ -73,8 +74,12 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
             HistoryView(
                 modifier = modifier,
                 playerShareViewModel = playerShareViewModel,
-                navigateToGame = {partie ->
-                    navController.navigate(ArchivedGame(partie.partie_id))
+                navigateToGame = { opponentID, opponentName, isPlayerFirst, difficulty ->
+                    navController.navigate(
+                        Game(opponentID, opponentName, isPlayerFirst, difficulty)
+                    ) {
+                        popUpTo<MainMenu> { inclusive = false }
+                    }
                 }
             )
         }
@@ -92,12 +97,6 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
         composable<ArchivedGame> {
             ArchivedGameView(
                 playerShareViewModel = playerShareViewModel,
-                navigateToMainMenu = {
-
-                    navController.navigate(MainMenu) {
-                        popUpTo<MainMenu>{inclusive = true}
-                    }
-                }
             )
         }
     }
