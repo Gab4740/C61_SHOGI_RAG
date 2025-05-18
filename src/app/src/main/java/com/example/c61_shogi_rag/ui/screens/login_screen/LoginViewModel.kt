@@ -42,12 +42,20 @@ class LoginViewModel: ViewModel() {
                 errorMessage = "Veuillez entrer un nom d'utilisateur"
                 return
             }
+            username.contains(" ")->{
+                errorMessage = "Le nom d'utilisateur ne doit pas contenir d'espaces"
+                return
+            }
             password.isEmpty() -> {
                 errorMessage = "Veuillez entrer un mot de passe"
                 return
             }
             password != confirmPassword -> {
                 errorMessage = "Les mots de passe ne correspondent pas"
+                return
+            }
+            password.contains(" ")->{
+                errorMessage = "Le mot de passe ne doit pas contenir d'espaces"
                 return
             }
         }
