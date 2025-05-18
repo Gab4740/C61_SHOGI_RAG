@@ -144,12 +144,12 @@ fun MatchItem(modifier: Modifier = Modifier,
             Text(text = " - ", fontSize = 40.sp)
             GoteComposable(name = goteName, score = goteScore)
         }
-        Row {
-            if (!partie.isPartieTerminee){
-                ShogiButton(text = "Continuer",
-                    onClick = { onClick(partie) })
-            }
-        }
+//        Row {
+//            if (!partie.isPartieTerminee){
+//                ShogiButton(text = "Continuer",
+//                    onClick = { onClick(partie) })
+//            }
+//        }
     }
 
 }

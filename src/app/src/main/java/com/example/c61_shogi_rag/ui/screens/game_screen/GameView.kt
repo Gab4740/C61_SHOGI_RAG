@@ -124,6 +124,7 @@ fun GameView(modifier: Modifier = Modifier,
                 } else {
                     gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
                 }
+
                 gameSaved.value = true
             }
             GameOverDialog(

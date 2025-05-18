@@ -252,6 +252,9 @@ public class Game implements MinimaxCallback {
     public void GameInit() {
         PieceInit();
         BoardInit();
+
+
+
         gameTimer.startTime();
         manager = new MinimaxManager(4,true, piecesForMinimax, true, pieces, difficulty);
     }

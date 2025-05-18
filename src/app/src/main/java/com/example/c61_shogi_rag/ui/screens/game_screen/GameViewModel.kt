@@ -146,33 +146,29 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
     }
 
     fun archiverPartie(id_gagnant: Int, id_perdant: Int) {
-        Log.d("GameViewModel", "Archiving game: gameEnded=$isGameEnded, playerConnected=$isPlayerConnected")
-        Log.d("GameViewModel", "Winner ID: $id_gagnant, Loser ID: $id_perdant")
 
         if (isGameEnded && isPlayerConnected) {
             try {
                 val gson = Gson()
                 val jsonString = gson.toJson(game.getGameSaver())
-                Log.d("GameViewModel", "JSON data: $jsonString")
+
+                game.gameSaver = null;
 
                 PartieDAO.addPartie(id_gagnant, id_perdant, isPlayerFirst, jsonString, true, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
-                        Log.d("GameViewModel", "Parties récupérées: ${partieList.size}")
                     }
 
                     override fun onPartieCree(succes: String){
-                        Log.d("GameViewModel", "Partie créée: $succes")
                     }
 
                     override fun onError(e: Exception) {
-                        Log.e("GameViewModel", "Erreur lors de la sauvegarde: ${e.message}", e)
                     }
                 })
             } catch (exception: Exception) {
-                Log.e("GameViewModel", "Exception lors de la sauvegarde: ${exception.message}", exception)
+                println(exception.printStackTrace())
             }
         } else {
-            Log.d("GameViewModel", "Conditions non remplies pour archiver la partie")
+            println("Partie non finie ou pas de connexion internet")
         }
     }
 
