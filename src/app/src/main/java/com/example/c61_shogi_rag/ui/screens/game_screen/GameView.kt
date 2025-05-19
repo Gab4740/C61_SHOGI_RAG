@@ -181,8 +181,8 @@ fun GameOverDialog(modifier: Modifier = Modifier, onDismiss:() -> Unit = {},
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ShogiButton(
-                    text = "Save game",
-                    onClick = {onConfirmation()}
+                    text = "Exit",
+                    onClick = {onDismiss()}
                 )
             }
         }
