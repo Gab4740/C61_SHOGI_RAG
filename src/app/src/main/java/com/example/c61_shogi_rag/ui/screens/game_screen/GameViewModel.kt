@@ -201,6 +201,33 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
         }
     }
 
+    fun updatePartie(id_gagnant: Int, id_perdant: Int, id_partie:Int) {
+
+        if (isGameEnded && isPlayerConnected) {
+            try {
+                val gson = Gson()
+                val jsonString = gson.toJson(game.getGameSaver())
+
+                game.gameSaver = null;
+
+                PartieDAO.updatePartie(id_partie,id_gagnant, id_perdant,true , jsonString, object : PartieCallback {
+                    override fun onPartiesRecuperees(partieList: List<Partie>) {
+                    }
+
+                    override fun onPartieCree(succes: String){
+                    }
+
+                    override fun onError(e: Exception) {
+                    }
+                })
+            } catch (exception: Exception) {
+                println(exception.printStackTrace())
+            }
+        } else {
+            println("Partie non finie ou pas de connexion internet")
+        }
+    }
+
     fun playerWon():Boolean {
         var win: Boolean = true
         if(isPlayerFirst == game.whoLost()) {

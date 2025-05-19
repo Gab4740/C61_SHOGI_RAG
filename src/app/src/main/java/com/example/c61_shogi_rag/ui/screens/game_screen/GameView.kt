@@ -110,7 +110,6 @@ fun GameView(modifier: Modifier = Modifier,
         }
     }
     when {
-        //rajouter ici la sauvegarde de partie
         gameViewModel.isGameEnded -> {
             val winner = if (gameViewModel.playerWon()) {
                 playerShareViewModel.currentPlayer.nom_joueur

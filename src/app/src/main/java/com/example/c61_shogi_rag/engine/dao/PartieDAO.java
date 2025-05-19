@@ -31,6 +31,10 @@ public class PartieDAO {
      *
      * @param id_winner -> representant l'id du joueur gagnant
      * @param id_loser -> representant l'id du joueur perdant
+     * @param playerCouleur -> representant la couleur du joueur
+     * @param jsonString -> representant la liste de tous les coups jouer de la partie
+     * @param partieFini -> representant si la partie est fini ou non
+     * @param callback -> signale qui permet de rapeller la fonction quand un changement est emis
      *
      *
      **/
@@ -81,31 +85,56 @@ public class PartieDAO {
 
         });
 
-        //a laisser pour l'instant quand on fera les teste pour ajouter les partie
-//                addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                int nbr_joueur = (int) snapshot.getChildrenCount();
-//                int new_id = 1;
-//
-//                if (nbr_joueur >= 0){
-//                    new_id = nbr_joueur+1;
-//                }
-//
-//                LocalDate dateActuelle = LocalDate.now();
-//                String date = dateActuelle.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//
-//                Partie partie = new Partie(new_id, id_winner, id_loser, date, jsonString);
-//
-//                partieDB.child(String.valueOf(new_id)).setValue(partie);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("Firebase", "Erreur de lecture des données : " + error.getMessage());
-//            }
-//        });
+    }
+
+
+    /**
+     * methode qui permet de mettre a jour une partie reprise
+     *
+     * @param partieId -> representant l'id de la partie a modifier
+     * @param winnerId -> representant l'id du joueur gagnant
+     * @param loserId -> representant l'id du joueur perdant
+     * @param partieFini -> representant si la partie est fini ou non
+     * @param callback -> signale qui permet de rapeller la fonction quand un changement est emis
+     *
+     **/
+    public static void updatePartie(int partieId, int winnerId, int loserId, boolean partieFini,String jsonString, PartieCallback callback){
+        DatabaseReference partieRef = partieDB.child(String.valueOf(partieId));
+
+        partieRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                try{
+                    Partie partie = currentData.getValue(Partie.class);
+                    if (partie != null){
+                        partie.setWinner_id(winnerId);
+                        partie.setLoser_id(loserId);
+                        partie.setHistoriqueCoups(jsonString);
+                        partie.setPartieTerminee(partieFini);
+                        currentData.setValue(partie);
+                    }
+                    return Transaction.success(currentData);
+                }catch (Exception e){
+                    Log.e("PartieDAO", "Erreur lors de la mise a jour: " + e.getMessage());
+                    return Transaction.abort();
+                }
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (error !=null){
+                    if (callback != null){
+                        callback.onError(error.toException());
+                    }
+                } else if (committed){
+                    if (callback != null){
+                        callback.onPartieCree("Partie mise a jour");
+                    }
+                }
+            }
+
+        });
     }
 
 
