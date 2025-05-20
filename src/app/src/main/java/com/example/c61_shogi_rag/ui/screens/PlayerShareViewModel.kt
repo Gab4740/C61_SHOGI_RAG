@@ -8,7 +8,13 @@ import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.game.GameSaver
 
-
+/**
+ * Nom du fichier : PlayerShareViewModel.kt
+ * Description : Ce fichier définit un ViewModel permettant de gérer les informations du joueur actuel,
+ *               la partie sélectionnée et la sauvegarde des données du jeu.
+ * Auteur(s) : [Romeo Barraza, Arslan Khaoua]
+ * Entête générée par Copilot
+ */
 class PlayerShareViewModel: ViewModel() {
 
     var currentPlayer: Joueur by mutableStateOf(Joueur(-1, "Guest"))

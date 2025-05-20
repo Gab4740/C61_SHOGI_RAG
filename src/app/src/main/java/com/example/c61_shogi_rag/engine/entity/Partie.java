@@ -1,5 +1,11 @@
 package com.example.c61_shogi_rag.engine.entity;
-
+/**
+ * Nom du fichier : Partie.java
+ * Description : Ce fichier définit une classe représentant une partie de Shogi,
+ *               incluant les informations sur le gagnant, le perdant, la date et l'historique des coups joués.
+ * Auteur : Arslan Khaoua
+ * Entête générée par Copilot
+ */
 public class Partie {
 
     private int partie_id;

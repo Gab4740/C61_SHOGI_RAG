@@ -2,11 +2,14 @@ package com.example.c61_shogi_rag.engine.piece.ShogiPieces;
 
 import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.piece.ExceptionPiece;
-import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.MoveUtils;
-import com.example.c61_shogi_rag.engine.piece.Position;
-import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
-
+/**
+ * Nom du fichier : RoiDragon.java
+ * Description : Ce fichier définit la classe représentant la pièce "Roi Dragon" du Shogi,
+ *               qui hérite des comportements exceptionnels et gère ses déplacements spécifiques sur le plateau.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class RoiDragon extends ExceptionPiece {
     public RoiDragon(byte id, byte idPromu, int imageId, int imageIdPromu, String nom, int[][] directions) {
         super(id, idPromu, imageId, imageIdPromu, nom, directions);

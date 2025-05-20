@@ -4,7 +4,14 @@ import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion;
-
+/**
+ * Nom du fichier : MoveUtils.java
+ * Description : Ce fichier définit une classe utilitaire contenant des méthodes
+ *               permettant de vérifier les déplacements des pièces de Shogi sur le plateau,
+ *               incluant les mouvements en diagonale, en ligne droite et les parachutages de pièces.
+ * Auteur(s) : [Gabriel Veilleux]
+ * Entête générée par Copilot
+ */
 public class MoveUtils {
     public static boolean checkCross(int finalX, int finalY, int currX, int currY, Board board, int[][] directions){
         int displacementXDragon = (finalX != currX) ? (finalX > currX ? 1 : -1) : 0;

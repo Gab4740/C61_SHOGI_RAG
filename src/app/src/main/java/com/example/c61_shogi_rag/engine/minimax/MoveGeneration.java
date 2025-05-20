@@ -7,13 +7,18 @@ import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
-
+/**
+ * Nom du fichier : MoveGeneration.java
+ * Description : Ce fichier implémente la génération des mouvements pour les pièces de Shogi,
+ *               permettant de parcourir et tester les déplacements possibles en fonction des règles du jeu.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class MoveGeneration {
     private int currListIndex;
     private int currPieceCount;

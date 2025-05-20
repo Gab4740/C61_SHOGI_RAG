@@ -4,21 +4,20 @@ import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.game.MoveManager;
 import com.example.c61_shogi_rag.engine.game.PromotionState;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
-import com.example.c61_shogi_rag.ui.theme.ShogiBoardKt;
 
-import java.time.chrono.MinguoEra;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
+/**
+ * Nom du fichier : MinimaxManager.java
+ * Description : Ce fichier implémente la gestion de l'algorithme Minimax pour le jeu de Shogi,
+ *               permettant l'exécution asynchrone et l'évaluation des mouvements à différentes profondeurs.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class MinimaxManager {
     private final EvaluationStrategies difficulty;
     private Minimax minimaxObj;

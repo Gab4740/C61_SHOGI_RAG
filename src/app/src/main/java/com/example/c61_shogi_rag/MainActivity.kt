@@ -1,7 +1,6 @@
 package com.example.c61_shogi_rag
 
 import android.os.Bundle
-import android.window.OnBackInvokedDispatcher
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,7 +12,13 @@ import com.example.c61_shogi_rag.ui.navigation.NavigationWrapper
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 import com.example.c61_shogi_rag.ui.theme.C61_SHOGI_RAGTheme
 
-
+/**
+ * Nom du fichier : MainActivity.kt
+ * Description : Ce fichier définit l'activité principale de l'application,
+ *               incluant la gestion du thème, la navigation et l'initialisation du ViewModel de jeu.
+ * Auteur : Romeo Barraza
+ * Entête générée par Copilot
+ */
 class MainActivity : ComponentActivity() {
 
     private var activeGameViewModel: GameViewModel? = null

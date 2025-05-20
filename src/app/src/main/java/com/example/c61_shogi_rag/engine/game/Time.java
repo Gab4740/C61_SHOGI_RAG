@@ -2,7 +2,13 @@ package com.example.c61_shogi_rag.engine.game;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
+/**
+ * Nom du fichier : Time.java
+ * Description : Ce fichier définit une classe permettant de gérer un chronomètre,
+ *               incluant le suivi du temps écoulé et l'affichage formaté du temps.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class Time{
     private int timePassed;
     private Timer timer;

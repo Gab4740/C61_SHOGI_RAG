@@ -36,10 +36,15 @@ import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.CustomText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
-import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
 import com.google.gson.Gson
-
+/**
+ * Nom du fichier : HistoryView.kt
+ * Description : Ce fichier définit l'interface utilisateur de l'historique des parties jouées,
+ *               permettant d'afficher les parties sauvegardées et de naviguer vers une partie en cours.
+ * Auteur(s) : [Arslan Khaoua]
+ * Entête générée par Copilot
+ */
 
 @Composable
 fun HistoryView(

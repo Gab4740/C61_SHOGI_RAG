@@ -1,6 +1,5 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
-import android.graphics.Paint.Cap
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,13 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +27,17 @@ import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
 import com.example.c61_shogi_rag.ui.theme.CounterText
 import com.example.c61_shogi_rag.ui.theme.PlayerTag
-import com.example.c61_shogi_rag.ui.theme.SenteComposable
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.ShogiPieceComposable
 import com.example.c61_shogi_rag.ui.theme.Title
 
-
+/**
+ * Nom du fichier : GameView.kt
+ * Description : Ce fichier définit l'interface utilisateur de la vue de jeu du Shogi,
+ *               incluant l'affichage du plateau, la gestion des coups et des dialogues de fin de partie et de promotion des pièces.
+ * Auteur(s) : [Romeo Barraza, Arslan Khaoua]
+ * Entête générée par Copilot
+ */
 @Composable
 fun GameView(modifier: Modifier = Modifier,
              gameViewModel: GameViewModel = viewModel(),

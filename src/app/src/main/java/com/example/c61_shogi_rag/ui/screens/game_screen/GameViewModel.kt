@@ -1,6 +1,5 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -23,14 +22,17 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
-import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-
+/**
+ * Nom du fichier : GameViewModel.kt
+ * Description : Ce fichier définit un ViewModel permettant de gérer la logique du jeu Shogi,
+ *               incluant le déroulement des tours, la gestion des pièces, l'archivage des parties et l'interaction avec l'IA.
+ * Auteur(s) : [Romeo Barraza]
+ * Entête générée par Copilot
+ */
 class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSaver: GameSaver? = null):
     ViewModel() {
 
