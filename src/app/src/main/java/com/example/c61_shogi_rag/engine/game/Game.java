@@ -92,6 +92,8 @@ public class Game implements MinimaxCallback {
 
         gameSaver = new GameSaver();
         promotionStateMap = new PromotionState(new HashMap<>());
+
+        this.gameBoard.prettyPrintConsoleBoard();
     }
 
     /**
@@ -587,9 +589,7 @@ public class Game implements MinimaxCallback {
                     gameBoard.movePieceTo(oldpos, newpos);
                 }
             }
-
-            int nbMoves = gameSaver.getTurnList().getTurnsList().size();
-            isPlayerTurn = (nbMoves % 2 == 0) == isPlayerStarting;
+            isPlayerTurn = true;
         }
 	}
 
