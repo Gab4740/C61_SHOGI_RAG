@@ -21,6 +21,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.game.GameSaver
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.CapturedPieces
@@ -117,13 +118,19 @@ fun GameView(modifier: Modifier = Modifier,
                 opponent.nom_joueur
             }
 
-            if (!gameSaved.value){
+            if (playerShareViewModel.isSelectPartieSet()){
+                if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
+                    gameViewModel.updatePartie(gameViewModel.playerID, gameViewModel.opponentID, playerShareViewModel.selectedPartie.partie_id)
+                } else {
+                    gameViewModel.updatePartie(gameViewModel.opponentID, gameViewModel.playerID, playerShareViewModel.selectedPartie.partie_id)
+                }
+            }
+            else if (!gameSaved.value){
                 if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
                     gameViewModel.archiverPartie(gameViewModel.playerID, gameViewModel.opponentID)
                 } else {
                     gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
                 }
-
                 gameSaved.value = true
             }
             GameOverDialog(

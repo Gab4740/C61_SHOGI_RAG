@@ -64,6 +64,8 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
             isPlayerTurn = game.isPlayerTurn
             isGameEnded = game.isGameEnded
 
+            System.out.println("ALLLO")
+
         }
         else if(!isPlayerTurn) {
             game.startMinimaxComputation();
@@ -155,6 +157,7 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
                 val jsonString = gson.toJson(game.getGameSaver())
 
                 game.gameSaver = null;
+
 
                 PartieDAO.addPartie(id_gagnant, id_perdant, isPlayerFirst, jsonString, true, object : PartieCallback {
                     override fun onPartiesRecuperees(partieList: List<Partie>) {
