@@ -10,7 +10,13 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
+/**
+ * Nom du fichier : Evaluation.java
+ * Description : Ce fichier définit une classe permettant d'évaluer diverses stratégies dans l'algorithme Minimax,
+ *               notamment le matériel, la sécurité du roi, la formation de châteaux et le contrôle du centre du plateau.
+ * Auteur : Gabriel Veilleux, Arslan Khaoua
+ * Entête générée par Copilot
+ */
 public class Evaluation {
 
     //rajouter d'autre adjust

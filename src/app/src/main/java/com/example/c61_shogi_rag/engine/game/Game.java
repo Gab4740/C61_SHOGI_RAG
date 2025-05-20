@@ -2,10 +2,6 @@ package com.example.c61_shogi_rag.engine.game;
 
 import androidx.compose.runtime.MutableState;
 
-import com.example.c61_shogi_rag.engine.dao.PartieDAO;
-import com.example.c61_shogi_rag.engine.entity.Partie;
-import com.example.c61_shogi_rag.engine.entity.PartieCallback;
-import com.example.c61_shogi_rag.engine.minimax.Difficulty;
 import com.example.c61_shogi_rag.engine.minimax.EvaluationStrategies;
 import com.example.c61_shogi_rag.engine.minimax.MinimaxCallback;
 import com.example.c61_shogi_rag.engine.minimax.MinimaxManager;
@@ -21,17 +17,20 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralArgent;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.GeneralOr;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion;
-import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiDragon;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiGote;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiSente;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Vector;
-
+/**
+ * Nom du fichier : Game.java
+ * Description : Ce fichier définit la gestion d'une partie de Shogi,
+ *               incluant l'initialisation du plateau, la création des pièces et le suivi du déroulement de la partie.
+ * Auteur : Gabriel Veilleux, Arslan Khaoua, Romeo Barraza
+ * Entête générée par Copilot
+ */
 public class Game implements MinimaxCallback {
     private final Board gameBoard;
     private Hashtable<Byte, ShogiPiece> pieces;

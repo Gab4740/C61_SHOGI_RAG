@@ -7,7 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.game.TurnHistory
 import com.google.gson.Gson
-
+/**
+ * Nom du fichier : ArchivedGameViewModel.kt
+ * Description : Ce fichier définit un ViewModel permettant de gérer la récupération et l'affichage
+ *               de l'historique des coups d'une partie archivée.
+ * Auteur(s) : [Arslan Khaoua]
+ * Entête générée par Copilot
+ */
 class ArchivedGameViewModel: ViewModel()  {
 
 

@@ -3,15 +3,18 @@ package com.example.c61_shogi_rag.engine.minimax;
 import com.example.c61_shogi_rag.engine.game.Board;
 import com.example.c61_shogi_rag.engine.game.MoveManager;
 import com.example.c61_shogi_rag.engine.game.PromotionState;
-import com.example.c61_shogi_rag.engine.piece.Move;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.Random;
 import java.util.Vector;
-
+/**
+ * Nom du fichier : Minimax.java
+ * Description : Ce fichier implémente l'algorithme Minimax pour le jeu de Shogi,
+ *               permettant de calculer le meilleur coup en fonction d'une stratégie d'évaluation et d'une profondeur de recherche.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class Minimax {
     private final EvaluationStrategies difficulty;
     private Vector<ShogiPiece> pieces;

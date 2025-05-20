@@ -16,6 +16,13 @@ import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 import com.example.c61_shogi_rag.ui.screens.history_screen.HistoryView
 import com.example.c61_shogi_rag.ui.screens.login_screen.LoginView
 import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuView
+/**
+ * Nom du fichier : navigation.kt
+ * Description : Ce fichier définit la logique de navigation entre les différents écrans du jeu Shogi,
+ *               facilitant la transition et le passage des données entre les vues.
+ * Auteur(s) : [Romeo Barraza]
+ * Entête générée par Copilot
+ */
 
 @Composable
 fun NavigationWrapper(modifier: Modifier = Modifier,

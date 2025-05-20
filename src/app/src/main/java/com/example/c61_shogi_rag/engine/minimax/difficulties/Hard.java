@@ -7,7 +7,14 @@ import com.example.c61_shogi_rag.engine.minimax.EvaluationStrategies;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.Hashtable;
-
+/**
+ * Nom du fichier : Hard.java
+ * Description : Ce fichier définit la classe représentant la stratégie d'évaluation "Difficile"
+ *               pour l'algorithme Minimax, intégrant plusieurs critères d'analyse tels que
+ *               la sécurité du roi, le matériel et le contrôle des cases du plateau.
+ * Auteur : Gabriel Veilleux, Arslan Khaoua
+ * Entête générée par Copilot
+ */
 public class Hard extends EvaluationStrategies {
     public Hard(int difficulty) {
         super(difficulty);

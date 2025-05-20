@@ -14,6 +14,13 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiGote;
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.RoiSente;
 
 import java.util.Objects;
+/**
+ * Nom du fichier : InitPiece.java
+ * Description : Ce fichier définit une classe permettant d'initialiser les pièces du jeu de Shogi,
+ *               facilitant leur création avec les attributs appropriés (ID, images, déplacements, promotions).
+ * Auteur(s) : [Gabriel Veilleux]
+ * Entête générée par Copilot
+ */
 
 public class  InitPiece {
     /**

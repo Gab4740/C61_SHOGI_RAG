@@ -5,6 +5,7 @@ package com.example.c61_shogi_rag.engine.piece;
  * forme de tableau 2D : int[][]
  * <a href="https://shogischool.com/shogi-pieces/">Documentation des pièces</a>
  * */
+
 public enum MoveSet{
     Roi(new int[][]{                    // King (玉 Gyoku )
             {1, 0}, {0, 1},

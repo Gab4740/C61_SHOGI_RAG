@@ -22,6 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.c61_shogi_rag.engine.minimax.Difficulty
 
+/**
+ * Nom du fichier : Button.kt
+ * Description : Ce fichier contient les composants de boutons utilisés dans l'interface utilisateur du jeu Shogi,
+ *               permettant aux joueurs d'interagir avec différentes options et actions.
+ * Auteur(s) : [Romeo Barraza]
+ * Entête générée par Copilot
+ */
 @Composable
 fun ShogiButton(modifier: Modifier = Modifier,
                 text: String,
