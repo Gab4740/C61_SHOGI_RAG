@@ -1,7 +1,13 @@
 package com.example.c61_shogi_rag.engine.piece;
 
 import com.example.c61_shogi_rag.engine.game.Board;
-
+/**
+ * Nom du fichier : NormalPiece.java
+ * Description : Ce fichier définit une classe représentant une pièce classique du Shogi,
+ *               incluant la validation de ses déplacements et l'application des règles du jeu.
+ * Auteur(s) : [Gabriel Veilleux]
+ * Entête générée par Copilot
+ */
 public class NormalPiece extends ShogiPiece{
 
     public NormalPiece(byte id, byte idPromu, int imageId, int imageIdPromu, String nom, int[][] directions) {

@@ -1,7 +1,13 @@
 package com.example.c61_shogi_rag.engine.game;
 
 import com.example.c61_shogi_rag.engine.piece.Position;
-
+/**
+ * Nom du fichier : OneTurn.java
+ * Description : Ce fichier définit une classe représentant un tour de jeu dans une partie de Shogi,
+ *               incluant les informations sur la pièce jouée, les positions et l'utilisation du parachutage.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class OneTurn {
     private byte piece_jouer;
     private Position old_pos;

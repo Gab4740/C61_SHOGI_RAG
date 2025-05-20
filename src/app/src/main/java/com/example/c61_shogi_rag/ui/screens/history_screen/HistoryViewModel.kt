@@ -10,7 +10,6 @@ import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.JoueurCallback
 import com.example.c61_shogi_rag.engine.entity.Partie
 import com.example.c61_shogi_rag.engine.entity.PartieCallback
-import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Nom du fichier : HistoryViewModel.kt
+ * Description : Ce fichier définit un ViewModel permettant de gérer l'historique des parties jouées,
+ *               incluant la récupération des données de la base de données et l'affichage des scores.
+ * Auteur(s) : [Arslan Khaoua]
+ * Entête générée par Copilot
+ */
 sealed class HistoryUiState {
 
     object Loading : HistoryUiState()

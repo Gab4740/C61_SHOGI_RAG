@@ -3,7 +3,13 @@ package com.example.c61_shogi_rag.engine.game;
 import com.example.c61_shogi_rag.engine.piece.Position;
 
 import java.util.HashMap;
-
+/**
+ * Nom du fichier : PromotionState.java
+ * Description : Ce fichier définit une classe permettant de gérer l'état de promotion des pièces de Shogi,
+ *               assurant le suivi des positions promues et la possibilité de promotion pour les pièces du jeu.
+ * Auteur : Gabriel Veilleux
+ * Entête générée par Copilot
+ */
 public class PromotionState {
     private HashMap<String, Boolean> internalMap;
 

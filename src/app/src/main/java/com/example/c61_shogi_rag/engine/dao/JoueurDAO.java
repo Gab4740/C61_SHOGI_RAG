@@ -16,7 +16,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
+/**
+ * Nom du fichier : JoueurDAO.java
+ * Description : Ce fichier implémente l'accès aux données des joueurs dans la base de données Firebase,
+ *               permettant la création de nouveaux joueurs et la récupération des informations de connexion.
+ * Auteur : Arslan Khaoua
+ * Entête générée par Copilot
+ */
 public class JoueurDAO {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();

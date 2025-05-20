@@ -19,7 +19,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Nom du fichier : PartieDAO.java
+ * Description : Ce fichier implémente l'accès aux données des parties dans la base de données Firebase,
+ *               permettant la création, la mise à jour et la récupération des parties jouées.
+ * Auteur : Arslan Khaoua
+ * Entête générée par Copilot
+ */
 public class PartieDAO {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();

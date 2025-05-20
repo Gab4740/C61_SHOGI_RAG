@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.view.WindowCompat
 import com.example.c61_shogi_rag.R
-
+// Crée automatiquement
 val asianaFontFamily = FontFamily(
     Font(R.font.asiana, FontWeight.Normal),
 )

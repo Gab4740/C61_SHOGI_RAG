@@ -4,7 +4,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-
+/**
+ * Nom du fichier : Text.kt
+ * Description : Ce fichier contient plusieurs fonctions composables permettant d'afficher du texte
+ *               avec différentes tailles et polices dans l'interface utilisateur du jeu Shogi.
+ * Auteur(s) : [Romeo Barraza]
+ */
 @Composable
 fun GameTitle(modifier: Modifier = Modifier,
               name: String) {

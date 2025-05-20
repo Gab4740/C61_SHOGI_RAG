@@ -5,7 +5,13 @@ import com.example.c61_shogi_rag.engine.piece.Position;
 import com.example.c61_shogi_rag.engine.piece.ShogiPiece;
 
 import java.util.Vector;
-
+/**
+ * Nom du fichier : Board.java
+ * Description : Ce fichier définit la classe représentant le plateau de jeu du Shogi,
+ *               incluant les méthodes de manipulation des pièces et des positions sur l'échiquier.
+ * Auteur : Gabriel Veilleux, Romeo Barraza
+ * Entête générée par Copilot
+ */
 public class Board {
     private final int BOARD_SIZE = 9;
     private byte[][] board;

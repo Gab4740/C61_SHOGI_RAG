@@ -8,7 +8,13 @@ import com.example.c61_shogi_rag.engine.dao.JoueurDAO
 import com.example.c61_shogi_rag.engine.entity.Joueur
 import com.example.c61_shogi_rag.engine.entity.JoueurCallback
 
-
+/**
+ * Nom du fichier : LoginViewModel.kt
+ * Description : Ce fichier définit un ViewModel permettant de gérer l'authentification des joueurs,
+ *               incluant la connexion, l'inscription et la validation des identifiants.
+ * Auteur(s) : [Arslan Khaoua, Romeo Barraza]
+ * Entête générée par Copilot
+ */
 class LoginViewModel: ViewModel() {
     var username by mutableStateOf("")
     var password by mutableStateOf("")

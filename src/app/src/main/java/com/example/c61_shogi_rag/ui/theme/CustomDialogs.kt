@@ -10,7 +10,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
 
-
+/**
+ * Nom du fichier : CustomDialogs.kt
+ * Description : Ce fichier définit des composants graphiques représentant différentes pièces
+ *               et éléments interactifs du jeu Shogi, facilitant leur affichage et leur manipulation.
+ * Auteur(s) : [Romeo Barraza]
+ * Entête générée par Copilot
+ */
 @Composable
 fun SenteComposable(modifier: Modifier = Modifier, onClick:() -> Unit = {} ) {
         Icon(

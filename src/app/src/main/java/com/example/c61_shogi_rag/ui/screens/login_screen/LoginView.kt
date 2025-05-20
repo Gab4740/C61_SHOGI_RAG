@@ -21,7 +21,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.ShogiButton
 import com.example.c61_shogi_rag.ui.theme.Title
-
+/**
+ * Nom du fichier : LoginView.kt
+ * Description : Ce fichier définit l'interface utilisateur de la connexion et de l'inscription des joueurs,
+ *               incluant la gestion des champs de saisie, des validations et de la navigation vers le menu principal.
+ * Auteur(s) : [Arslan Khaoua, Romeo Barraza]
+ * Entête générée par Copilot
+ */
 @Composable
 fun LoginView(modifier: Modifier = Modifier,
               loginViewModel: LoginViewModel = viewModel(),

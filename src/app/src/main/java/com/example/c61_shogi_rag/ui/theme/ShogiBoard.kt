@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.c61_shogi_rag.R
 import com.example.c61_shogi_rag.engine.piece.Position
-import com.example.c61_shogi_rag.engine.piece.ShogiPiece
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Charriot
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Chevalier
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Fou
@@ -34,6 +32,12 @@ import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Lance
 import com.example.c61_shogi_rag.engine.piece.ShogiPieces.Pion
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 
+/**
+ * Nom du fichier : ShogiBoard.kt
+ * Description : Ce fichier contient les composants de l'affichage du plateau de jeu de Shogi,
+ *               ainsi que la gestion des pièces capturées et leur affichage.
+ * Auteur(s) : [Romeo Barraza]
+ */
 val cellSize: Dp = 43.dp
 
 val drawableList = listOf<Int>(

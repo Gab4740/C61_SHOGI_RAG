@@ -1,7 +1,13 @@
 package com.example.c61_shogi_rag.engine.piece;
 
 import com.example.c61_shogi_rag.engine.game.Board;
-
+/**
+ * Nom du fichier : ShogiPiece.java
+ * Description : Ce fichier définit une classe abstraite représentant une pièce de Shogi,
+ *               incluant ses propriétés, ses déplacements et la validation de ses mouvements sur le plateau.
+ * Auteur(s) : [Gabriel Veilleux]
+ * Entête générée par Copilot
+ */
 public abstract class ShogiPiece {
     private final byte ID;  // ID negatif = Noir, ID positif = Blanc
     private final byte ID_PROMU;
