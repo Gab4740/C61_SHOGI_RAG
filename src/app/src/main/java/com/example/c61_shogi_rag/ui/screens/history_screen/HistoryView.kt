@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -136,7 +138,14 @@ fun MatchItem(modifier: Modifier = Modifier,
               goteScore: Float,
               onClick: (Partie) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier
+        .border(
+            width = if (!partie.isPartieTerminee) 2.dp else 0.dp,
+            color = if (!partie.isPartieTerminee) Color.Red else Color.Transparent,
+            shape = RoundedCornerShape(8.dp)
+        )
+        .padding(8.dp)
+    ){
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable {
@@ -149,12 +158,6 @@ fun MatchItem(modifier: Modifier = Modifier,
             Text(text = " - ", fontSize = 40.sp)
             GoteComposable(name = goteName, score = goteScore)
         }
-//        Row {
-//            if (!partie.isPartieTerminee){
-//                ShogiButton(text = "Continuer",
-//                    onClick = { onClick(partie) })
-//            }
-//        }
     }
 
 }

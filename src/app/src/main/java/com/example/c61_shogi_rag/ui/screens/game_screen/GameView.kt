@@ -124,6 +124,7 @@ fun GameView(modifier: Modifier = Modifier,
                 } else {
                     gameViewModel.updatePartie(gameViewModel.opponentID, gameViewModel.playerID, playerShareViewModel.selectedPartie.partie_id)
                 }
+                playerShareViewModel.removeSelectPartie()
             }
             else if (!gameSaved.value){
                 if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
@@ -132,6 +133,7 @@ fun GameView(modifier: Modifier = Modifier,
                     gameViewModel.archiverPartie(gameViewModel.opponentID, gameViewModel.playerID)
                 }
                 gameSaved.value = true
+
             }
             GameOverDialog(
                 winner = winner ,

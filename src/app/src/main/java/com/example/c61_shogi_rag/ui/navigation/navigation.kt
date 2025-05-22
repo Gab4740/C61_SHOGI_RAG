@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.c61_shogi_rag.engine.entity.Joueur
+import com.example.c61_shogi_rag.engine.game.GameSaver
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.screens.archived_game_screen.ArchivedGameView
 import com.example.c61_shogi_rag.ui.screens.game_screen.GameView
@@ -16,6 +17,8 @@ import com.example.c61_shogi_rag.ui.screens.game_screen.GameViewModel
 import com.example.c61_shogi_rag.ui.screens.history_screen.HistoryView
 import com.example.c61_shogi_rag.ui.screens.login_screen.LoginView
 import com.example.c61_shogi_rag.ui.screens.main_menu_screen.MainMenuView
+import com.google.gson.Gson
+
 /**
  * Nom du fichier : navigation.kt
  * Description : Ce fichier définit la logique de navigation entre les différents écrans du jeu Shogi,
@@ -54,8 +57,9 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
                 val savedGame = playerShareViewModel.currentGameSaver
                 if (savedGame != null && playerShareViewModel.isSelectPartieSet()) {
                     GameViewModel(game.isPlayerFirst, game.difficulty, savedGame)
-                } else
-                GameViewModel(game.isPlayerFirst, game.difficulty)
+                } else {
+                    GameViewModel(game.isPlayerFirst, game.difficulty)
+                }
             }
 
             LaunchedEffect(gameViewModel) {
@@ -69,7 +73,7 @@ fun NavigationWrapper(modifier: Modifier = Modifier,
                 opponent = Joueur(game.opponentID, game.opponentName),
                 gameViewModel = gameViewModel,
                 navigateToMainMenu = {
-
+                    playerShareViewModel.removeSelectPartie()
                     navController.navigate(MainMenu) {
                         popUpTo<MainMenu>{inclusive = true}
                     }

@@ -43,7 +43,7 @@ public class Game implements MinimaxCallback {
     private Boolean isPlayerTurn;
     private Boolean isGameEnded;
     private Boolean GameWinner;
-    private static GameSaver gameSaver;
+    private GameSaver gameSaver;
     private static PromotionState promotionStateMap;
     private MinimaxManager manager;
     private EvaluationStrategies difficulty;
@@ -567,7 +567,7 @@ public class Game implements MinimaxCallback {
     }
 
     public void setGameSaver(GameSaver gameSaver) {
-        Game.gameSaver = gameSaver;
+        this.gameSaver = gameSaver;
     }
 
     public void loadSavedGame(){
@@ -585,7 +585,9 @@ public class Game implements MinimaxCallback {
                         gameBoard.setPieceAt(piece, newpos);
                     }
                 }else{
-                    gameBoard.movePieceTo(oldpos, newpos);
+                    if (oldpos != null && newpos != null && gameBoard.getPieceAt(oldpos) != 0) {
+                        gameBoard.movePieceTo(oldpos, newpos);
+                    }
                 }
             }
             isPlayerTurn = true;

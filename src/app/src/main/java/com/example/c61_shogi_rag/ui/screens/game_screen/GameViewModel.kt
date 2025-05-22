@@ -1,5 +1,6 @@
 package com.example.c61_shogi_rag.ui.screens.game_screen
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -55,19 +56,23 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
     val clock = mutableStateOf(game.timeString)
 
     init {
+        //game.GameInit()
+        counter.value = 0
         game.GameInit()
 
-        if (savedGameSaver != null){
+        if (savedGameSaver == null) {
+            // Réinitialiser explicitement le jeu
+            game = Game(isPlayerFirst, difficulty.strategy, counter)
+            game.GameInit()
+        } else {
+            // Charger une partie sauvegardée
+            Log.d("GameViewModel", "Chargement d'une partie sauvegardée")
+            game = Game(isPlayerFirst, difficulty.strategy, counter)
             game.gameSaver = savedGameSaver
             game.loadSavedGame()
-
-            isPlayerTurn = game.isPlayerTurn
-            isGameEnded = game.isGameEnded
-
-            System.out.println("ALLLO")
-
         }
-        else if(!isPlayerTurn) {
+
+        if(!isPlayerTurn) {
             game.startMinimaxComputation();
             isPlayerTurn = game.isPlayerTurn
         }

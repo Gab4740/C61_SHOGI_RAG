@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.c61_shogi_rag.engine.game.GameSaver
 import com.example.c61_shogi_rag.engine.minimax.Difficulty
 import com.example.c61_shogi_rag.ui.screens.PlayerShareViewModel
 import com.example.c61_shogi_rag.ui.theme.DifficultyOption
@@ -54,6 +55,7 @@ fun MainMenuView(modifier: Modifier = Modifier,
             text = "Play",
             fontFamily = japanWaveFontFamily,
             onClick = {
+                playerShareViewModel.removeSelectPartie()
                 mainMenuViewModel.openAlertDialog = true
             }
         )
