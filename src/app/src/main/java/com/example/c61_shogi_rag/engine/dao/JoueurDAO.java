@@ -30,12 +30,12 @@ public class JoueurDAO {
     private static final DatabaseReference joueurInfoDB = database.getReference("joueurInfo");
 
     /**
-     *
      * methode permettant de cree un nouveau joueur et de l'envoyer a la BD
      *
-     * @param nom -> representant le nom/pseudo du joueur
-     *
-     **/
+     * @param nom Le nom/pseudo du joueur à créer
+     * @param password Le mot de passe du joueur
+     * @param callback Interface de rappel pour traiter le résultat de l'opération
+     */
     public static void addJoueur(String nom, String password, JoueurCallback callback) {
 
         // 1. Vérifier si le nom d'utilisateur existe déjà
@@ -99,6 +99,12 @@ public class JoueurDAO {
     }
 
 
+    /**
+     * Récupère un joueur de la base de données par son identifiant unique.
+     *
+     * @param callback Interface de rappel pour traiter le résultat de la requête
+     * @param id_joueur L'identifiant unique du joueur à récupérer
+     */
     public static void getJoueurById(JoueurCallback callback, int id_joueur){
 
         if (id_joueur < 0){
@@ -138,7 +144,13 @@ public class JoueurDAO {
     }
 
 
-
+    /**
+     * Authentifie un joueur en vérifiant son nom d'utilisateur et mot de passe.
+     *
+     * @param callback Interface de rappel pour traiter le résultat de l'authentification
+     * @param nom Le nom d'utilisateur/pseudo du joueur
+     * @param password Le mot de passe en clair à vérifier
+     */
     public static void getJoueurByName(JoueurCallback callback, String nom, String password) {
 
         Query query = joueurDB.orderByChild("nom_joueur").equalTo(nom);

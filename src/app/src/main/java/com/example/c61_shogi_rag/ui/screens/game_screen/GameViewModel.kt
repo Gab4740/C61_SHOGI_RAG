@@ -157,7 +157,9 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
     fun archiverPartie(id_gagnant: Int, id_perdant: Int) {
 
         if (isGameEnded && isPlayerConnected) {
+            partieDejaTraitee = true
             try {
+
                 val gson = Gson()
                 val jsonString = gson.toJson(game.getGameSaver())
 
@@ -182,8 +184,10 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
         }
     }
 
+    var partieDejaTraitee = false
+
     fun archiverPartieEnCours() {
-        if (!isGameEnded && isPlayerConnected) {
+        if (!isGameEnded && isPlayerConnected && !partieDejaTraitee) {
             try {
                 val gson = Gson()
 
@@ -198,22 +202,27 @@ class GameViewModel(isPlayerFirst: Boolean, difficulty: Difficulty, savedGameSav
                     }
 
                     override fun onPartieCree(succes: String) {
-                        System.out.println("Partie en cours sauvegardée: $succes")
+                        Log.d("GameViewModel", "Partie en cours sauvegardée: $succes")
                     }
 
                     override fun onError(e: Exception) {
-                        System.out.println("Erreur lors de la sauvegarde de la partie en cours: $e")
+                        Log.e("GameViewModel", "Erreur lors de la sauvegarde de la partie en cours: $e")
                     }
                 })
             } catch (exception: Exception) {
-                exception.printStackTrace()
+                Log.e("GameViewModel", "Exception lors de la sauvegarde", exception)
             }
+        }else{
+            Log.d("GameViewModel", "Pas de sauvegarde - Joueur non connecté ou partie terminée")
         }
     }
 
     fun updatePartie(id_gagnant: Int, id_perdant: Int, id_partie:Int) {
 
         if (isGameEnded && isPlayerConnected) {
+
+
+            partieDejaTraitee = true
             try {
                 val gson = Gson()
                 val jsonString = gson.toJson(game.getGameSaver())

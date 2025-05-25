@@ -283,7 +283,14 @@ public class Game implements MinimaxCallback {
             promotionStateMap.removePromotedPosition(move.getMove().getCurrentPosition());
             promotionStateMap.promotePiece(move.getMove().getNextPosition());
         }
+        Position currentPos = move.getMove().getCurrentPosition();
+        Position nextPos = move.getMove().getNextPosition();
+        byte pieceId = gameBoard.getPieceAt(currentPos);
+
         move.do_move_on_board(gameBoard);
+
+        gameSaver.addNewTurn(new OneTurn(pieceId, currentPos, nextPos, false));
+
         this.counter.setValue(this.counter.getValue() + 1) ;
 
         isGameEnded = isKingsAlive();

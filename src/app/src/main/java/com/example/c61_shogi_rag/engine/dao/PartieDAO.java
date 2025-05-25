@@ -52,9 +52,23 @@ public class PartieDAO {
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                 try{
-                    long nombrePartie = currentData.getChildrenCount();
+                    long maxId = 0;
 
-                    long newId = nombrePartie + 1;
+                    for (MutableData child : currentData.getChildren()) {
+                        try {
+                            long childId = Long.parseLong(child.getKey());
+                            if (childId > maxId) {
+                                maxId = childId;
+                            }
+                        } catch (NumberFormatException e) {
+                            // Ignorer les clés non numériques
+                            Log.w("PartieDAO", "Clé non numérique trouvée: " + child.getKey());
+                        }
+                    }
+
+                    // Utiliser maxId + 1 pour le nouvel ID
+                    long newId = maxId + 1;
+
                     String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
                     Partie partie = new Partie((int) newId, id_winner, id_loser, date, jsonString, playerCouleur, partieFini);

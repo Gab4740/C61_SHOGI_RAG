@@ -57,9 +57,10 @@ fun GameView(modifier: Modifier = Modifier,
     LifeCylceEvents(
         onAppStopped = {
             // Fonction appelée lorsque l'app s'arrête ou passe en arrière-plan
-            Log.d("MyApp", "L'application est maintenant en arrière-plan.")
+
         },
-        gameViewModel = gameViewModel
+        gameViewModel = gameViewModel,
+        playerShareViewModel = playerShareViewModel
     )
 
     val gameSaved = remember { mutableStateOf(false) }
@@ -118,15 +119,20 @@ fun GameView(modifier: Modifier = Modifier,
                 opponent.nom_joueur
             }
 
+
             if (playerShareViewModel.isSelectPartieSet()){
+
                 if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
                     gameViewModel.updatePartie(gameViewModel.playerID, gameViewModel.opponentID, playerShareViewModel.selectedPartie.partie_id)
                 } else {
                     gameViewModel.updatePartie(gameViewModel.opponentID, gameViewModel.playerID, playerShareViewModel.selectedPartie.partie_id)
                 }
                 playerShareViewModel.removeSelectPartie()
+                gameSaved.value = true
+
             }
             else if (!gameSaved.value){
+
                 if (winner == playerShareViewModel.currentPlayer.nom_joueur) {
                     gameViewModel.archiverPartie(gameViewModel.playerID, gameViewModel.opponentID)
                 } else {
@@ -140,6 +146,7 @@ fun GameView(modifier: Modifier = Modifier,
                 onDismiss = {
                     gameViewModel.isGameEnded = false
                     gameSaved.value = false
+                    gameViewModel.partieDejaTraitee = true
                     navigateToMainMenu()
                 }
             )
@@ -226,16 +233,17 @@ fun PromotionDialogue(
 }
 
 @Composable
-fun LifeCylceEvents(onAppStopped: () -> Unit, gameViewModel: GameViewModel){
+fun LifeCylceEvents(onAppStopped: () -> Unit, gameViewModel: GameViewModel, playerShareViewModel: PlayerShareViewModel){
     val lifecycleOwner = LocalLifecycleOwner.current
 
     // Observer pour les événements de cycle de vie
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_DESTROY -> {
-                    gameViewModel.archiverPartieEnCours()
-                    Log.d("MyApp", "L'activité a été détruite.")
+                Lifecycle.Event.ON_STOP -> {
+                    if (!gameViewModel.isGameEnded && !playerShareViewModel.isSelectPartieSet()){
+                        gameViewModel.archiverPartieEnCours()
+                    }
                     onAppStopped()
                 }
                 else -> Unit

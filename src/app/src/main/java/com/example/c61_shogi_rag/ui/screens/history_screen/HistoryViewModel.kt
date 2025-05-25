@@ -135,67 +135,24 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun calculateScores(partie:Partie, playerId:Int): Pair<Float, Float>  {
-        var senteScore = 0f
-        var goteScore = 0f
-
+        val isPlayerWinner = partie.winner_id == playerId
         val playerCouleur = partie.isPlayerCouleur
 
-        val isPlayerWinner = partie.winner_id == playerId
-
-        if (playerCouleur){
-            senteScore = if (isPlayerWinner) 1f else 0f
-            goteScore = if (isPlayerWinner) 0f else 1f
-        }else{
-            senteScore = if (isPlayerWinner) 0f else 1f
-            goteScore = if (isPlayerWinner) 1f else 0f
-
+        return if (playerCouleur) {
+            if (isPlayerWinner) Pair(1f, 0f) else Pair(0f, 1f)
+        } else {
+            if (isPlayerWinner) Pair(0f, 1f) else Pair(1f, 0f)
         }
-
-        return Pair(senteScore, goteScore)
     }
 
     fun getNom(partie: Partie, playerName: String): Pair<String, String> {
         val playerCouleur = partie.isPlayerCouleur
 
-        val senteName: String
-        val goteName: String
-
-        if (playerCouleur) {
-            senteName = playerName
-            goteName = "IA"
+        return if (playerCouleur) {
+            Pair(playerName, "IA")
         } else {
-            senteName = "IA"
-            goteName = playerName
+            Pair("IA", playerName)
         }
-
-        return Pair(senteName, goteName)
     }
-
-
-//Ancienne methode a laisse pour l'instant au cas ou
-
-//    var listeParties by mutableStateOf<List<Partie>>(emptyList())
-//
-//    var joueurRecuperer by mutableStateOf<Joueur?>(null)
-//        private set
-//
-//    private val partieDAO = PartieDAO()
-//
-//     fun getPartieJouer(id_joueur: Int) {
-//        PartieDAO.getPartie(object : PartieCallback {
-//            override fun onPartiesRecuperees(partieList: List<Partie>) {
-//               listeParties = partieList
-//                //System.out.println(listeParties.size)
-//            }
-//        }, id_joueur)
-//    }
-//
-//    fun getJoueurById(id_joueur:Int){
-//        JoueurDAO.getJoueurById(object : JoueurCallback {
-//            override fun onJoueurRecupere(joueur: Joueur) {
-//                joueurRecuperer = joueur
-//            }
-//        }, id_joueur)
-//    }
 
 }
