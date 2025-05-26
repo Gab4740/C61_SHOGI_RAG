@@ -95,34 +95,6 @@ public class Board {
         return allPos;
     }
 
-    public int getBOARD_SIZE() {
-        return BOARD_SIZE;
-    }
-
-    // --------------------------------------------
-    // DEBUG TOOL
-    public void prettyPrintConsoleBoard() {
-        int maxLength = getMaxNumberLength();
-
-        for (byte[] row : board) {
-            for (int num : row) {
-                System.out.printf("%" + maxLength + "d ", num);
-            }
-            System.out.println();
-        }
-    }
-
-    private int getMaxNumberLength() {
-        int maxLength = 0;
-        for (byte[] row : board) {
-            for (int num : row) {
-                maxLength = Math.max(maxLength, String.valueOf(num).length());
-            }
-        }
-        return maxLength;
-    }
-    // --------------------------------------------
-
     public boolean isWhitePawnInColumn(final int column) {
         boolean valid = true;
         for(int row = 0; row < BOARD_SIZE; row++) {
@@ -133,5 +105,9 @@ public class Board {
             }
         }
         return valid;
+    }
+
+    public int getBOARD_SIZE() {
+        return BOARD_SIZE;
     }
 }

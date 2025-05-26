@@ -90,7 +90,6 @@ public class Minimax {
             return minEval;
         }
     }
-
     public int getLeafCounter() {
         return leafCounter;
     }

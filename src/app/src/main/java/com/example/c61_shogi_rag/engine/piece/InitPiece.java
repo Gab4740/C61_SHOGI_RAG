@@ -45,8 +45,6 @@ public class  InitPiece {
         int adjust = 1;
         int inverse = -1;
 
-        ShogiPiece newPiece;
-
         switch(pieceName){
             case "roisente" :
                 piece_id = PieceIDs.Roi.getValue() * (color ? adjust : inverse);

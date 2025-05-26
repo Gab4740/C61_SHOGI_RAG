@@ -10,7 +10,6 @@ import com.example.c61_shogi_rag.engine.piece.Position;
  * Entête générée par Copilot
  */
 public class MoveManager {
-    // private final byte originalPiece;
     private final byte originalTarget;
     private final Move move;
 
@@ -49,15 +48,7 @@ public class MoveManager {
         return move.getNextPosition().getPosX() >= 6;
     }
 
-    public byte getOriginalTarget() {
-        return originalTarget;
-    }
-
     public Move getMove() {
         return move;
-    }
-
-    public void prettyPrint(){
-        System.out.println("(" + move.getCurrentPosition().getPosX() + "," + move.getCurrentPosition().getPosY() + ") to " + "(" + move.getNextPosition().getPosX() + "," + move.getNextPosition().getPosY() + ")");
     }
 }

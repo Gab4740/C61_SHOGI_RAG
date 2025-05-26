@@ -17,7 +17,6 @@ public class MoveUtils {
         int displacementXDragon = (finalX != currX) ? (finalX > currX ? 1 : -1) : 0;
         int displacementYDragon = (finalY != currY) ? (finalY > currY ? 1 : -1) : 0;
 
-        // True = white, False = black
         boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
 
         while (currX != finalX || currY != finalY) {
@@ -45,7 +44,6 @@ public class MoveUtils {
             int displacementX = finalX > currX ? 1 : -1;
             int displacementY = finalY > currY ? 1 : -1;
 
-            // True = white, False = black
             boolean pieceColor = board.getPieceAt(new Position(currX, currY)) > 0;
 
             while(currX != finalX && currY != finalY){
@@ -85,26 +83,5 @@ public class MoveUtils {
             }
         }
         return false;
-    }
-
-    public boolean canParachute(ShogiPiece piece, Position pos, Board gameBoard){
-        boolean valid = true;
-        final int LAST_ROW = 8;
-
-        if(piece instanceof Pion) {
-            // TODO Vérifier si le pion fait échec et mat
-            if(pos.getPosX() == LAST_ROW || !gameBoard.isWhitePawnInColumn(pos.getPosY())) {
-                valid = false;
-            }
-        } else if (piece instanceof  Lance) {
-            if(pos.getPosX() == LAST_ROW) {
-                valid = false;
-            }
-        } else if (piece instanceof Chevalier) {
-            if(pos.getPosX() == LAST_ROW  || pos.getPosX() == LAST_ROW + 1) {
-                valid = false;
-            }
-        }
-        return valid;
     }
 }

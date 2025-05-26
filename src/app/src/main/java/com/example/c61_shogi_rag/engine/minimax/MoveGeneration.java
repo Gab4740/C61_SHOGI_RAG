@@ -60,7 +60,6 @@ public class MoveGeneration {
             pieceExists = false;
             return;
         }
-
         pieceToGenMoveFrom = pieces.get(currListIndex);
         posOfSpecificPiece = board.getPositionsFromPiece(pieceToGenMoveFrom);
         currListIndex++;
@@ -165,10 +164,6 @@ public class MoveGeneration {
             getNewPieceFromBoard();
             return (currListIndex - 1) != pieces.size();
         }
-
-        //if(currListIndex == pieces.size() && !pieceToParachute.isEmpty()){
-        //    // Start testing parachuting here
-        //}
         return (currListIndex != pieces.size() || pieceToGenMoveFrom.getDIRECTIONS().length != currDirectionsIndex);
     }
 

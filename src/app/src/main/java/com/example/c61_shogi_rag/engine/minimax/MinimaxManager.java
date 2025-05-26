@@ -60,45 +60,6 @@ public class MinimaxManager {
     }
 
     private MoveManager executeMinimax() {
-        // MULTI-THREADING FUCKERY :
-        //List<MoveManager> allMoves = new ArrayList<>();
-        //MoveGeneration moveGenerator = new MoveGeneration(piece, currGameBoard, promotionStateMap, piecesObj);
-        //while (moveGenerator.genMove()) {
-        //    MoveManager move = moveGenerator.getCurrMoveToReturn();
-        //    if (move != null) {
-        //        allMoves.add(move);
-        //    }
-        //}
-        //ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        //List<Callable<MoveScore>> tasks = new ArrayList<>();
-        //for (MoveManager move : allMoves) {
-        //    tasks.add(() -> {
-        //        Board clonedBoard = currGameBoard.clone(); // Make sure this is a deep clone!
-        //        PromotionState copyPromo = promotionStateMap.clone();
-        //        move.do_move_on_board(clonedBoard);
-        //        Minimax minimaxObj = new Minimax(piece, piecesObj, difficulty);
-        //        MoveScore eval = minimaxObj.minimax(clonedBoard, searchDepth - 1, ALPHA, BETA, !maximizingPlayer, copyPromo);
-        //        eval.setMove(move); // associate the move that led to this score
-        //        return eval;
-        //    });
-        //}
-        //MoveScore bestMoveScore = null;
-        //try {
-        //    List<Future<MoveScore>> results = executor.invokeAll(tasks);
-        //    for (Future<MoveScore> future : results) {
-        //        MoveScore result = future.get();
-        //        if (bestMoveScore == null ||
-        //                (maximizingPlayer && result.getScore() > bestMoveScore.getScore()) ||
-        //                (!maximizingPlayer && result.getScore() < bestMoveScore.getScore())) {
-        //            bestMoveScore = result;
-        //        }
-        //    }
-        //} catch (InterruptedException | ExecutionException e) {
-        //    e.printStackTrace();
-        //} finally {
-        //    executor.shutdown();
-        //}
-
         long start = System.nanoTime();
         Board boardCopy = currGameBoard.clone();
         PromotionState promotionCopy = promotionStateMap.clone();

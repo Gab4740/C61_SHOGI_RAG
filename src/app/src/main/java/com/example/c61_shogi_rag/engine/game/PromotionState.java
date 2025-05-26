@@ -60,11 +60,4 @@ public class PromotionState {
     public boolean canPiecePromote(Position pos){
         return !this.isPiecePromoted(pos) && pos.getPosX() <= 2;
     }
-
-    // DEBUG
-    public void printMap() {
-        for (String key : internalMap.keySet()) {
-            System.out.println(key + " -> " + internalMap.get(key));
-        }
-    }
 }
